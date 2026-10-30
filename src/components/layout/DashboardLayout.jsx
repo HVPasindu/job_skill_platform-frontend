@@ -23,6 +23,7 @@ export default function DashboardLayout() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [location.pathname]);
   const role = ROLE_DETAILS[activeRole];
+  const seekerPaths = { "My profile": "profile", "My documents": "documents" };
   async function signOut() {
     setOpen(false);
     if (
@@ -71,13 +72,29 @@ export default function DashboardLayout() {
           >
             ◎ <span>My account</span>
           </ListItemButton>
-          {role?.modules.map((label) => (
-            <ListItemButton key={label} disabled>
-              <span>↗</span>
-              <span>{label}</span>
-              <small>Soon</small>
-            </ListItemButton>
-          ))}
+          {role?.modules.map((label) =>
+            activeRole === "job_seeker" && seekerPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/job-seeker/${seekerPaths[label]}`}
+                selected={
+                  location.pathname ===
+                  `/dashboard/job-seeker/${seekerPaths[label]}`
+                }
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : (
+              <ListItemButton key={label} disabled>
+                <span>↗</span>
+                <span>{label}</span>
+                <small>Soon</small>
+              </ListItemButton>
+            ),
+          )}
           {!user.roles.includes("trainer") && (
             <ListItemButton
               component={NavLink}

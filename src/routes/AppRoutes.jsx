@@ -23,6 +23,13 @@ const DashboardLayout = lazy(
 );
 const DashboardHome = lazy(() => import("../pages/dashboard/DashboardHome"));
 const Account = lazy(() => import("../pages/dashboard/Account"));
+const SeekerLayout = lazy(() => import("../components/layout/SeekerLayout"));
+const Profile = lazy(() => import("../pages/seeker/Profile"));
+const Education = lazy(() => import("../pages/seeker/Education"));
+const Experience = lazy(() => import("../pages/seeker/Experience"));
+const Skills = lazy(() => import("../pages/seeker/Skills"));
+const Documents = lazy(() => import("../pages/seeker/Documents"));
+const ResumeInsights = lazy(() => import("../pages/seeker/ResumeInsights"));
 function publicPage(page) {
   return (
     <MainLayout>
@@ -62,6 +69,26 @@ export default function AppRoutes() {
           />
           <Route path="account" element={deferred(<Account />)} />
           <Route path="become-trainer" element={deferred(<BecomeTrainer />)} />
+          <Route element={deferred(<SeekerLayout />)}>
+            <Route path="job-seeker/profile" element={deferred(<Profile />)} />
+            <Route
+              path="job-seeker/education"
+              element={deferred(<Education />)}
+            />
+            <Route
+              path="job-seeker/experience"
+              element={deferred(<Experience />)}
+            />
+            <Route path="job-seeker/skills" element={deferred(<Skills />)} />
+            <Route
+              path="job-seeker/documents"
+              element={deferred(<Documents />)}
+            />
+            <Route
+              path="job-seeker/resume-insights"
+              element={deferred(<ResumeInsights />)}
+            />
+          </Route>
           <Route path=":rolePath" element={deferred(<DashboardHome />)} />
         </Route>
       </Route>
