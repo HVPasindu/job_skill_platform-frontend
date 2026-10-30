@@ -16,9 +16,11 @@
     "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
     "@mui/styled-engine-sc": "^9.0.0",
+    "@react-three/fiber": "^9.8.2",
     "@tailwindcss/vite": "^4.2.4",
     "axios": "^1.15.2",
     "jwt-decode": "^4.0.0",
+    "motion": "^14.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-hook-form": "^7.74.0",
@@ -26,6 +28,7 @@
     "react-router-dom": "^7.14.2",
     "styled-components": "^6.4.1",
     "tailwindcss": "^4.2.4",
+    "three": "^0.187.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {
