@@ -7,7 +7,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useForm, useWatch } from "react-hook-form";
-import useApiResource from "../../hooks/useApiResource";
+import usePagedResource from "../../hooks/usePagedResource";
+import PageBar from "../employer/PageBar";
 import { seekerService } from "../../services/seekerService";
 import { recordSections, readable } from "../../data/seekerFields";
 import { asBoolean, dateInput } from "../../utils/seekerFiles";
@@ -113,10 +114,10 @@ function RecordEditor({ kind, record, onClose, onSaved }) {
 export default function RecordCollection({ kind }) {
   const section = recordSections[kind];
   const load = useCallback(
-    (signal) => seekerService.list(kind, signal),
+    (params, signal) => seekerService.listPage(kind, params, signal),
     [kind],
   );
-  const resource = useApiResource(load);
+  const resource = usePagedResource(load);
   const [editor, setEditor] = useState(null);
   const [busy, setBusy] = useState(false);
   async function remove(record) {
@@ -162,7 +163,7 @@ export default function RecordCollection({ kind }) {
         <Loading />
       ) : resource.error ? (
         <ErrorState message={resource.error} onRetry={resource.reload} />
-      ) : !resource.data.length ? (
+      ) : !resource.data.items.length ? (
         <section className="seeker-empty">
           <span>✦</span>
           <h2>Your next chapter starts here.</h2>
@@ -173,7 +174,7 @@ export default function RecordCollection({ kind }) {
         </section>
       ) : (
         <div className="seeker-record-grid">
-          {resource.data.map((record, index) => (
+          {resource.data.items.map((record, index) => (
             <article
               className={`seeker-record ${kind === "skills" ? "skill-record" : ""}`}
               key={record.id}
@@ -239,6 +240,11 @@ export default function RecordCollection({ kind }) {
           ))}
         </div>
       )}
+      <PageBar
+        pagination={resource.data?.pagination}
+        onChange={resource.setPage}
+        label="Profile record pages"
+      />
       {editor && (
         <RecordEditor
           kind={kind}

@@ -7,6 +7,7 @@ import Button from "../../components/ui/Button";
 import Reveal from "../../components/experience/Reveal";
 import AuthSculpture from "../../components/experience/AuthSculpture";
 const SeekerOverview = lazy(() => import("../seeker/SeekerOverview"));
+const EmployerOverview = lazy(() => import("../employer/EmployerOverview"));
 export default function DashboardHome() {
   const { rolePath } = useParams();
   const { user, activeRole } = useAuth();
@@ -17,6 +18,12 @@ export default function DashboardHome() {
     return (
       <Suspense fallback={<Loading />}>
         <SeekerOverview />
+      </Suspense>
+    );
+  if (role === "employer")
+    return (
+      <Suspense fallback={<Loading />}>
+        <EmployerOverview />
       </Suspense>
     );
   const details = ROLE_DETAILS[role];

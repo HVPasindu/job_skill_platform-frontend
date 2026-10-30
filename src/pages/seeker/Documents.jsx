@@ -14,7 +14,8 @@ import FilePicker from "../../components/seeker/FilePicker";
 import Button from "../../components/ui/Button";
 import Loading from "../../components/ui/Loading";
 import ErrorState from "../../components/ui/ErrorState";
-import useApiResource from "../../hooks/useApiResource";
+import usePagedResource from "../../hooks/usePagedResource";
+import PageBar from "../../components/employer/PageBar";
 import { seekerService } from "../../services/seekerService";
 import { fileSize, fileUrl, asBoolean } from "../../utils/seekerFiles";
 import { confirmAction, showError, showSuccess } from "../../utils/alerts";
@@ -126,12 +127,14 @@ function DocumentEditor({ document, onClose, onSaved }) {
 }
 export default function Documents() {
   const load = useCallback(
-    (signal) => seekerService.list("resumes", signal),
+    (params, signal) => seekerService.listPage("resumes", params, signal),
     [],
   );
-  const resource = useApiResource(load);
+  const resource = usePagedResource(load, 6);
   const [editor, setEditor] = useState(null);
-  const [filter, setFilter] = useState("all");
+  const filter = resource.params.get("document_type") || "all";
+  const setFilter = (value) =>
+    resource.filter(value === "all" ? {} : { document_type: value });
   const [busy, setBusy] = useState(false);
   async function action(document, remove = false) {
     setBusy(true);
@@ -159,7 +162,7 @@ export default function Documents() {
       setBusy(false);
     }
   }
-  const documents = (resource.data || []).filter(
+  const documents = (resource.data?.items || []).filter(
     (doc) => filter === "all" || doc.document_type === filter,
   );
   return (
@@ -276,6 +279,11 @@ export default function Documents() {
           ))}
         </div>
       )}
+      <PageBar
+        pagination={resource.data?.pagination}
+        onChange={resource.setPage}
+        label="Document pages"
+      />
       {editor && (
         <DocumentEditor
           document={editor.id ? editor : null}

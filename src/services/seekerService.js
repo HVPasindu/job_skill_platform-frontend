@@ -15,6 +15,18 @@ async function missingAsNull(request) {
   }
 }
 export const seekerService = {
+  listPage: async (kind, params, signal) => {
+    const result = await data(
+      api.get(`/job-seeker/${kind}`, { params, signal }),
+    );
+    const key = {
+      education: "educations",
+      experience: "experiences",
+      skills: "skills",
+      resumes: "resumes",
+    }[kind];
+    return { items: result[key] || [], pagination: result.pagination };
+  },
   profile: async (signal) =>
     (await missingAsNull(api.get("/job-seeker/profile", { signal })))
       ?.profile || null,

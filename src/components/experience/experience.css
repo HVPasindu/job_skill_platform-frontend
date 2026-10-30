@@ -1073,3 +1073,89 @@
     }
   }
 }
+
+/* Step 05: geometric CSS building sculpture, paused outside the viewport/hidden tabs. */
+@layer components {
+  .employer-sculpture {
+    height: 245px;
+    position: relative;
+    perspective: 800px;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .employer-tower {
+    position: absolute;
+    top: 45px;
+    left: calc(50% - 75px);
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transform: rotateX(15deg) rotateY(-25deg) rotateZ(-10deg);
+    animation: employer-rise 13s ease-in-out infinite;
+  }
+  .tower-block {
+    display: block;
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #91aaff, #315cff);
+    box-shadow: 8px 8px 0 #1839af;
+  }
+  .tower-one {
+    left: -22px;
+    top: 45px;
+    transform: translateZ(-15px);
+    background: linear-gradient(135deg, #dcffad, #b0e65e);
+    box-shadow: 8px 8px 0 #658e2c;
+  }
+  .tower-two {
+    left: 64px;
+    top: 20px;
+    transform: translateZ(-5px);
+    background: linear-gradient(135deg, #ffccb3, #ff9167);
+    box-shadow: 8px 8px 0 #b54b23;
+  }
+  .tower-three {
+    left: 13px;
+    top: -26px;
+    transform: translateZ(25px);
+  }
+  .employer-tower > span {
+    position: absolute;
+    left: 27px;
+    top: -15px;
+    color: #fff;
+    font-size: 66px;
+    line-height: 1;
+    transform: translateZ(30px);
+  }
+  .employer-tower > b {
+    position: absolute;
+    bottom: -42px;
+    left: -25px;
+    width: 220px;
+    text-align: center;
+    font-size: 7px;
+    letter-spacing: 0.16em;
+    color: #7b8da8;
+    transform: translateZ(-10px);
+  }
+  .employer-sculpture[data-active="false"] .employer-tower {
+    animation-play-state: paused;
+  }
+  @keyframes employer-rise {
+    0%,
+    100% {
+      transform: rotateX(15deg) rotateY(-25deg) rotateZ(-10deg) translateY(0);
+    }
+    50% {
+      transform: rotateX(-5deg) rotateY(15deg) rotateZ(5deg) translateY(12px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .employer-tower {
+      animation: none;
+    }
+  }
+}

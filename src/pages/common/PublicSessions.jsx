@@ -6,15 +6,15 @@ import Card from "../../components/ui/Card";
 import Loading from "../../components/ui/Loading";
 import EmptyState from "../../components/ui/EmptyState";
 import ErrorState from "../../components/ui/ErrorState";
-import usePublicData from "../../hooks/usePublicData";
-import { getPublicSessions } from "../../services/publicService";
+import usePagedResource from "../../hooks/usePagedResource";
+import PageBar from "../../components/employer/PageBar";
+import api from "../../api/axiosInstance";
+const loadSessions = async (params, signal) =>
+  (await api.get("/mentorship-sessions", { params, signal })).data;
 export default function PublicSessions() {
-  const {
-    data: sessions,
-    loading,
-    error,
-    retry,
-  } = usePublicData(getPublicSessions);
+  const resource = usePagedResource(loadSessions, 9);
+  const { loading, error, reload: retry } = resource;
+  const sessions = resource.data?.sessions || [];
   return (
     <div className="page-container section-space">
       <PageHeader
@@ -57,6 +57,11 @@ export default function PublicSessions() {
           ))}
         </div>
       )}
+      <PageBar
+        pagination={resource.data?.pagination}
+        onChange={resource.setPage}
+        label="Mentorship session pages"
+      />
     </div>
   );
 }

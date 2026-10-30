@@ -28,6 +28,11 @@ export default function DashboardLayout() {
     "My documents": "documents",
     "My applications": "applications",
   };
+  const employerPaths = {
+    "My companies": "companies",
+    "Manage jobs": "jobs",
+    Candidates: "candidates",
+  };
   async function signOut() {
     setOpen(false);
     if (
@@ -86,6 +91,19 @@ export default function DashboardLayout() {
                   location.pathname ===
                   `/dashboard/job-seeker/${seekerPaths[label]}`
                 }
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : activeRole === "employer" && employerPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/employer/${employerPaths[label]}`}
+                selected={location.pathname.startsWith(
+                  `/dashboard/employer/${employerPaths[label]}`,
+                )}
                 onClick={() => setOpen(false)}
               >
                 <span>↗</span>

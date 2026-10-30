@@ -36,6 +36,17 @@ const MyApplications = lazy(() => import("../pages/seeker/MyApplications"));
 const ApplicationDetails = lazy(
   () => import("../pages/seeker/ApplicationDetails"),
 );
+const EmployerLayout = lazy(
+  () => import("../components/layout/EmployerLayout"),
+);
+const CompanyLayout = lazy(() => import("../components/layout/CompanyLayout"));
+const Companies = lazy(() => import("../pages/employer/Companies"));
+const CompanyProfile = lazy(() => import("../pages/employer/CompanyProfile"));
+const Team = lazy(() => import("../pages/employer/Team"));
+const CompanyJobs = lazy(() => import("../pages/employer/CompanyJobs"));
+const MyPostings = lazy(() => import("../pages/employer/MyPostings"));
+const JobEditor = lazy(() => import("../pages/employer/JobEditor"));
+const Candidates = lazy(() => import("../pages/employer/Candidates"));
 function publicPage(page) {
   return (
     <MainLayout>
@@ -107,6 +118,34 @@ export default function AppRoutes() {
               path="job-seeker/resume-insights"
               element={deferred(<ResumeInsights />)}
             />
+          </Route>
+          <Route element={deferred(<EmployerLayout />)}>
+            <Route
+              path="employer/companies"
+              element={deferred(<Companies />)}
+            />
+            <Route path="employer/jobs" element={deferred(<MyPostings />)} />
+            <Route
+              path="employer/candidates"
+              element={deferred(<Candidates />)}
+            />
+            <Route
+              path="employer/companies/:companyId"
+              element={deferred(<CompanyLayout />)}
+            >
+              <Route index element={deferred(<CompanyProfile />)} />
+              <Route path="team" element={deferred(<Team />)} />
+              <Route path="jobs" element={deferred(<CompanyJobs />)} />
+              <Route path="jobs/new" element={deferred(<JobEditor />)} />
+              <Route
+                path="jobs/:jobId/edit"
+                element={deferred(<JobEditor />)}
+              />
+              <Route
+                path="jobs/:jobId/candidates"
+                element={deferred(<Candidates />)}
+              />
+            </Route>
           </Route>
           <Route path=":rolePath" element={deferred(<DashboardHome />)} />
         </Route>
