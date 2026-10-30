@@ -1,112 +1,87 @@
+// MUI Drawer/IconButton provide the accessible mobile menu; React Router provides links.
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  Button,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import { Drawer, IconButton } from "@mui/material";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import NorthEastRoundedIcon from "@mui/icons-material/NorthEastRounded";
+import { navLinks } from "../../data/navLinks";
+import Button from "../ui/Button";
 
-function Navbar() {
-  const [open, setOpen] = useState(false);
-
-  const navItems = [
-    { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-    { label: "Jobs", path: "/jobs" },
-    { label: "Courses", path: "/courses" },
-    { label: "Sessions", path: "/sessions" },
-    { label: "Contact", path: "/contact" },
-  ];
-
+function Brand() {
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-700">
-          SkillJob
-        </Link>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
+    <Link className="brand" to="/" aria-label="SkillJob home">
+      <span className="brand-mark">↗</span>skilljob
+      <span className="brand-dot">.</span>
+    </Link>
+  );
+}
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="site-header">
+      <nav className="page-container nav-row" aria-label="Main navigation">
+        <Brand />
+        <div className="desktop-navigation">
+          {navLinks.map((item) => (
             <NavLink
               key={item.path}
+              end={item.path === "/"}
               to={item.path}
               className={({ isActive }) =>
-                isActive
-                  ? "text-blue-700 font-semibold"
-                  : "text-gray-700 hover:text-blue-700"
+                `nav-link ${isActive ? "active" : ""}`
               }
             >
               {item.label}
             </NavLink>
           ))}
         </div>
-
-        {/* Desktop Login */}
-        <div className="hidden md:block">
-          <Link to="/login">
-            <Button variant="contained">Login</Button>
+        <div className="desktop-navigation nav-actions">
+          <Link to="/contact" className="contact-link">
+            Let’s talk
           </Link>
+          <Button to="/login" endIcon={<NorthEastRoundedIcon />}>
+            Sign in
+          </Button>
         </div>
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
-          <IconButton onClick={() => setOpen(true)}>
-            <MenuIcon />
-          </IconButton>
-        </div>
-      </div>
-
-      {/* Mobile Drawer */}
-      <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
-        <div className="w-72 h-full bg-white">
-          <div className="px-5 py-4 flex items-center justify-between border-b">
-            <Link
-              to="/"
-              onClick={() => setOpen(false)}
-              className="text-2xl font-bold text-blue-700"
-            >
-              SkillJob
-            </Link>
-
-            <IconButton onClick={() => setOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-
-          <List>
-            {navItems.map((item) => (
-              <ListItem key={item.path} disablePadding>
-                <ListItemButton
-                  component={NavLink}
-                  to={item.path}
-                  onClick={() => setOpen(false)}
-                  className="mx-3 my-1 rounded-xl"
-                >
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-
-          <div className="px-5 mt-4">
-            <Link to="/login" onClick={() => setOpen(false)}>
-              <Button variant="contained" fullWidth>
-                Login
+        <IconButton
+          className="mobile-menu-button"
+          aria-label="Open menu"
+          onClick={() => setOpen(true)}
+        >
+          <MenuRoundedIcon />
+        </IconButton>
+        <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+          <div className="mobile-menu">
+            <div className="flex justify-between items-center">
+              <Brand />
+              <IconButton
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+              >
+                <CloseRoundedIcon />
+              </IconButton>
+            </div>
+            <div className="mobile-menu-links">
+              {[...navLinks, { label: "Contact", path: "/contact" }].map(
+                (item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.path === "/"}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </NavLink>
+                ),
+              )}
+              <Button to="/login" onClick={() => setOpen(false)}>
+                Sign in
               </Button>
-            </Link>
+            </div>
           </div>
-        </div>
-      </Drawer>
-    </nav>
+        </Drawer>
+      </nav>
+    </header>
   );
 }
-
-export default Navbar;
