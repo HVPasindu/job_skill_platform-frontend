@@ -1,0 +1,691 @@
+/* Normal authentication/dashboard styling; animation lives in components/experience/. */
+@layer components {
+  .auth-v2 .auth-art h1 br {
+    display: initial;
+  }
+  .auth-v2 {
+    background: #f7f7f2;
+  }
+  .auth-v2 .auth-art {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 800px;
+    align-self: start;
+    padding: 40px clamp(30px, 4vw, 65px);
+  }
+  .auth-v2 .auth-art > div:not(.page-orbit) {
+    margin-top: 65px;
+  }
+  .auth-v2 .auth-art h1 {
+    font-size: clamp(56px, 5.4vw, 86px);
+    letter-spacing: -0.055em;
+    line-height: 1.03;
+  }
+  .auth-v2 .auth-art p {
+    margin-top: 25px;
+    line-height: 1.6;
+  }
+  .auth-v2 .auth-art > .auth-sculpture {
+    margin: 0;
+    position: absolute;
+    right: 0;
+    bottom: 55px;
+    width: 100%;
+    height: 340px;
+    z-index: 0;
+  }
+  .auth-v2 .auth-art > .auth-art-foot {
+    position: absolute;
+    margin: 0;
+    bottom: 26px;
+    left: clamp(30px, 4vw, 65px);
+    right: 35px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #c0cadd;
+    letter-spacing: 0.025em;
+  }
+  .auth-v2 .auth-content {
+    padding: 60px clamp(25px, 4vw, 70px);
+  }
+  .auth-v2 .auth-card {
+    max-width: 480px;
+    min-width: 0;
+  }
+  .auth-v2 .auth-card h2 {
+    font-size: clamp(38px, 4.2vw, 60px);
+    letter-spacing: -0.055em;
+  }
+  .auth-v2 .auth-card h2 em {
+    color: #315cff;
+    font-family: Georgia, serif;
+    font-weight: 400;
+  }
+  .auth-v2 .auth-back {
+    margin-bottom: 42px;
+  }
+  .auth-v2 .auth-card form {
+    gap: 22px;
+    margin-top: 32px;
+  }
+  .auth-v2 .auth-card .auth-footnote {
+    font-size: 16px;
+    margin-top: 24px;
+  }
+  .auth-footnote a,
+  .text-action {
+    color: #254bd8;
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .text-action {
+    cursor: pointer;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 650;
+    font-size: 16px;
+    padding: 12px 0;
+  }
+  .text-action:disabled {
+    color: #697385;
+    cursor: default;
+    text-decoration: none;
+  }
+  .form-notice {
+    background: #e7f3d9;
+    color: #23431b !important;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 16px !important;
+  }
+  .form-hint {
+    color: #596477;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .role-options {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .role-options .MuiFormControlLabel-root {
+    margin: 0;
+    padding: 5px 10px;
+    border: 1px solid #d8dce4;
+    border-radius: 13px;
+    background: #fffef9;
+  }
+  .role-options .MuiFormControlLabel-root:has(.Mui-checked) {
+    border-color: #315cff;
+    background: #eef1ff;
+  }
+  .otp-input {
+    letter-spacing: 0.35em !important;
+    font-size: 25px !important;
+    font-weight: 700 !important;
+  }
+  .skilljob-alert {
+    border-radius: 25px !important;
+    font-family: inherit;
+  }
+  .skilljob-alert .swal2-title {
+    font-size: 29px;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+  }
+  .skilljob-alert .swal2-html-container {
+    line-height: 1.65;
+    font-size: 17px;
+  }
+  .skilljob-alert .swal2-styled {
+    border-radius: 100px;
+    padding: 13px 25px;
+  }
+  .dashboard-shell {
+    display: flex;
+    min-height: 100vh;
+    background: #f3f4ef;
+    color: #101729;
+  }
+  .dashboard-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: fixed;
+    inset: 0 auto 0 0;
+    background: #fffef9;
+    border-right: 1px solid #e0e3dc;
+    z-index: 20;
+  }
+  .dashboard-sidebar-inner {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 22px 24px;
+  }
+  .dashboard-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .dashboard-brand-row .brand {
+    color: #101729;
+  }
+  .dashboard-sidebar-inner > .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.13em;
+    margin-bottom: 23px;
+    color: #586378;
+  }
+  .dashboard-links {
+    display: grid;
+    gap: 7px;
+    margin-top: 28px;
+  }
+  .dashboard-links .MuiListItemButton-root {
+    border-radius: 12px;
+    min-height: 45px;
+    gap: 12px;
+    padding: 10px 13px;
+    font-size: 15px;
+    font-weight: 550;
+  }
+  .dashboard-links .MuiListItemButton-root.Mui-selected {
+    color: #fff;
+    background: #315cff;
+  }
+  .dashboard-links .Mui-disabled {
+    opacity: 0.56;
+  }
+  .dashboard-links small {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 400;
+  }
+  .dashboard-sidebar-bottom {
+    display: grid;
+    gap: 18px;
+    margin-top: auto;
+    padding: 35px 12px 0;
+    font-size: 14px;
+  }
+  .dashboard-sidebar-bottom button {
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: #254bd8;
+    padding: 0;
+  }
+  .dashboard-sidebar-bottom > span {
+    border-top: 1px solid #e0e3dc;
+    padding-top: 20px;
+    color: #667080;
+    font-size: 11px;
+  }
+  .dashboard-main {
+    margin-left: 280px;
+    flex: 1;
+    min-width: 0;
+  }
+  .dashboard-topbar {
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 42px;
+    border-bottom: 1px solid #dce0d7;
+  }
+  .dashboard-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #576175;
+  }
+  .dashboard-menu-button.MuiIconButton-root {
+    display: none;
+  }
+  .dashboard-user {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .dashboard-user > span:last-child {
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .dashboard-avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: #e0e7ff;
+    color: #244acc;
+    border: 1px solid #bdccff;
+    border-radius: 50%;
+    font-size: 17px;
+  }
+  .dashboard-content {
+    padding: 35px 42px 60px;
+    max-width: 1530px;
+    margin: 0 auto;
+    min-height: calc(100vh - 170px);
+  }
+  .dashboard-welcome {
+    margin-bottom: 26px;
+  }
+  .dashboard-welcome .eyebrow {
+    color: #596477;
+    font-size: 10px;
+  }
+  .dashboard-welcome > p {
+    font-size: 20px;
+    margin-top: 8px;
+  }
+  .workspace-hero {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(200px, 1fr);
+    background: #0c1526;
+    color: #fffef9;
+    border-radius: 26px;
+    padding: 45px;
+    min-height: 390px;
+  }
+  .workspace-hero > div:first-child {
+    position: relative;
+    z-index: 2;
+  }
+  .workspace-pill {
+    display: inline-block;
+    border: 1px solid #7b879f;
+    border-radius: 30px;
+    padding: 9px 13px;
+    color: #d4dced;
+    font-size: 11px;
+  }
+  .workspace-hero h1 {
+    font-size: clamp(45px, 4.4vw, 74px);
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+    font-weight: 750;
+    margin-top: 27px;
+    color: var(--workspace-accent);
+  }
+  .workspace-hero p {
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 480px;
+    color: #c2cce0;
+    margin: 24px 0 28px;
+  }
+  .workspace-hero .auth-sculpture {
+    align-self: center;
+    height: 280px;
+    min-width: 0;
+    margin-right: -35px;
+  }
+  .dashboard-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin: 25px 0 55px;
+  }
+  .workspace-card {
+    border-radius: 23px;
+    background: #fffef9;
+    border: 1px solid #dfe3da;
+    padding: 30px;
+    min-width: 0;
+  }
+  .workspace-card-lime {
+    background: #e5f4ca;
+    border-color: #d2e7b4;
+  }
+  .card-index {
+    font-size: 10px;
+    color: #526042;
+    letter-spacing: 0.11em;
+    font-weight: 650;
+  }
+  .workspace-card h2 {
+    font-size: 33px;
+    line-height: 1.12;
+    letter-spacing: -0.045em;
+    font-weight: 650;
+    margin: 25px 0 16px;
+  }
+  .workspace-card p {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    overflow-wrap: anywhere;
+  }
+  .muted {
+    color: #596477;
+  }
+  .workspace-card .magnetic {
+    margin-top: 10px;
+  }
+  .account-role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .account-role-chips > span {
+    display: inline-block;
+    padding: 7px 12px;
+    background: #fffef9;
+    border: 1px solid #cbd4c0;
+    border-radius: 25px;
+    font-size: 12px;
+    color: #26351f;
+  }
+  .workspace-road-ahead > h2 {
+    font-size: 36px;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    margin: 16px 0;
+    line-height: 1.12;
+  }
+  .workspace-road-ahead > p {
+    color: #596477;
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 650px;
+    margin-bottom: 28px;
+  }
+  .workspace-road-ahead > div > div {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    border-top: 1px solid #d6dccf;
+    padding: 22px 0;
+  }
+  .workspace-road-ahead h3 {
+    font-size: 19px;
+    font-weight: 600;
+    flex: 1;
+  }
+  .workspace-road-ahead > div > div > span {
+    font-size: 12px;
+    color: #647057;
+  }
+  .dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 25px 42px;
+    border-top: 1px solid #dce0d7;
+    font-size: 12px;
+    color: #596477;
+  }
+  .dashboard-footer a {
+    font-weight: 700;
+    font-size: 18px;
+    color: #101729;
+  }
+  .dashboard-mobile-drawer {
+    width: min(300px, 90vw);
+    background: #fffef9 !important;
+  }
+  .workspace-page-title {
+    font-size: clamp(44px, 5vw, 76px);
+    font-weight: 750;
+    line-height: 1.05;
+    letter-spacing: -0.06em;
+    margin: 25px 0;
+  }
+  .workspace-page-title em {
+    font-family: Georgia, serif;
+    font-weight: 400;
+    color: #315cff;
+  }
+  .workspace-page-intro {
+    color: #596477;
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 680px;
+    margin-bottom: 32px;
+  }
+  .account-details {
+    margin-bottom: 24px;
+  }
+  .account-details h2 {
+    margin-top: 0;
+  }
+  .account-details dl > div {
+    padding: 20px 0;
+    border-top: 1px solid #e0e3dc;
+  }
+  .account-details dt {
+    color: #596477;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .account-details dd {
+    margin-left: 0;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+  }
+  .company-memberships {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 15px;
+  }
+  .company-memberships li {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    border-top: 1px solid #e0e3dc;
+    padding-top: 15px;
+    font-size: 16px;
+  }
+  .company-memberships li span {
+    color: #596477;
+    text-transform: capitalize;
+  }
+  .become-trainer {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(220px, 1fr);
+    align-items: center;
+    gap: 20px;
+    padding: 45px 0;
+  }
+  .become-trainer ul {
+    margin-bottom: 35px;
+    padding-left: 22px;
+    font-size: 17px;
+    line-height: 2;
+  }
+  .become-trainer .auth-sculpture {
+    background: #0c1526;
+    border-radius: 30px;
+    height: 400px;
+  }
+  .become-trainer .form-hint {
+    margin-top: 18px;
+  }
+  @media (max-width: 1200px) {
+    .dashboard-sidebar {
+      width: 245px;
+    }
+    .dashboard-main {
+      margin-left: 245px;
+    }
+    .dashboard-content {
+      padding: 30px 28px 45px;
+    }
+    .dashboard-topbar,
+    .dashboard-footer {
+      padding-inline: 28px;
+    }
+    .workspace-hero {
+      padding: 32px;
+      grid-template-columns: minmax(0, 1fr) 180px;
+    }
+    .workspace-hero .auth-sculpture {
+      opacity: 0.8;
+    }
+  }
+  @media (max-width: 899px) {
+    .dashboard-sidebar {
+      display: none;
+    }
+    .dashboard-main {
+      margin-left: 0;
+    }
+    .dashboard-menu-button.MuiIconButton-root {
+      display: inline-flex;
+    }
+    .dashboard-topbar {
+      min-height: 80px;
+    }
+    .become-trainer {
+      grid-template-columns: 1fr;
+    }
+    .become-trainer .auth-sculpture {
+      max-width: 500px;
+      width: 100%;
+      margin-inline: auto;
+    }
+    .auth-v2 .auth-art {
+      position: relative;
+      height: auto;
+      min-height: 0;
+      padding: 25px 30px 32px;
+    }
+    .auth-v2 .auth-art > div:not(.page-orbit) {
+      margin-top: 35px;
+    }
+    .auth-v2 .auth-art h1 {
+      font-size: clamp(44px, 8vw, 68px);
+    }
+    .auth-v2 .auth-art > .auth-sculpture {
+      height: 240px;
+      width: 250px;
+      right: -40px;
+      bottom: -30px;
+      opacity: 0.45;
+      margin: 0;
+    }
+    .auth-v2 .auth-art > .auth-art-foot {
+      display: none;
+    }
+    .auth-v2 .auth-content {
+      padding: 38px 28px 55px;
+    }
+    .auth-v2 .auth-back {
+      margin-bottom: 30px;
+    }
+  }
+  @media (max-width: 599px) {
+    .dashboard-topbar {
+      padding: 14px 16px;
+      gap: 8px;
+    }
+    .dashboard-topbar-left {
+      font-size: 12px;
+      gap: 5px;
+    }
+    .dashboard-user > span:last-child {
+      display: none;
+    }
+    .dashboard-content {
+      padding: 24px 18px 38px;
+    }
+    .workspace-hero {
+      display: block;
+      padding: 30px 25px;
+      min-height: 480px;
+    }
+    .workspace-hero h1 {
+      font-size: clamp(44px, 12vw, 65px);
+    }
+    .workspace-hero p {
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+    .workspace-hero .auth-sculpture {
+      position: absolute;
+      right: -85px;
+      bottom: -95px;
+      width: 290px;
+      height: 290px;
+      opacity: 0.35;
+      z-index: -1;
+    }
+    .workspace-pill {
+      font-size: 10px;
+      padding: 8px 10px;
+    }
+    .dashboard-card-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .workspace-card {
+      padding: 25px;
+    }
+    .workspace-card h2 {
+      font-size: 31px;
+    }
+    .workspace-road-ahead > h2 {
+      font-size: 31px;
+    }
+    .workspace-road-ahead > div > div {
+      gap: 12px;
+    }
+    .workspace-road-ahead h3 {
+      font-size: 16px;
+    }
+    .workspace-road-ahead > div > div > span {
+      font-size: 10px;
+    }
+    .dashboard-footer {
+      padding: 24px 18px;
+      font-size: 10px;
+    }
+    .become-trainer {
+      padding-top: 15px;
+    }
+    .become-trainer .auth-sculpture {
+      height: 290px;
+    }
+    .auth-v2 .auth-art h1 {
+      font-size: clamp(39px, 10vw, 55px);
+    }
+    .auth-v2 .auth-art p {
+      display: none;
+    }
+    .auth-v2 .auth-card h2 {
+      font-size: clamp(36px, 10vw, 49px);
+    }
+    .auth-v2 .auth-art > .auth-sculpture {
+      width: 200px;
+      right: -65px;
+      opacity: 0.3;
+    }
+    .auth-v2 .auth-content {
+      padding-inline: 22px;
+    }
+  }
+}
