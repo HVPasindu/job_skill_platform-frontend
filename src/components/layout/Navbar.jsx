@@ -7,6 +7,8 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import NorthEastRoundedIcon from "@mui/icons-material/NorthEastRounded";
 import { navLinks } from "../../data/navLinks";
 import Button from "../ui/Button";
+import useAuth from "../../hooks/useAuth";
+import { roleHome } from "../../data/roles";
 
 function Brand() {
   return (
@@ -18,6 +20,7 @@ function Brand() {
 }
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated, activeRole } = useAuth();
   return (
     <header className="site-header">
       <nav className="page-container nav-row" aria-label="Main navigation">
@@ -40,8 +43,11 @@ export default function Navbar() {
           <Link to="/contact" className="contact-link">
             Let’s talk
           </Link>
-          <Button to="/login" endIcon={<NorthEastRoundedIcon />}>
-            Sign in
+          <Button
+            to={isAuthenticated ? roleHome(activeRole) : "/login"}
+            endIcon={<NorthEastRoundedIcon />}
+          >
+            {isAuthenticated ? "My workspace" : "Sign in"}
           </Button>
         </div>
         <IconButton
@@ -75,8 +81,11 @@ export default function Navbar() {
                   </NavLink>
                 ),
               )}
-              <Button to="/login" onClick={() => setOpen(false)}>
-                Sign in
+              <Button
+                to={isAuthenticated ? roleHome(activeRole) : "/login"}
+                onClick={() => setOpen(false)}
+              >
+                {isAuthenticated ? "My workspace" : "Sign in"}
               </Button>
             </div>
           </div>

@@ -743,3 +743,134 @@
     }
   }
 }
+
+/* Step 02 CSS 3D sculpture: transform-only motion, independent of form state. */
+@layer components {
+  .auth-sculpture {
+    position: relative;
+    perspective: 800px;
+    overflow: clip;
+    pointer-events: none;
+    isolation: isolate;
+  }
+  .sculpture-orbit {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    left: 50%;
+    top: 50%;
+    margin: -115px;
+    transform-style: preserve-3d;
+    transform: rotateX(25deg) rotateZ(-24deg);
+    animation: sculpture-turn 24s linear infinite;
+  }
+  .sculpture-ring {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: 50%;
+    border: 30px solid #315cff;
+    box-shadow:
+      inset 4px 5px 2px #88a4ff,
+      inset -5px -5px 2px #122b91,
+      5px 8px 0 #132a80;
+  }
+  .sculpture-ring.ring-b {
+    inset: 23px;
+    border-width: 16px;
+    border-color: #c7fa76;
+    box-shadow:
+      inset 2px 2px 0 #eaffc6,
+      3px 4px 0 #5f8a29;
+    transform: rotateY(70deg);
+  }
+  .sculpture-ring.ring-c {
+    inset: -13px;
+    border-width: 2px;
+    border-color: #9cacc7;
+    box-shadow: none;
+    transform: rotateX(70deg);
+    opacity: 0.55;
+  }
+  .sculpture-core {
+    position: absolute;
+    inset: 65px;
+    background: linear-gradient(135deg, #ffd1b9, #ff6b3d);
+    border-radius: 23px;
+    display: grid;
+    place-items: center;
+    color: #0c1526;
+    font-size: 65px;
+    font-weight: 700;
+    transform: translateZ(25px);
+    box-shadow: 4px 5px 0 #a43f20;
+  }
+  .sculpture-moon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -25px;
+    right: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #7185a8);
+    transform: translateZ(25px);
+  }
+  .sculpture-ground {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 10%;
+    height: 30px;
+    border-radius: 50%;
+    background: #020713;
+    filter: blur(20px);
+    opacity: 0.65;
+  }
+  .sculpture-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.18em;
+    color: #c0cadd;
+    font-size: 10px;
+  }
+  .compact .sculpture-caption {
+    display: none;
+  }
+  .auth-sculpture[data-active="false"] .sculpture-orbit {
+    animation-play-state: paused;
+  }
+  @keyframes sculpture-turn {
+    0% {
+      transform: rotateX(25deg) rotateY(0deg) rotateZ(-24deg);
+    }
+    50% {
+      transform: rotateX(-15deg) rotateY(180deg) rotateZ(-12deg);
+    }
+    100% {
+      transform: rotateX(25deg) rotateY(360deg) rotateZ(-24deg);
+    }
+  }
+  @media (max-width: 599px) {
+    .sculpture-orbit {
+      width: 190px;
+      height: 190px;
+      margin: -95px;
+    }
+    .sculpture-core {
+      inset: 53px;
+      font-size: 50px;
+      border-radius: 17px;
+    }
+    .sculpture-ring {
+      border-width: 24px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sculpture-orbit {
+      animation: none;
+    }
+  }
+}
