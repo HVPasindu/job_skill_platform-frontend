@@ -30,6 +30,23 @@ const Experience = lazy(() => import("../pages/seeker/Experience"));
 const Skills = lazy(() => import("../pages/seeker/Skills"));
 const Documents = lazy(() => import("../pages/seeker/Documents"));
 const ResumeInsights = lazy(() => import("../pages/seeker/ResumeInsights"));
+const JobDetails = lazy(() => import("../pages/common/JobDetails"));
+const ApplyJob = lazy(() => import("../pages/seeker/ApplyJob"));
+const MyApplications = lazy(() => import("../pages/seeker/MyApplications"));
+const ApplicationDetails = lazy(
+  () => import("../pages/seeker/ApplicationDetails"),
+);
+const EmployerLayout = lazy(
+  () => import("../components/layout/EmployerLayout"),
+);
+const CompanyLayout = lazy(() => import("../components/layout/CompanyLayout"));
+const Companies = lazy(() => import("../pages/employer/Companies"));
+const CompanyProfile = lazy(() => import("../pages/employer/CompanyProfile"));
+const Team = lazy(() => import("../pages/employer/Team"));
+const CompanyJobs = lazy(() => import("../pages/employer/CompanyJobs"));
+const MyPostings = lazy(() => import("../pages/employer/MyPostings"));
+const JobEditor = lazy(() => import("../pages/employer/JobEditor"));
+const Candidates = lazy(() => import("../pages/employer/Candidates"));
 function publicPage(page) {
   return (
     <MainLayout>
@@ -54,6 +71,7 @@ export default function AppRoutes() {
       <Route path="/about" element={publicPage(<About />)} />
       <Route path="/contact" element={publicPage(<Contact />)} />
       <Route path="/jobs" element={publicPage(<PublicJobs />)} />
+      <Route path="/jobs/:jobId" element={publicPage(<JobDetails />)} />
       <Route path="/courses" element={publicPage(<PublicCourses />)} />
       <Route path="/sessions" element={publicPage(<PublicSessions />)} />
       <Route element={<GuestRoute />}>
@@ -70,6 +88,18 @@ export default function AppRoutes() {
           <Route path="account" element={deferred(<Account />)} />
           <Route path="become-trainer" element={deferred(<BecomeTrainer />)} />
           <Route element={deferred(<SeekerLayout />)}>
+            <Route
+              path="job-seeker/apply/:jobId"
+              element={deferred(<ApplyJob />)}
+            />
+            <Route
+              path="job-seeker/applications"
+              element={deferred(<MyApplications />)}
+            />
+            <Route
+              path="job-seeker/applications/:applicationId"
+              element={deferred(<ApplicationDetails />)}
+            />
             <Route path="job-seeker/profile" element={deferred(<Profile />)} />
             <Route
               path="job-seeker/education"
@@ -88,6 +118,34 @@ export default function AppRoutes() {
               path="job-seeker/resume-insights"
               element={deferred(<ResumeInsights />)}
             />
+          </Route>
+          <Route element={deferred(<EmployerLayout />)}>
+            <Route
+              path="employer/companies"
+              element={deferred(<Companies />)}
+            />
+            <Route path="employer/jobs" element={deferred(<MyPostings />)} />
+            <Route
+              path="employer/candidates"
+              element={deferred(<Candidates />)}
+            />
+            <Route
+              path="employer/companies/:companyId"
+              element={deferred(<CompanyLayout />)}
+            >
+              <Route index element={deferred(<CompanyProfile />)} />
+              <Route path="team" element={deferred(<Team />)} />
+              <Route path="jobs" element={deferred(<CompanyJobs />)} />
+              <Route path="jobs/new" element={deferred(<JobEditor />)} />
+              <Route
+                path="jobs/:jobId/edit"
+                element={deferred(<JobEditor />)}
+              />
+              <Route
+                path="jobs/:jobId/candidates"
+                element={deferred(<Candidates />)}
+              />
+            </Route>
           </Route>
           <Route path=":rolePath" element={deferred(<DashboardHome />)} />
         </Route>

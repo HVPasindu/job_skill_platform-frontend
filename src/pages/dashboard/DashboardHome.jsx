@@ -1,15 +1,31 @@
-import { Link, Navigate, useParams } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Loading from "../../components/ui/Loading";
+import { Navigate, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { ROLE_DETAILS, roleFromPath, roleHome } from "../../data/roles";
 import Button from "../../components/ui/Button";
 import Reveal from "../../components/experience/Reveal";
 import AuthSculpture from "../../components/experience/AuthSculpture";
+const SeekerOverview = lazy(() => import("../seeker/SeekerOverview"));
+const EmployerOverview = lazy(() => import("../employer/EmployerOverview"));
 export default function DashboardHome() {
   const { rolePath } = useParams();
   const { user, activeRole } = useAuth();
   const role = roleFromPath(rolePath);
   if (!role || !user.roles.includes(role) || role !== activeRole)
     return <Navigate to={roleHome(activeRole)} replace />;
+  if (role === "job_seeker")
+    return (
+      <Suspense fallback={<Loading />}>
+        <SeekerOverview />
+      </Suspense>
+    );
+  if (role === "employer")
+    return (
+      <Suspense fallback={<Loading />}>
+        <EmployerOverview />
+      </Suspense>
+    );
   const details = ROLE_DETAILS[role];
   return (
     <>
@@ -68,61 +84,23 @@ export default function DashboardHome() {
           )}
         </Reveal>
       </div>
-      {role === "job_seeker" ? (
-        <section className="workspace-road-ahead">
-          <span className="eyebrow">YOUR STORY, READY TO GROW</span>
-          <h2>Make your experience visible.</h2>
-          <p>
-            Build your profile, add the documents behind your experience and
-            explore resume insights.
-          </p>
-          <div>
-            {[
-              ["profile", "Build my profile"],
-              ["documents", "Manage documents"],
-              ["resume-insights", "Explore resume insights"],
-            ].map(([path, label], index) => (
-              <Link
-                key={path}
-                to={`/dashboard/job-seeker/${path}`}
-                style={{ display: "block" }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "22px 0",
-                    borderTop: "1px solid #d6dccf",
-                  }}
-                >
-                  <span>0{index + 1}</span>
-                  <h3>{label}</h3>
-                  <span>Open ↗</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="workspace-road-ahead">
-          <span className="eyebrow">A LITTLE FURTHER AHEAD</span>
-          <h2>Your workspace is taking shape.</h2>
-          <p>
-            Your account and workspace navigation are ready. Profile, management
-            and activity tools are coming next.
-          </p>
-          <div>
-            {details.modules.map((label, index) => (
-              <div key={label}>
-                <span>0{index + 1}</span>
-                <h3>{label}</h3>
-                <span>Coming soon ↗</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      <section className="workspace-road-ahead">
+        <span className="eyebrow">A LITTLE FURTHER AHEAD</span>
+        <h2>Your workspace is taking shape.</h2>
+        <p>
+          Your account and workspace navigation are ready. Profile, management
+          and activity tools are coming next.
+        </p>
+        <div>
+          {details.modules.map((label, index) => (
+            <div key={label}>
+              <span>0{index + 1}</span>
+              <h3>{label}</h3>
+              <span>Coming soon ↗</span>
+            </div>
+          ))}
+        </div>
+      </section>
     </>
   );
 }
