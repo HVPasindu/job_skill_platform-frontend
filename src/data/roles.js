@@ -28,6 +28,7 @@ export const ROLE_DETAILS = {
       "Trainer profile",
       "My courses",
       "Course materials",
+      "Course categories",
       "My students",
       "My sessions",
     ],

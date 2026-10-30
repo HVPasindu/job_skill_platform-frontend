@@ -33,6 +33,12 @@ export default function DashboardLayout() {
     "Manage jobs": "jobs",
     Candidates: "candidates",
   };
+  const trainerPaths = {
+    "Trainer profile": "profile",
+    "My courses": "courses",
+    "Course materials": "materials",
+    "Course categories": "categories",
+  };
   async function signOut() {
     setOpen(false);
     if (
@@ -103,6 +109,19 @@ export default function DashboardLayout() {
                 to={`/dashboard/employer/${employerPaths[label]}`}
                 selected={location.pathname.startsWith(
                   `/dashboard/employer/${employerPaths[label]}`,
+                )}
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : activeRole === "trainer" && trainerPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/trainer/${trainerPaths[label]}`}
+                selected={location.pathname.startsWith(
+                  `/dashboard/trainer/${trainerPaths[label]}`,
                 )}
                 onClick={() => setOpen(false)}
               >

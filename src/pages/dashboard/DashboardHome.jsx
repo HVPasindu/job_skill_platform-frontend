@@ -8,6 +8,7 @@ import Reveal from "../../components/experience/Reveal";
 import AuthSculpture from "../../components/experience/AuthSculpture";
 const SeekerOverview = lazy(() => import("../seeker/SeekerOverview"));
 const EmployerOverview = lazy(() => import("../employer/EmployerOverview"));
+const TrainerOverview = lazy(() => import("../trainer/TrainerOverview"));
 export default function DashboardHome() {
   const { rolePath } = useParams();
   const { user, activeRole } = useAuth();
@@ -24,6 +25,12 @@ export default function DashboardHome() {
     return (
       <Suspense fallback={<Loading />}>
         <EmployerOverview />
+      </Suspense>
+    );
+  if (role === "trainer")
+    return (
+      <Suspense fallback={<Loading />}>
+        <TrainerOverview />
       </Suspense>
     );
   const details = ROLE_DETAILS[role];

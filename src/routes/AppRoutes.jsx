@@ -47,6 +47,22 @@ const CompanyJobs = lazy(() => import("../pages/employer/CompanyJobs"));
 const MyPostings = lazy(() => import("../pages/employer/MyPostings"));
 const JobEditor = lazy(() => import("../pages/employer/JobEditor"));
 const Candidates = lazy(() => import("../pages/employer/Candidates"));
+const CourseDetails = lazy(() => import("../pages/common/CourseDetails"));
+const TrainerLayout = lazy(() => import("../components/layout/TrainerLayout"));
+const TrainerCourseLayout = lazy(
+  () => import("../components/layout/TrainerCourseLayout"),
+);
+const TrainerProfile = lazy(() => import("../pages/trainer/TrainerProfile"));
+const TrainerCourses = lazy(() => import("../pages/trainer/MyCourses"));
+const CourseEditor = lazy(() => import("../pages/trainer/CourseEditor"));
+const CourseMaterials = lazy(() => import("../pages/trainer/CourseMaterials"));
+const MaterialResources = lazy(
+  () => import("../pages/trainer/MaterialResources"),
+);
+const CourseCategories = lazy(
+  () => import("../pages/trainer/CourseCategories"),
+);
+const MaterialsHome = lazy(() => import("../pages/trainer/MaterialsHome"));
 function publicPage(page) {
   return (
     <MainLayout>
@@ -73,6 +89,10 @@ export default function AppRoutes() {
       <Route path="/jobs" element={publicPage(<PublicJobs />)} />
       <Route path="/jobs/:jobId" element={publicPage(<JobDetails />)} />
       <Route path="/courses" element={publicPage(<PublicCourses />)} />
+      <Route
+        path="/courses/:courseId"
+        element={publicPage(<CourseDetails />)}
+      />
       <Route path="/sessions" element={publicPage(<PublicSessions />)} />
       <Route element={<GuestRoute />}>
         <Route path="/login" element={deferred(<Login />)} />
@@ -144,6 +164,40 @@ export default function AppRoutes() {
               <Route
                 path="jobs/:jobId/candidates"
                 element={deferred(<Candidates />)}
+              />
+            </Route>
+          </Route>
+          <Route element={deferred(<TrainerLayout />)}>
+            <Route
+              path="trainer/profile"
+              element={deferred(<TrainerProfile />)}
+            />
+            <Route
+              path="trainer/categories"
+              element={deferred(<CourseCategories />)}
+            />
+            <Route
+              path="trainer/courses"
+              element={deferred(<TrainerCourses />)}
+            />
+            <Route
+              path="trainer/materials"
+              element={deferred(<MaterialsHome />)}
+            />
+            <Route
+              path="trainer/courses/new"
+              element={deferred(<CourseEditor />)}
+            />
+            <Route
+              path="trainer/courses/:courseId"
+              element={deferred(<TrainerCourseLayout />)}
+            >
+              <Route index element={<Navigate to="edit" replace />} />
+              <Route path="edit" element={deferred(<CourseEditor />)} />
+              <Route path="materials" element={deferred(<CourseMaterials />)} />
+              <Route
+                path="materials/:materialId"
+                element={deferred(<MaterialResources />)}
               />
             </Route>
           </Route>

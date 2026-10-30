@@ -62,7 +62,7 @@ export default function BecomeTrainer() {
           {busy ? "Opening your next chapter…" : "Become a trainer ↗"}
         </Button>
         <p className="form-hint">
-          Trainer profile, courses and session tools are coming next.
+          Create your trainer profile, then start shaping your first course.
         </p>
       </div>
       <AuthSculpture />
