@@ -21,6 +21,7 @@ function SeekerWorkspace() {
           ["skills", "Skills"],
           ["documents", "My documents"],
           ["resume-insights", "Resume insights"],
+          ["applications", "My applications"],
         ].map(([path, label]) => (
           <NavLink key={path} to={`/dashboard/job-seeker/${path}`}>
             {label}

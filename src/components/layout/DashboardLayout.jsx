@@ -23,7 +23,11 @@ export default function DashboardLayout() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [location.pathname]);
   const role = ROLE_DETAILS[activeRole];
-  const seekerPaths = { "My profile": "profile", "My documents": "documents" };
+  const seekerPaths = {
+    "My profile": "profile",
+    "My documents": "documents",
+    "My applications": "applications",
+  };
   async function signOut() {
     setOpen(false);
     if (
