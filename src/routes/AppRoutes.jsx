@@ -85,6 +85,10 @@ const SessionParticipants = lazy(
 const TrainerSessionLayout = lazy(
   () => import("../components/layout/TrainerSessionLayout"),
 );
+const AdminLayout = lazy(() => import("../components/layout/AdminLayout"));
+const AdminOverview = lazy(() => import("../pages/admin/AdminOverview"));
+const JobCategories = lazy(() => import("../pages/admin/JobCategories"));
+const ChatbotLogs = lazy(() => import("../pages/admin/ChatbotLogs"));
 function publicPage(page) {
   return (
     <MainLayout>
@@ -271,6 +275,11 @@ export default function AppRoutes() {
                 element={deferred(<MaterialResources />)}
               />
             </Route>
+          </Route>
+          <Route path="admin" element={deferred(<AdminLayout />)}>
+            <Route index element={deferred(<AdminOverview />)} />
+            <Route path="categories" element={deferred(<JobCategories />)} />
+            <Route path="chatbot-logs" element={deferred(<ChatbotLogs />)} />
           </Route>
           <Route path=":rolePath" element={deferred(<DashboardHome />)} />
         </Route>

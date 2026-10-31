@@ -1,0 +1,341 @@
+.admin-workspace {
+  color: #14243c;
+  min-width: 0;
+}
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #dce3ed;
+  padding-bottom: 16px;
+}
+.admin-tabs a {
+  color: #526179;
+  padding: 9px 16px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.admin-tabs a.active {
+  color: #fff;
+  background: #315cff;
+}
+.admin-header {
+  background: #eef1ff;
+  border: 1px solid #dce2ff;
+  border-radius: 28px;
+  padding: clamp(24px, 4vw, 52px);
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+.admin-header h1 {
+  font-size: clamp(32px, 4.5vw, 64px);
+  letter-spacing: -2.5px;
+  line-height: 1.08;
+  margin: 20px 0;
+  font-weight: 650;
+}
+.admin-header h1 em {
+  font-family: Georgia, serif;
+  color: #315cff;
+  font-weight: 500;
+}
+.admin-header p {
+  max-width: 580px;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #4b5d76;
+  margin: 0;
+}
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 28px 0 22px;
+}
+.admin-toolbar h2 {
+  font-size: 28px;
+  letter-spacing: -1px;
+  margin: 6px 0 0;
+}
+.admin-overview-grid,
+.admin-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.admin-overview-grid > div {
+  min-width: 0;
+}
+.admin-overview-card {
+  padding: 32px;
+  border-radius: 24px;
+  background: #fffef9;
+  border: 1px solid #dce3ec;
+  height: 100%;
+}
+.admin-card-lime {
+  background: #eaf8d6;
+  border-color: #cee1b1;
+}
+.admin-overview-card > span,
+.admin-card-index {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+  color: #62728a;
+}
+.admin-overview-card h2 {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin: 28px 0 18px;
+}
+.admin-overview-card p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #52647c;
+  margin-bottom: 24px;
+}
+.admin-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px;
+  margin: 24px 0;
+  background: #fffef9;
+  border: 1px solid #dce3ec;
+  border-radius: 24px;
+}
+.admin-note > span {
+  background: #315cff;
+  color: white;
+  padding: 12px;
+  border-radius: 14px;
+}
+.admin-note h2 {
+  font-size: 23px;
+  margin: 0;
+}
+.admin-note p {
+  color: #52647c;
+  line-height: 1.8;
+  font-size: 15px;
+  margin-bottom: 0;
+}
+.admin-category-card {
+  padding: 26px;
+  background: #fffef9;
+  border: 1px solid #dce3ec;
+  border-radius: 22px;
+  overflow-wrap: anywhere;
+}
+.admin-category-card h3 {
+  font-size: 25px;
+  letter-spacing: -0.7px;
+  margin: 23px 0 9px;
+}
+.admin-category-card p {
+  color: #66748a;
+  font-size: 14px;
+}
+.admin-category-card > div {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+}
+.admin-delete,
+.admin-clear {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  padding: 8px 0;
+  color: #a43b30;
+}
+.admin-clear {
+  color: #45609c;
+}
+.admin-delete:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.admin-empty {
+  background: #fffef9;
+  border: 1px dashed #b9c8de;
+  border-radius: 22px;
+  padding: 40px 24px;
+  text-align: center;
+}
+.admin-empty h2 {
+  font-size: 25px;
+}
+.admin-empty p {
+  font-size: 16px;
+  color: #586b84;
+  line-height: 1.7;
+}
+.admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+.admin-filters > .MuiTextField-root:first-child {
+  flex: 1;
+  min-width: 220px;
+}
+.admin-filters > .MuiTextField-root:nth-child(2) {
+  min-width: 190px;
+}
+.admin-support-note {
+  color: #65738a;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.admin-log-list {
+  display: grid;
+  gap: 16px;
+}
+.admin-log-card {
+  background: #fffef9;
+  border: 1px solid #dce3ec;
+  border-radius: 22px;
+  padding: 25px;
+  min-width: 0;
+}
+.admin-log-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #66738a;
+}
+.admin-log-meta span {
+  color: #3152c0;
+  background: #edf1ff;
+  border-radius: 20px;
+  padding: 6px 11px;
+  font-weight: 650;
+}
+.admin-log-meta small {
+  margin-left: auto;
+}
+.admin-log-card h3 {
+  margin: 18px 0 10px;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.admin-log-card > p {
+  color: #53647c;
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.admin-log-card > .magnetic-wrap {
+  margin-left: -10px;
+}
+.admin-dialog .MuiDialog-paper {
+  background: #fffef9;
+  border-radius: 24px;
+}
+.admin-dialog .MuiDialogTitle-root {
+  padding: 25px 25px 18px;
+  font-size: 25px;
+  letter-spacing: -0.7px;
+}
+.admin-dialog .MuiDialogContent-root {
+  padding: 12px 25px 20px;
+}
+.admin-dialog .MuiDialogActions-root {
+  padding: 10px 25px 24px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.admin-log-detail p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #30445f;
+}
+.admin-log-detail h3 {
+  margin-top: 24px;
+}
+.admin-log-detail > small {
+  color: #66758b;
+}
+@media (max-width: 900px) {
+  .admin-header {
+    grid-template-columns: minmax(0, 1fr) 120px;
+  }
+  .admin-header .assistant-orb-large {
+    width: 120px;
+    height: 150px;
+  }
+}
+@media (max-width: 600px) {
+  .admin-header {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .admin-header .assistant-orb {
+    display: none;
+  }
+  .admin-header h1 {
+    letter-spacing: -1.3px;
+    font-size: 38px;
+  }
+  .admin-header p {
+    font-size: 16px;
+  }
+  .admin-overview-grid,
+  .admin-category-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-overview-card {
+    padding: 24px;
+  }
+  .admin-overview-card h2 {
+    font-size: 29px;
+  }
+  .admin-tabs {
+    gap: 3px;
+  }
+  .admin-tabs a {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+  .admin-filters > .MuiTextField-root {
+    width: 100%;
+    min-width: 0 !important;
+  }
+  .admin-log-card {
+    padding: 20px;
+  }
+  .admin-note {
+    padding: 22px;
+    gap: 12px;
+  }
+  .admin-dialog .MuiDialogActions-root {
+    padding-inline: 18px;
+  }
+}

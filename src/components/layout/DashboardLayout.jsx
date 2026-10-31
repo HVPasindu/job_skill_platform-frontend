@@ -43,6 +43,10 @@ export default function DashboardLayout() {
     "My students": "students",
     "My sessions": "sessions",
   };
+  const adminPaths = {
+    "Job categories": "categories",
+    "Chatbot logs": "chatbot-logs",
+  };
   async function signOut() {
     setOpen(false);
     if (
@@ -126,6 +130,19 @@ export default function DashboardLayout() {
                 to={`/dashboard/trainer/${trainerPaths[label]}`}
                 selected={location.pathname.startsWith(
                   `/dashboard/trainer/${trainerPaths[label]}`,
+                )}
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : activeRole === "admin" && adminPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/admin/${adminPaths[label]}`}
+                selected={location.pathname.startsWith(
+                  `/dashboard/admin/${adminPaths[label]}`,
                 )}
                 onClick={() => setOpen(false)}
               >

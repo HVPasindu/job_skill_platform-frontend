@@ -1379,3 +1379,79 @@
     }
   }
 }
+
+/* Step08: transform-only CSS3D assistant. Pauses offscreen/closed and obeys reduced motion. */
+.assistant-orb {
+  width: 48px;
+  height: 54px;
+  perspective: 500px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+.assistant-orb-assembly {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: assistant-orbit 14s linear infinite;
+  animation-play-state: paused;
+}
+.assistant-orb[data-active="true"] .assistant-orb-assembly {
+  animation-play-state: running;
+}
+.assistant-orb-assembly i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #315cff;
+  border-radius: 35%;
+  box-shadow: inset 0 0 14px #315cff15;
+}
+.assistant-orb-assembly i:nth-child(1) {
+  transform: rotateY(65deg) rotateX(30deg);
+}
+.assistant-orb-assembly i:nth-child(2) {
+  transform: rotateX(65deg) rotateZ(30deg);
+  border-color: #719e30;
+}
+.assistant-orb-assembly i:nth-child(3) {
+  transform: rotateY(-35deg) rotateX(-30deg);
+  border-color: #7e93ee;
+}
+.assistant-orb-assembly b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #315cff;
+  font-size: 23px;
+  transform: translateZ(5px);
+}
+.assistant-orb-large {
+  width: 180px;
+  height: 200px;
+}
+.assistant-orb-large .assistant-orb-assembly {
+  width: 110px;
+  height: 110px;
+}
+.assistant-orb-large .assistant-orb-assembly i {
+  border-width: 3px;
+}
+.assistant-orb-large .assistant-orb-assembly b {
+  font-size: 62px;
+}
+@keyframes assistant-orbit {
+  from {
+    transform: rotateX(-15deg) rotateY(0);
+  }
+  to {
+    transform: rotateX(-15deg) rotateY(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-orb-assembly {
+    animation: none;
+    transform: rotateX(-15deg) rotateY(25deg);
+  }
+}
