@@ -1,0 +1,2 @@
+# SPA history fallback for Netlify: direct links and refreshes use React Router.
+/* /index.html 200

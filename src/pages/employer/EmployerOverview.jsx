@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-seeker.css";
 import "../../styles-employer.css";
 import { Link } from "react-router-dom";
@@ -64,7 +65,12 @@ export default function EmployerOverview() {
         </div>
         <Link to="/dashboard/employer/companies">All companies ↗</Link>
       </div>
-      <div className="employer-recent">
+      <DataCollection
+        viewKey="employer-recent"
+        label="Recent job postings"
+        className="employer-recent"
+        defaultView="list"
+      >
         {!data.recent_jobs.length ? (
           <p>No jobs yet. Choose a company and create your first role.</p>
         ) : (
@@ -84,7 +90,7 @@ export default function EmployerOverview() {
             </Link>
           ))
         )}
-      </div>
+      </DataCollection>
     </>
   );
 }

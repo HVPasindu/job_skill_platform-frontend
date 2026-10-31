@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-seeker.css";
 import "../../styles-trainer.css";
 import { Link } from "react-router-dom";
@@ -81,7 +82,12 @@ export default function TrainerOverview() {
           <p>No courses yet. One good idea is all it takes to start.</p>
         </section>
       ) : (
-        <div className="trainer-recent">
+        <DataCollection
+          viewKey="trainer-recent"
+          label="Recent courses"
+          className="trainer-recent"
+          defaultView="list"
+        >
           {recent_courses.map((course) => (
             <Link
               key={course.id}
@@ -94,7 +100,7 @@ export default function TrainerOverview() {
               <b>↗</b>
             </Link>
           ))}
-        </div>
+        </DataCollection>
       )}
     </>
   );

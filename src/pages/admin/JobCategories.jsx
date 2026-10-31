@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
 import { supportService } from "../../services/supportService";
@@ -69,7 +70,11 @@ export default function JobCategories() {
           <p>Add a job category to help employers organise opportunities.</p>
         </section>
       ) : (
-        <div className="admin-category-grid">
+        <DataCollection
+          viewKey="job-categories"
+          label="Job categories"
+          className="admin-category-grid"
+        >
           {resource.data.categories.map((category) => (
             <article key={category.id} className="admin-category-card">
               <span className="admin-card-index">
@@ -96,7 +101,7 @@ export default function JobCategories() {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

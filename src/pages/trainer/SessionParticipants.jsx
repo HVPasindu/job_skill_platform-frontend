@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback } from "react";
 import { useOutletContext } from "react-router-dom";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -38,7 +39,12 @@ export default function SessionParticipants() {
           <p>No participants yet.</p>
         </section>
       ) : (
-        <div className="participant-list">
+        <DataCollection
+          viewKey="session-participants"
+          label="Session participants"
+          className="participant-list"
+          defaultView="list"
+        >
           {resource.data.participants.map((p) => (
             <article key={p.id}>
               <span>{p.full_name.charAt(0)}</span>
@@ -49,7 +55,7 @@ export default function SessionParticipants() {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

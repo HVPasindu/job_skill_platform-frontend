@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -78,7 +79,11 @@ export default function MyLearning() {
           <p>No enrollments match this page or status.</p>
         </section>
       ) : (
-        <div className="learning-card-grid">
+        <DataCollection
+          viewKey="seeker-learning"
+          label="Your enrollments"
+          className="learning-card-grid"
+        >
           {resource.data.enrollments.map((e) => (
             <article className="learning-enrollment-card" key={e.id}>
               <StatusPill status={e.enrollment_status} />
@@ -95,7 +100,7 @@ export default function MyLearning() {
               </Link>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

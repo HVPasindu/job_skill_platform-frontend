@@ -7,18 +7,21 @@ export default function useSceneActivity(elementRef) {
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { rootMargin: "80px" },
-    );
-    observer.observe(element);
+    const Observer = window.IntersectionObserver;
+    const observer = Observer
+      ? new Observer(([entry]) => setVisible(entry.isIntersecting), {
+          rootMargin: "80px",
+        })
+      : null;
+    observer?.observe(element);
+    if (!observer) queueMicrotask(() => setVisible(true));
     function onVisibilityChange() {
       setTabVisible(!document.hidden);
     }
     onVisibilityChange();
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [elementRef]);

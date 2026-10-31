@@ -1,3 +1,4 @@
+import ImageWithFallback from "../ui/ImageWithFallback";
 import { Link } from "react-router-dom";
 import { fileUrl } from "../../utils/seekerFiles";
 import { words } from "../../utils/jobFormat";
@@ -19,20 +20,17 @@ export default function CourseCard({
         aria-hidden="true"
         className="course-card-image"
       >
-        {fileUrl(course.thumbnail_url) ? (
-          <img
-            src={fileUrl(course.thumbnail_url)}
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div className="course-art">
-            <span>↗</span>
-            <b>{words(course.course_type) || "Learning"}</b>
-            <i />
-          </div>
-        )}
+        <ImageWithFallback
+          src={fileUrl(course.thumbnail_url)}
+          alt=""
+          fallback={
+            <div className="course-art">
+              <span>↗</span>
+              <b>{words(course.course_type) || "Learning"}</b>
+              <i />
+            </div>
+          }
+        />
       </Link>
       <div className="course-card-body">
         <div className="course-card-meta">

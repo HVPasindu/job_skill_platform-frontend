@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-jobs.css";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -96,11 +97,15 @@ export default function PublicJobs() {
           </section>
         ) : (
           <>
-            <div className="jobs-grid">
+            <DataCollection
+              viewKey="public-jobs"
+              label="Open roles"
+              className="jobs-grid"
+            >
               {resource.data.jobs.map((job) => (
                 <JobCard key={job.id} job={job} />
               ))}
-            </div>
+            </DataCollection>
             {resource.data.pagination?.total_pages > 1 && (
               <Pagination
                 className="jobs-pagination"

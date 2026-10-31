@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -27,7 +28,11 @@ function Files({ material }) {
           No attached resources yet. Check the lesson link above, if provided.
         </p>
       ) : (
-        <div className="learning-resource-grid">
+        <DataCollection
+          viewKey="learning-resources"
+          label="Learning resources"
+          className="learning-resource-grid"
+        >
           {resource.data.files.map((f) => (
             <article key={f.id}>
               <span className="eyebrow">{words(f.file_type)}</span>
@@ -45,7 +50,7 @@ function Files({ material }) {
               )}
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import useApiResource from "../../hooks/useApiResource";
@@ -84,7 +85,12 @@ export default function CourseMaterials() {
           <p>Add your first material, then attach its resources.</p>
         </section>
       ) : (
-        <div className="trainer-material-list">
+        <DataCollection
+          viewKey="trainer-materials"
+          label="Course materials"
+          className="trainer-material-list"
+          defaultView="list"
+        >
           {resource.data.materials.map((material) => (
             <article key={material.id}>
               <span className="material-order">
@@ -117,7 +123,7 @@ export default function CourseMaterials() {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

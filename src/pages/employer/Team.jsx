@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -88,7 +89,12 @@ export default function Team() {
       ) : resource.error ? (
         <ErrorState message={resource.error} onRetry={resource.reload} />
       ) : (
-        <div className="team-list">
+        <DataCollection
+          viewKey="company-team"
+          label="Team members"
+          className="team-list"
+          defaultView="list"
+        >
           {resource.data.users.map((member) => (
             <article className="team-card" key={member.company_user_id}>
               <span className="team-avatar">{member.full_name.charAt(0)}</span>
@@ -125,7 +131,7 @@ export default function Team() {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

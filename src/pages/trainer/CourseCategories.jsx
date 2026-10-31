@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
 import { courseService } from "../../services/courseService";
@@ -36,7 +37,11 @@ export default function CourseCategories() {
           <p>Add the first course category.</p>
         </section>
       ) : (
-        <div className="trainer-category-grid">
+        <DataCollection
+          viewKey="course-categories"
+          label="Course categories"
+          className="trainer-category-grid"
+        >
           {resource.data.categories.map((c) => (
             <article key={c.id}>
               <span>↗</span>
@@ -44,7 +49,7 @@ export default function CourseCategories() {
               <small>Shared course category</small>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

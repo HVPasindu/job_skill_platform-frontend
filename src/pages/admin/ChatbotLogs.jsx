@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 // MUI supplies filters and the read-only detail dialog; server pagination provides totals.
 import {
@@ -110,7 +111,12 @@ export default function ChatbotLogs() {
           </p>
         </section>
       ) : (
-        <div className="admin-log-list">
+        <DataCollection
+          viewKey="chatbot-logs"
+          label="Support exchanges"
+          className="admin-log-list"
+          defaultView="list"
+        >
           {resource.data.logs.map((log) => (
             <article key={log.id} className="admin-log-card">
               <div className="admin-log-meta">
@@ -129,7 +135,7 @@ export default function ChatbotLogs() {
               </Button>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

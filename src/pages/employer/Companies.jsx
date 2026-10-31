@@ -1,3 +1,5 @@
+import ImageWithFallback from "../../components/ui/ImageWithFallback";
+import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -45,20 +47,23 @@ export default function Companies() {
           <p>Create your first company to publish jobs and meet candidates.</p>
         </section>
       ) : (
-        <div className="company-grid">
+        <DataCollection
+          viewKey="employer-companies"
+          label="Your companies"
+          className="company-grid"
+        >
           {resource.data.companies.map((company) => (
             <article className="company-card" key={company.id}>
               <div className="company-card-top">
-                {fileUrl(company.logo_url) ? (
-                  <img
-                    src={fileUrl(company.logo_url)}
-                    alt={`${company.company_name} logo`}
-                  />
-                ) : (
-                  <span className="company-monogram">
-                    {company.company_name.charAt(0)}
-                  </span>
-                )}
+                <ImageWithFallback
+                  src={fileUrl(company.logo_url)}
+                  alt={`${company.company_name} logo`}
+                  fallback={
+                    <span className="company-monogram">
+                      {company.company_name.charAt(0)}
+                    </span>
+                  }
+                />
                 <span className="employer-role">{company.company_role}</span>
               </div>
               <h2>{company.company_name}</h2>
@@ -72,7 +77,7 @@ export default function Companies() {
               </Link>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

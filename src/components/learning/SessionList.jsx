@@ -1,3 +1,4 @@
+import DataCollection from "../collections/DataCollection";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { TextField, MenuItem } from "@mui/material";
@@ -163,7 +164,17 @@ export default function SessionList({ mode = "public" }) {
           <p>No sessions match this page or filter.</p>
         </section>
       ) : (
-        <div className="session-grid">
+        <DataCollection
+          viewKey={`sessions-${mode}`}
+          label={
+            mode === "trainer"
+              ? "Your mentorship sessions"
+              : mode === "joined"
+                ? "Joined sessions"
+                : "Mentorship sessions"
+          }
+          className="session-grid"
+        >
           {resource.data.sessions.map((session) => {
             const id = sessionId(session);
             return (
@@ -241,7 +252,7 @@ export default function SessionList({ mode = "public" }) {
               </article>
             );
           })}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

@@ -1,3 +1,4 @@
+import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { TextField, MenuItem } from "@mui/material";
@@ -123,7 +124,11 @@ export default function JobList({ company }) {
           <p>No jobs on this page. Create a role or try different filters.</p>
         </section>
       ) : (
-        <div className="employer-job-grid">
+        <DataCollection
+          viewKey="employer-jobs"
+          label="Managed jobs"
+          className="employer-job-grid"
+        >
           {resource.data.jobs.map((job) => {
             const base = `/dashboard/employer/companies/${job.company_id}/jobs/${job.id}`;
             return (
@@ -155,7 +160,7 @@ export default function JobList({ company }) {
               </article>
             );
           })}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

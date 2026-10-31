@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import { TextField, MenuItem } from "@mui/material";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -118,7 +119,11 @@ export default function MyCourses({ materials = false }) {
           <p>No courses match this page or these filters.</p>
         </section>
       ) : (
-        <div className="trainer-course-grid">
+        <DataCollection
+          viewKey={materials ? "trainer-material-picker" : "trainer-courses"}
+          label={materials ? "Choose a course" : "Your courses"}
+          className="trainer-course-grid"
+        >
           {resource.data.courses.map((course) => (
             <CourseCard
               key={course.id}
@@ -129,7 +134,7 @@ export default function MyCourses({ materials = false }) {
               busy={busy}
             />
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

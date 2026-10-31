@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useCallback, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -133,7 +134,12 @@ export default function Students() {
           <p>No student enrollments match this page or filter.</p>
         </section>
       ) : (
-        <div className="student-list">
+        <DataCollection
+          viewKey="trainer-students"
+          label="Student enrollments"
+          className="student-list"
+          defaultView="list"
+        >
           {resource.data.enrollments.map((e) => (
             <article key={e.id}>
               <div>
@@ -150,7 +156,7 @@ export default function Students() {
               )}
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

@@ -11,6 +11,7 @@ import { useMediaQuery } from "@mui/material";
 // Motion library values keep mouse updates outside normal React state.
 import { useMotionValue, useReducedMotion } from "motion/react";
 import SceneBoundary from "./SceneBoundary";
+import { canLoad3D } from "./visualBudget";
 import OrbitFallback from "./OrbitFallback";
 import useSceneActivity from "./useSceneActivity";
 const HeroScene = lazy(() => import("./HeroScene"));
@@ -50,7 +51,10 @@ export default function HeroVisual({ progress }) {
       import.meta.env.VITE_ENABLE_3D === "false"
     )
       return;
-    const timer = window.setTimeout(() => setEligible(supportsWebGL()), 800);
+    const timer = window.setTimeout(
+      () => setEligible(canLoad3D() && supportsWebGL()),
+      800,
+    );
     return () => window.clearTimeout(timer);
   }, [desktop, reduced, active]);
 

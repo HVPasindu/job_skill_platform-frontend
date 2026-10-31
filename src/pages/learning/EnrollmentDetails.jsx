@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -30,7 +31,12 @@ function Materials({ courseId, enrollmentId }) {
       ) : !resource.data.materials.length ? (
         <p>The trainer is preparing your course materials.</p>
       ) : (
-        <div className="learning-material-list">
+        <DataCollection
+          viewKey="learning-materials"
+          label="Course learning path"
+          className="learning-material-list"
+          defaultView="list"
+        >
           {resource.data.materials.map((m) => (
             <article key={m.id}>
               <span>{m.sort_order ?? "↗"}</span>
@@ -54,7 +60,7 @@ function Materials({ courseId, enrollmentId }) {
               </Link>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

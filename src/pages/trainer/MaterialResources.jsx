@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import useApiResource from "../../hooks/useApiResource";
@@ -82,7 +83,12 @@ function Files({ material, course }) {
           <p>Attach documents, images or links to this material.</p>
         </section>
       ) : (
-        <div className="trainer-resource-list">
+        <DataCollection
+          viewKey="trainer-resources"
+          label="Files and links"
+          className="trainer-resource-list"
+          defaultView="list"
+        >
           {resource.data.files.map((file) => {
             const href =
               fileUrl(file.file_url) || externalUrl(file.external_url);
@@ -112,7 +118,7 @@ function Files({ material, course }) {
               </article>
             );
           })}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

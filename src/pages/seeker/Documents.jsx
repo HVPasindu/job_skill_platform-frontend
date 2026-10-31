@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 // MUI Dialog and TextField provide accessible upload/edit controls.
@@ -220,7 +221,11 @@ export default function Documents() {
           </p>
         </section>
       ) : (
-        <div className="seeker-document-grid">
+        <DataCollection
+          viewKey="seeker-documents"
+          label="Your documents"
+          className="seeker-document-grid"
+        >
           {documents.map((doc) => (
             <article className="document-card" key={doc.id}>
               <div className={`document-cover type-${doc.document_type}`}>
@@ -277,7 +282,7 @@ export default function Documents() {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

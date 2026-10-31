@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-seeker.css";
 import "../../styles-trainer.css";
 import { useState } from "react";
@@ -145,11 +146,15 @@ export default function PublicCourses() {
           </p>
         </section>
       ) : (
-        <div className="course-catalogue-grid">
+        <DataCollection
+          viewKey="public-courses"
+          label="Course results"
+          className="course-catalogue-grid"
+        >
           {resource.data.courses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}
