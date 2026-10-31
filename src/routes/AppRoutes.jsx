@@ -63,6 +63,28 @@ const CourseCategories = lazy(
   () => import("../pages/trainer/CourseCategories"),
 );
 const MaterialsHome = lazy(() => import("../pages/trainer/MaterialsHome"));
+const MyLearning = lazy(() => import("../pages/learning/MyLearning"));
+const EnrollmentDetails = lazy(
+  () => import("../pages/learning/EnrollmentDetails"),
+);
+const LearningResources = lazy(
+  () => import("../pages/learning/LearningResources"),
+);
+const EnrollCourse = lazy(() => import("../pages/learning/EnrollCourse"));
+const MySessions = lazy(() => import("../pages/learning/MySessions"));
+const JoinSession = lazy(() => import("../pages/learning/JoinSession"));
+const SessionDetails = lazy(() => import("../pages/common/SessionDetails"));
+const Students = lazy(() => import("../pages/trainer/Students"));
+const MentorshipSessions = lazy(
+  () => import("../pages/trainer/MentorshipSessions"),
+);
+const SessionEditor = lazy(() => import("../pages/trainer/SessionEditor"));
+const SessionParticipants = lazy(
+  () => import("../pages/trainer/SessionParticipants"),
+);
+const TrainerSessionLayout = lazy(
+  () => import("../components/layout/TrainerSessionLayout"),
+);
 function publicPage(page) {
   return (
     <MainLayout>
@@ -94,6 +116,10 @@ export default function AppRoutes() {
         element={publicPage(<CourseDetails />)}
       />
       <Route path="/sessions" element={publicPage(<PublicSessions />)} />
+      <Route
+        path="/sessions/:sessionId"
+        element={publicPage(<SessionDetails />)}
+      />
       <Route element={<GuestRoute />}>
         <Route path="/login" element={deferred(<Login />)} />
         <Route path="/signup" element={deferred(<Signup />)} />
@@ -108,6 +134,30 @@ export default function AppRoutes() {
           <Route path="account" element={deferred(<Account />)} />
           <Route path="become-trainer" element={deferred(<BecomeTrainer />)} />
           <Route element={deferred(<SeekerLayout />)}>
+            <Route
+              path="job-seeker/learning"
+              element={deferred(<MyLearning />)}
+            />
+            <Route
+              path="job-seeker/learning/:enrollmentId"
+              element={deferred(<EnrollmentDetails />)}
+            />
+            <Route
+              path="job-seeker/learning/:enrollmentId/materials/:materialId"
+              element={deferred(<LearningResources />)}
+            />
+            <Route
+              path="job-seeker/courses/:courseId/enroll"
+              element={deferred(<EnrollCourse />)}
+            />
+            <Route
+              path="job-seeker/sessions"
+              element={deferred(<MySessions />)}
+            />
+            <Route
+              path="job-seeker/sessions/:sessionId/join"
+              element={deferred(<JoinSession />)}
+            />
             <Route
               path="job-seeker/apply/:jobId"
               element={deferred(<ApplyJob />)}
@@ -168,6 +218,26 @@ export default function AppRoutes() {
             </Route>
           </Route>
           <Route element={deferred(<TrainerLayout />)}>
+            <Route path="trainer/students" element={deferred(<Students />)} />
+            <Route
+              path="trainer/sessions"
+              element={deferred(<MentorshipSessions />)}
+            />
+            <Route
+              path="trainer/sessions/new"
+              element={deferred(<SessionEditor />)}
+            />
+            <Route
+              path="trainer/sessions/:sessionId"
+              element={deferred(<TrainerSessionLayout />)}
+            >
+              <Route index element={<Navigate to="edit" replace />} />
+              <Route path="edit" element={deferred(<SessionEditor />)} />
+              <Route
+                path="participants"
+                element={deferred(<SessionParticipants />)}
+              />
+            </Route>
             <Route
               path="trainer/profile"
               element={deferred(<TrainerProfile />)}
@@ -194,6 +264,7 @@ export default function AppRoutes() {
             >
               <Route index element={<Navigate to="edit" replace />} />
               <Route path="edit" element={deferred(<CourseEditor />)} />
+              <Route path="students" element={deferred(<Students />)} />
               <Route path="materials" element={deferred(<CourseMaterials />)} />
               <Route
                 path="materials/:materialId"

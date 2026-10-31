@@ -27,6 +27,8 @@ export default function DashboardLayout() {
     "My profile": "profile",
     "My documents": "documents",
     "My applications": "applications",
+    "My learning": "learning",
+    "My sessions": "sessions",
   };
   const employerPaths = {
     "My companies": "companies",
@@ -38,6 +40,8 @@ export default function DashboardLayout() {
     "My courses": "courses",
     "Course materials": "materials",
     "Course categories": "categories",
+    "My students": "students",
+    "My sessions": "sessions",
   };
   async function signOut() {
     setOpen(false);

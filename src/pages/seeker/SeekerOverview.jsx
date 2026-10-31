@@ -109,6 +109,8 @@ export default function SeekerOverview() {
           </h2>
           {[
             ["/jobs", "Find a role"],
+            ["/dashboard/job-seeker/learning", "Continue learning"],
+            ["/dashboard/job-seeker/sessions", "My mentorship sessions"],
             ["/dashboard/job-seeker/documents", "Update my documents"],
             [
               "/dashboard/job-seeker/resume-insights",

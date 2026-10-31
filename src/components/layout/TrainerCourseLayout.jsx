@@ -42,6 +42,7 @@ export default function TrainerCourseLayout() {
       <nav className="trainer-course-tabs" aria-label="Course tools">
         <NavLink to={`${base}/edit`}>Course details</NavLink>
         <NavLink to={`${base}/materials`}>Materials & resources</NavLink>
+        <NavLink to={`${base}/students`}>Enrolled students</NavLink>
       </nav>
       <Outlet context={{ ...parent, course, reloadCourse: resource.reload }} />
     </>

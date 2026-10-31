@@ -21,6 +21,8 @@ function Workspace() {
           ["profile", "Trainer profile"],
           ["courses", "My courses"],
           ["categories", "Course categories"],
+          ["students", "My students"],
+          ["sessions", "My sessions"],
         ].map(([path, label]) => (
           <NavLink key={path} to={`/dashboard/trainer/${path}`}>
             {label}

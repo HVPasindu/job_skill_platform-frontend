@@ -1,5 +1,7 @@
 import "../../styles-seeker.css";
 import "../../styles-trainer.css";
+import "../../styles-learning.css";
+import CourseEnrollmentAction from "../../components/learning/CourseEnrollmentAction";
 import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -86,7 +88,10 @@ export default function CourseDetails() {
           </span>
           {course.status !== "published" && (
             <span className={`course-status status-${course.status}`}>
-              Owner preview · {course.status}
+              {Number(user?.id) === Number(course.trainer_user_id)
+                ? "Owner preview"
+                : "Enrolled access"}{" "}
+              · {course.status}
             </span>
           )}
           <h1>{course.title}</h1>
@@ -105,6 +110,7 @@ export default function CourseDetails() {
           <p className="course-trainer-byline">
             Shared by <strong>{course.trainer_name}</strong>
           </p>
+          {!owner && <CourseEnrollmentAction course={course} />}
           {owner && (
             <Button to={`/dashboard/trainer/courses/${course.id}/edit`}>
               Manage this course ↗

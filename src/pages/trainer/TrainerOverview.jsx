@@ -45,6 +45,10 @@ export default function TrainerOverview() {
         </div>
         <KnowledgeSculpture />
       </section>
+      <div className="trainer-step7-links">
+        <Link to="/dashboard/trainer/students">Meet your learners ↗</Link>
+        <Link to="/dashboard/trainer/sessions">Manage mentorship ↗</Link>
+      </div>
       <div className="trainer-metrics">
         {[
           ["Your courses", counts.courses, "courses"],
