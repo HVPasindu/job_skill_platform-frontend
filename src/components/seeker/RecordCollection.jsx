@@ -1,3 +1,4 @@
+import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 // MUI Dialog provides focus management; React Hook Form keeps the edit form simple.
 import {
@@ -173,7 +174,11 @@ export default function RecordCollection({ kind }) {
           </p>
         </section>
       ) : (
-        <div className="seeker-record-grid">
+        <DataCollection
+          viewKey={`seeker-${kind}`}
+          label={section.title}
+          className="seeker-record-grid"
+        >
           {resource.data.items.map((record, index) => (
             <article
               className={`seeker-record ${kind === "skills" ? "skill-record" : ""}`}
@@ -238,7 +243,7 @@ export default function RecordCollection({ kind }) {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

@@ -7,7 +7,13 @@ export const ROLE_DETAILS = {
     title: "Make your next move.",
     description:
       "Your experience has a destination. Find the opportunities that move you forward.",
-    modules: ["My profile", "My documents", "My applications", "My learning"],
+    modules: [
+      "My profile",
+      "My documents",
+      "My applications",
+      "My learning",
+      "My sessions",
+    ],
   },
   employer: {
     label: "Employer",
@@ -28,6 +34,7 @@ export const ROLE_DETAILS = {
       "Trainer profile",
       "My courses",
       "Course materials",
+      "Course categories",
       "My students",
       "My sessions",
     ],

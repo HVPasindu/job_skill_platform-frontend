@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-jobs.css";
 import { useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -80,7 +81,12 @@ export default function MyApplications() {
           <p className="applications-count" role="status">
             {resource.data.pagination.total} matching applications
           </p>
-          <div className="applications-list">
+          <DataCollection
+            viewKey="seeker-applications"
+            label="Your applications"
+            className="applications-list"
+            defaultView="list"
+          >
             {resource.data.applications.map((application) => (
               <article className="application-list-card" key={application.id}>
                 <div>
@@ -111,7 +117,7 @@ export default function MyApplications() {
                 </div>
               </article>
             ))}
-          </div>
+          </DataCollection>
           {resource.data.pagination.total_pages > 1 && (
             <Pagination
               className="jobs-pagination"

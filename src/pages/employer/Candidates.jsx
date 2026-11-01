@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
 import { TextField, MenuItem } from "@mui/material";
@@ -112,7 +113,12 @@ function List({ job, company }) {
           <p>No applications match this page or these filters.</p>
         </section>
       ) : (
-        <div className="candidate-list">
+        <DataCollection
+          viewKey="employer-candidates"
+          label="Candidate results"
+          className="candidate-list"
+          defaultView="list"
+        >
           {resource.data.applications.map((application) => (
             <article className="candidate-card" key={application.id}>
               <span className="team-avatar">
@@ -144,7 +150,7 @@ function List({ job, company }) {
               </div>
             </article>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

@@ -1159,3 +1159,299 @@
     }
   }
 }
+
+/* Step06: CSS-only 3D book, isolated from ordinary page/form code. */
+@layer components {
+  .knowledge-sculpture {
+    width: 100%;
+    height: 300px;
+    perspective: 1000px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  .knowledge-orbit {
+    width: 210px;
+    height: 250px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: knowledge-drift 8s ease-in-out infinite;
+  }
+  .knowledge-book {
+    width: 155px;
+    height: 205px;
+    position: absolute;
+    left: 27px;
+    top: 10px;
+    transform-style: preserve-3d;
+    transform: rotateX(16deg) rotateY(-28deg) rotateZ(-9deg);
+  }
+  .book-back,
+  .book-cover,
+  .book-page {
+    position: absolute;
+    inset: 0;
+    border-radius: 9px 18px 18px 9px;
+    transform-style: preserve-3d;
+    box-shadow: 6px 8px 0 rgba(13, 30, 40, 0.1);
+  }
+  .book-back {
+    background: #203ec4;
+    transform: translateZ(-22px);
+  }
+  .book-page {
+    background: repeating-linear-gradient(
+      90deg,
+      #fffdf0 0 2px,
+      #e6e5d3 2px 3px
+    );
+    border: 1px solid #d9dcca;
+    transform-origin: left center;
+  }
+  .book-page.page-one {
+    transform: translateZ(-15px) rotateY(-3deg);
+  }
+  .book-page.page-two {
+    transform: translateZ(-9px) rotateY(-6deg);
+  }
+  .book-page.page-three {
+    transform: translateZ(-3px) rotateY(-9deg);
+  }
+  .book-cover {
+    background: #718aff;
+    color: #101a2f;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    transform-origin: left center;
+    transform: translateZ(5px) rotateY(-15deg);
+    border-left: 8px solid #4562e4;
+    box-shadow: 9px 12px 0 rgba(13, 30, 40, 0.13);
+  }
+  .book-cover > span {
+    font-size: 44px;
+    line-height: 1;
+    color: #fffef9;
+  }
+  .book-cover > b {
+    font-size: 30px;
+    letter-spacing: -0.065em;
+    line-height: 0.98;
+    margin-top: auto;
+    font-weight: 850;
+  }
+  .book-cover > small {
+    font-size: 7px;
+    letter-spacing: 0.13em;
+    margin-top: 13px;
+  }
+  .knowledge-dot {
+    position: absolute;
+    border-radius: 19px;
+    box-shadow: 6px 8px 0 rgba(13, 30, 40, 0.13);
+  }
+  .knowledge-dot.dot-one {
+    width: 50px;
+    height: 50px;
+    background: #c7fa76;
+    right: -16px;
+    top: 30px;
+    transform: translateZ(35px) rotate(15deg);
+  }
+  .knowledge-dot.dot-two {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ffae88;
+    left: -10px;
+    bottom: 40px;
+    transform: translateZ(25px);
+  }
+  .knowledge-stamp {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    color: #596477;
+  }
+  .knowledge-sculpture[data-active="false"] .knowledge-orbit {
+    animation-play-state: paused;
+  }
+  @keyframes knowledge-drift {
+    0%,
+    100% {
+      transform: translateY(0) rotateZ(-2deg);
+    }
+    50% {
+      transform: translateY(-15px) rotateZ(4deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .knowledge-orbit {
+      animation: none;
+    }
+  }
+}
+
+/* Step07: procedural 3D connection rings, with no texture/model payload. */
+@layer components {
+  .growth-orbit {
+    width: 100%;
+    height: 290px;
+    display: grid;
+    place-items: center;
+    perspective: 950px;
+    pointer-events: none;
+  }
+  .growth-assembly {
+    width: 205px;
+    height: 245px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: growth-drift 9s ease-in-out infinite;
+  }
+  .growth-ring {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: 7px;
+    top: 15px;
+    border: 22px solid #748cff;
+    border-radius: 50%;
+    box-shadow:
+      inset 4px 4px 0 #4864db,
+      6px 8px 0 #3650be;
+    transform: rotateY(42deg) rotateX(23deg) rotateZ(-20deg);
+  }
+  .growth-ring.ring-two {
+    border-color: #c7fa76;
+    box-shadow:
+      inset 4px 4px 0 #a4cf59,
+      6px 8px 0 #86ad40;
+    transform: translateZ(22px) rotateY(-42deg) rotateX(-23deg) rotateZ(20deg);
+  }
+  .growth-core {
+    position: absolute;
+    left: 64px;
+    top: 70px;
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+    background: #ffb08a;
+    color: #142033;
+    border-radius: 22px;
+    font-size: 54px;
+    box-shadow: 7px 8px 0 #d98c66;
+    transform: translateZ(70px) rotate(-8deg);
+  }
+  .growth-assembly > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #667181;
+  }
+  .growth-orbit[data-active="false"] .growth-assembly {
+    animation-play-state: paused;
+  }
+  @keyframes growth-drift {
+    0%,
+    100% {
+      transform: translateY(0) rotateZ(-4deg);
+    }
+    50% {
+      transform: translateY(-14px) rotateZ(6deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .growth-assembly {
+      animation: none;
+    }
+  }
+}
+
+/* Step08: transform-only CSS3D assistant. Pauses offscreen/closed and obeys reduced motion. */
+.assistant-orb {
+  width: 48px;
+  height: 54px;
+  perspective: 500px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+.assistant-orb-assembly {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: assistant-orbit 14s linear infinite;
+  animation-play-state: paused;
+}
+.assistant-orb[data-active="true"] .assistant-orb-assembly {
+  animation-play-state: running;
+}
+.assistant-orb-assembly i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #315cff;
+  border-radius: 35%;
+  box-shadow: inset 0 0 14px #315cff15;
+}
+.assistant-orb-assembly i:nth-child(1) {
+  transform: rotateY(65deg) rotateX(30deg);
+}
+.assistant-orb-assembly i:nth-child(2) {
+  transform: rotateX(65deg) rotateZ(30deg);
+  border-color: #719e30;
+}
+.assistant-orb-assembly i:nth-child(3) {
+  transform: rotateY(-35deg) rotateX(-30deg);
+  border-color: #7e93ee;
+}
+.assistant-orb-assembly b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #315cff;
+  font-size: 23px;
+  transform: translateZ(5px);
+}
+.assistant-orb-large {
+  width: 180px;
+  height: 200px;
+}
+.assistant-orb-large .assistant-orb-assembly {
+  width: 110px;
+  height: 110px;
+}
+.assistant-orb-large .assistant-orb-assembly i {
+  border-width: 3px;
+}
+.assistant-orb-large .assistant-orb-assembly b {
+  font-size: 62px;
+}
+@keyframes assistant-orbit {
+  from {
+    transform: rotateX(-15deg) rotateY(0);
+  }
+  to {
+    transform: rotateX(-15deg) rotateY(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-orb-assembly {
+    animation: none;
+    transform: rotateX(-15deg) rotateY(25deg);
+  }
+}

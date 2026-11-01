@@ -1,3 +1,4 @@
+import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
 import PageBar from "./PageBar";
@@ -71,7 +72,12 @@ export default function JobSkills({ jobId }) {
           role.
         </p>
       ) : (
-        <div className="job-skill-list">
+        <DataCollection
+          viewKey="job-skills"
+          label="Required skills"
+          className="job-skill-list"
+          defaultView="list"
+        >
           {resource.data.skills.map((skill) => (
             <div key={skill.skill_id}>
               <strong>{skill.skill_name}</strong>
@@ -86,7 +92,7 @@ export default function JobSkills({ jobId }) {
               </button>
             </div>
           ))}
-        </div>
+        </DataCollection>
       )}
       <PageBar
         pagination={resource.data?.pagination}

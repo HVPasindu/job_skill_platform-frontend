@@ -1,3 +1,4 @@
+import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-jobs.css";
 import { Link } from "react-router-dom";
 import useApiResource from "../../hooks/useApiResource";
@@ -109,6 +110,8 @@ export default function SeekerOverview() {
           </h2>
           {[
             ["/jobs", "Find a role"],
+            ["/dashboard/job-seeker/learning", "Continue learning"],
+            ["/dashboard/job-seeker/sessions", "My mentorship sessions"],
             ["/dashboard/job-seeker/documents", "Update my documents"],
             [
               "/dashboard/job-seeker/resume-insights",
@@ -131,7 +134,12 @@ export default function SeekerOverview() {
           <Link to="/dashboard/job-seeker/applications">View all ↗</Link>
         </div>
         {data.recent_applications.length ? (
-          <div className="overview-recent-list">
+          <DataCollection
+            viewKey="seeker-recent"
+            label="Recent applications"
+            className="overview-recent-list"
+            defaultView="list"
+          >
             {data.recent_applications.map((application) => (
               <Link
                 to={`/dashboard/job-seeker/applications/${application.id}`}
@@ -145,7 +153,7 @@ export default function SeekerOverview() {
                 <ApplicationStatus status={application.application_status} />
               </Link>
             ))}
-          </div>
+          </DataCollection>
         ) : (
           <section className="jobs-empty">
             <h2>Your first move is ahead.</h2>

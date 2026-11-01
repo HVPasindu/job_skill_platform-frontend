@@ -1,3 +1,4 @@
+import ImageWithFallback from "../ui/ImageWithFallback";
 import { useEffect, useRef, useState } from "react";
 import {
   validateFiles,
@@ -56,11 +57,11 @@ export default function FilePicker({
     <div className={`seeker-file-picker ${image ? "image-picker" : ""}`}>
       {image && (
         <div className="profile-photo">
-          {preview || existingImage ? (
-            <img src={preview || existingImage} alt="Profile preview" />
-          ) : (
-            <span aria-hidden="true">↗</span>
-          )}
+          <ImageWithFallback
+            src={preview || existingImage}
+            alt="Profile preview"
+            fallback={<span aria-hidden="true">↗</span>}
+          />
         </div>
       )}
       <label className={`file-pick-label ${disabled ? "disabled" : ""}`}>

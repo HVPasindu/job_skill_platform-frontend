@@ -27,11 +27,25 @@ export default function DashboardLayout() {
     "My profile": "profile",
     "My documents": "documents",
     "My applications": "applications",
+    "My learning": "learning",
+    "My sessions": "sessions",
   };
   const employerPaths = {
     "My companies": "companies",
     "Manage jobs": "jobs",
     Candidates: "candidates",
+  };
+  const trainerPaths = {
+    "Trainer profile": "profile",
+    "My courses": "courses",
+    "Course materials": "materials",
+    "Course categories": "categories",
+    "My students": "students",
+    "My sessions": "sessions",
+  };
+  const adminPaths = {
+    "Job categories": "categories",
+    "Chatbot logs": "chatbot-logs",
   };
   async function signOut() {
     setOpen(false);
@@ -103,6 +117,32 @@ export default function DashboardLayout() {
                 to={`/dashboard/employer/${employerPaths[label]}`}
                 selected={location.pathname.startsWith(
                   `/dashboard/employer/${employerPaths[label]}`,
+                )}
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : activeRole === "trainer" && trainerPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/trainer/${trainerPaths[label]}`}
+                selected={location.pathname.startsWith(
+                  `/dashboard/trainer/${trainerPaths[label]}`,
+                )}
+                onClick={() => setOpen(false)}
+              >
+                <span>↗</span>
+                <span>{label}</span>
+              </ListItemButton>
+            ) : activeRole === "admin" && adminPaths[label] ? (
+              <ListItemButton
+                key={label}
+                component={NavLink}
+                to={`/dashboard/admin/${adminPaths[label]}`}
+                selected={location.pathname.startsWith(
+                  `/dashboard/admin/${adminPaths[label]}`,
                 )}
                 onClick={() => setOpen(false)}
               >
