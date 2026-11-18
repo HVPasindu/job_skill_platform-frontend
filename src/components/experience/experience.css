@@ -1,0 +1,1457 @@
+/* All complex visuals and motion live here, beside their React components. */
+@layer components {
+  .magnetic {
+    display: inline-flex;
+    max-width: 100%;
+  }
+  .tilt-perspective {
+    perspective: 1100px;
+    height: 100%;
+  }
+  .immersive-hero {
+    color: #fff;
+    background: #0c1526;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .hero-layout {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 0;
+    align-items: center;
+    min-height: 740px;
+    padding-block: 60px 45px;
+  }
+  .hero-copy {
+    position: relative;
+    z-index: 3;
+  }
+  .hero-copy .eyebrow {
+    color: #bac9e1;
+  }
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.11;
+    pointer-events: none;
+    background-image: radial-gradient(#b2c2dd 0.5px, transparent 0.5px);
+    background-size: 6px 6px;
+    mask-image: linear-gradient(to bottom, transparent, #000);
+  }
+  .hero-title {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(68px, 7.5vw, 112px);
+    font-weight: 750;
+    letter-spacing: -5.5px;
+    line-height: 0.97;
+    margin-top: 30px;
+  }
+  .hero-title > span {
+    display: block;
+  }
+  .changing-word {
+    color: #c7fa76;
+    height: 1.12em;
+    overflow: hidden;
+    perspective: 700px;
+  }
+  .changing-word > span {
+    display: inline-block;
+    transform-origin: 50% 70%;
+  }
+  .hero-art-column {
+    position: relative;
+    min-width: 0;
+  }
+  .hero-visual {
+    height: 610px;
+    position: relative;
+    isolation: isolate;
+    touch-action: pan-y;
+  }
+  .portal-glow {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse,
+      #315cff42,
+      #315cff0a 55%,
+      transparent 72%
+    );
+  }
+  .portal-grid {
+    position: absolute;
+    inset: 4%;
+    background-image:
+      linear-gradient(#728bba16 1px, transparent 1px),
+      linear-gradient(90deg, #728bba16 1px, transparent 1px);
+    background-size: 45px 45px;
+    mask-image: radial-gradient(circle, #000, transparent 68%);
+  }
+  .hero-canvas {
+    position: absolute;
+    inset: 0 -25px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.6s;
+    pointer-events: none;
+  }
+  .hero-canvas.is-ready {
+    opacity: 1;
+  }
+  .fallback-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: opacity 0.6s;
+  }
+  .fallback-layer.scene-ready {
+    opacity: 0;
+  }
+  .orbit-fallback {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: grid;
+    place-items: center;
+    perspective: 700px;
+  }
+  .fallback-ring {
+    position: absolute;
+    width: 65%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow:
+      inset 10px 10px 12px #7093ff,
+      10px 10px 20px #0004;
+    border: 25px solid #315cff;
+  }
+  .ring-a {
+    transform: rotateY(42deg) rotateX(25deg) rotateZ(-35deg);
+    animation: portal-sway 12s ease-in-out infinite alternate;
+  }
+  .ring-b {
+    border-width: 12px;
+    border-color: #b7c9ed;
+    width: 64%;
+    transform: rotateY(-45deg) rotateX(55deg) rotateZ(35deg);
+    box-shadow: inset 4px 4px 8px #fff8;
+    animation: portal-sway-two 15s ease-in-out infinite alternate;
+  }
+  .ring-c {
+    width: 82%;
+    border-width: 1px;
+    border-color: #7192fb;
+    transform: rotateX(64deg) rotateZ(-20deg);
+    box-shadow: none;
+  }
+  .fallback-core {
+    position: absolute;
+    width: 23%;
+    aspect-ratio: 1;
+    border-radius: 24%;
+    background: linear-gradient(135deg, #ecffc7, #c7fa76 50%, #4b8623);
+    transform: rotate(-25deg);
+    box-shadow: 0 0 55px #c7fa7619;
+  }
+  .fallback-moon {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background: #ff784e;
+    left: 13%;
+    top: 23%;
+    transform: rotate(35deg);
+  }
+  .orbit-fallback.quiet * {
+    animation: none;
+  }
+  .orbit-caption {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #bfcee6;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .top-caption {
+    left: 7%;
+    top: 7%;
+  }
+  .bottom-caption {
+    right: 4%;
+    bottom: 6%;
+  }
+  .bottom-caption > span {
+    color: #c7fa76;
+    font-size: 25px;
+  }
+  .caption-dot {
+    width: 6px;
+    height: 6px;
+    background: #c7fa76;
+    border-radius: 50%;
+  }
+  .orbital-tag {
+    position: absolute;
+    z-index: 4;
+    background: #132540e8;
+    color: #fff;
+    border: 1px solid #91b0dc40;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    font-size: 15px;
+    box-shadow: 0 15px 30px #0002;
+    animation: tag-float 6s ease-in-out infinite alternate;
+  }
+  .orbital-tag > span {
+    color: #c7fa76;
+    font-size: 26px;
+    line-height: 1;
+  }
+  .tag-one {
+    top: 19%;
+    right: -2%;
+  }
+  .tag-two {
+    bottom: 18%;
+    left: 1%;
+    animation-delay: -3s;
+  }
+  .tag-two > span {
+    color: #ff956e;
+  }
+  .orbit-coordinate {
+    position: absolute;
+    z-index: 4;
+    color: #879bc0;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+  .coordinate-one {
+    top: 44%;
+    left: 0;
+    writing-mode: vertical-rl;
+  }
+  .coordinate-two {
+    top: 50%;
+    right: -2%;
+    writing-mode: vertical-rl;
+  }
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    border-top: 1px solid #ffffff23;
+    padding-block: 24px 28px;
+  }
+  .hero-bottom > span {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #aab7cf;
+  }
+  .scroll-prompt {
+    color: #e0e7f6;
+    font-size: 14px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .scroll-prompt > span {
+    border: 1px solid #67758c;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    animation: scroll-bob 2s ease-in-out infinite;
+  }
+  .kinetic-strip {
+    overflow: hidden;
+    background: #c7fa76;
+    color: #101729;
+    padding-block: 24px;
+  }
+  .kinetic-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-travel 33s linear infinite;
+  }
+  .kinetic-track > span {
+    flex-shrink: 0;
+    padding-right: 38px;
+    display: flex;
+    align-items: center;
+    gap: 38px;
+    font-size: 27px;
+    font-weight: 650;
+    letter-spacing: -0.8px;
+  }
+  .kinetic-track b {
+    font-size: 38px;
+    font-weight: 400;
+  }
+  .kinetic-strip:hover .kinetic-track {
+    animation-play-state: paused;
+  }
+  .scroll-statement {
+    padding-block: 130px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-statement h2 {
+    font-size: clamp(36px, 4.9vw, 70px);
+    font-weight: 650;
+    letter-spacing: -2.8px;
+    line-height: 1.17;
+    max-width: 1180px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+  }
+  .statement-orbit {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border: 1px solid #315cff30;
+    border-radius: 50%;
+    right: -140px;
+    top: 30px;
+    transform: rotateX(45deg);
+    box-shadow: 0 0 0 30px #315cff04;
+  }
+  .journey-section {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 75px;
+    align-items: start;
+    padding-bottom: 100px;
+  }
+  .journey-intro {
+    position: sticky;
+    top: 135px;
+    padding-block: 20px;
+  }
+  .journey-stack {
+    position: relative;
+    padding-bottom: 25px;
+  }
+  .journey-card-wrapper {
+    position: sticky;
+    top: 125px;
+    margin-bottom: 140px;
+    perspective: 1000px;
+  }
+  .journey-card-wrapper:last-child {
+    margin-bottom: 0;
+  }
+  .journey-1 {
+    top: 141px;
+  }
+  .journey-2 {
+    top: 157px;
+  }
+  .journey-card {
+    position: relative;
+    min-height: 480px;
+    border-radius: 25px;
+    padding: 38px;
+    overflow: hidden;
+    transform-origin: center top;
+    box-shadow:
+      0 -4px 0 #f7f7f2,
+      0 18px 40px #10172908;
+  }
+  .journey-card.blue {
+    background: #315cff;
+    color: #fff;
+  }
+  .journey-card.lime {
+    background: #c7fa76;
+    color: #101729;
+  }
+  .journey-card.orange {
+    background: #ff784e;
+    color: #101729;
+  }
+  .journey-art {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    right: -80px;
+    bottom: -60px;
+    opacity: 0.18;
+    transform: rotate(-25deg);
+  }
+  .journey-art i {
+    display: block;
+    border: 18px solid currentColor;
+    border-radius: 50%;
+    position: absolute;
+    inset: 0;
+  }
+  .journey-art i:nth-child(2) {
+    inset: 30px;
+  }
+  .journey-art i:nth-child(3) {
+    inset: 60px;
+  }
+  .art-1 {
+    transform: rotate(25deg);
+    bottom: -80px;
+  }
+  .art-1 i {
+    border-radius: 18%;
+  }
+  .art-2 {
+    transform: rotate(45deg);
+  }
+  .art-2 i {
+    border-radius: 0;
+  }
+  .chapter-ring {
+    border: 32px solid #315cff;
+    width: 280px;
+    height: 280px;
+    border-radius: 30%;
+    transform: rotate(25deg);
+    box-shadow: 12px 18px 0 #b5c3ff;
+    animation: chapter-turn 12s ease-in-out infinite alternate;
+    position: absolute;
+  }
+  .chapter-art > span {
+    transform: translateZ(1px);
+    color: #fff;
+    text-shadow: 0 5px 0 #2042cd;
+  }
+  .page-orbit {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    right: -35px;
+    top: 0;
+    opacity: 0.24;
+    pointer-events: none;
+  }
+  .page-orbit i {
+    position: absolute;
+    inset: 20px;
+    border: 12px solid #315cff;
+    border-radius: 50%;
+    transform: rotateY(50deg) rotateX(35deg);
+  }
+  .page-orbit i:nth-child(2) {
+    transform: rotateY(-50deg) rotateX(55deg);
+    border-color: #ff6b3d;
+  }
+  .page-orbit i:nth-child(3) {
+    inset: 0;
+    border-width: 1px;
+    transform: rotateX(60deg);
+  }
+  .page-orbit > span {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    border-radius: 10px;
+    background: #315cff;
+    top: 40%;
+    left: 45%;
+    transform: rotate(25deg);
+  }
+  @keyframes portal-sway {
+    from {
+      transform: rotateY(42deg) rotateX(25deg) rotateZ(-35deg);
+    }
+    to {
+      transform: rotateY(-15deg) rotateX(35deg) rotateZ(0deg);
+    }
+  }
+  @keyframes portal-sway-two {
+    from {
+      transform: rotateY(-45deg) rotateX(55deg) rotateZ(35deg);
+    }
+    to {
+      transform: rotateY(-10deg) rotateX(65deg) rotateZ(-15deg);
+    }
+  }
+  @keyframes tag-float {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes scroll-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+  }
+  @keyframes marquee-travel {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes chapter-turn {
+    from {
+      transform: rotate(20deg);
+    }
+    to {
+      transform: rotate(-12deg);
+    }
+  }
+  @media (max-width: 1150px) {
+    .hero-layout {
+      min-height: 700px;
+    }
+    .hero-title {
+      font-size: 85px;
+      letter-spacing: -4.5px;
+    }
+    .hero-visual {
+      height: 530px;
+    }
+    .hero-canvas {
+      inset: 0 -10px;
+    }
+    .orbital-tag {
+      font-size: 13px;
+      padding: 12px 15px;
+    }
+    .journey-section {
+      gap: 45px;
+    }
+    .journey-card {
+      padding: 32px;
+    }
+  }
+  @media (max-width: 899px) {
+    .hero-layout {
+      grid-template-columns: 1fr;
+      padding-block: 55px 10px;
+    }
+    .hero-title {
+      font-size: 94px;
+      max-width: 650px;
+    }
+    .hero-art-column {
+      max-width: 620px;
+      width: 100%;
+      margin-inline: auto;
+    }
+    .hero-visual {
+      height: 480px;
+    }
+    .orbital-tag {
+      font-size: 15px;
+    }
+    .hero-bottom > span {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    .journey-section {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+    .journey-intro {
+      position: static;
+    }
+    .journey-intro h2 br {
+      display: none;
+    }
+    .journey-intro p {
+      max-width: 600px;
+    }
+    .journey-arrow {
+      display: none;
+    }
+    .journey-card {
+      min-height: 430px;
+    }
+    .journey-card-wrapper {
+      margin-bottom: 90px;
+      top: 100px;
+    }
+    .journey-1 {
+      top: 112px;
+    }
+    .journey-2 {
+      top: 124px;
+    }
+    .scroll-statement {
+      padding-block: 90px;
+    }
+    .scroll-statement h2 {
+      font-size: 51px;
+      letter-spacing: -1.7px;
+    }
+  }
+  @media (max-width: 599px) {
+    .hero-layout {
+      padding-top: 35px;
+    }
+    .hero-title {
+      font-size: clamp(50px, 15.5vw, 88px);
+      letter-spacing: -3.1px;
+      line-height: 1;
+      margin-top: 26px;
+    }
+    .hero-copy .eyebrow {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    .hero-visual {
+      height: 350px;
+      margin-top: 12px;
+    }
+    .fallback-ring {
+      border-width: 19px;
+    }
+    .ring-b {
+      border-width: 10px;
+    }
+    .ring-c {
+      border-width: 1px;
+    }
+    .orbital-tag {
+      font-size: 12px;
+      padding: 11px 12px;
+      gap: 8px;
+    }
+    .orbital-tag > span {
+      font-size: 22px;
+    }
+    .tag-one {
+      right: 0;
+      top: 19%;
+    }
+    .tag-two {
+      left: 0;
+      bottom: 15%;
+    }
+    .orbit-caption {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+    }
+    .orbit-coordinate {
+      display: none;
+    }
+    .hero-bottom {
+      padding-block: 20px;
+    }
+    .hero-bottom > span {
+      max-width: 150px;
+      font-size: 9px;
+      line-height: 1.8;
+    }
+    .scroll-prompt {
+      font-size: 12px;
+      gap: 10px;
+    }
+    .scroll-prompt > span {
+      width: 30px;
+      height: 30px;
+    }
+    .kinetic-strip {
+      padding-block: 18px;
+    }
+    .kinetic-track > span {
+      font-size: 22px;
+      gap: 25px;
+      padding-right: 25px;
+    }
+    .kinetic-track b {
+      font-size: 30px;
+    }
+    .scroll-statement {
+      padding-block: 65px;
+    }
+    .scroll-statement h2 {
+      font-size: 38px;
+      line-height: 1.2;
+      letter-spacing: -1.5px;
+      margin-top: 25px;
+    }
+    .journey-section {
+      padding-bottom: 65px;
+    }
+    .journey-card {
+      padding: 27px;
+      min-height: 445px;
+      border-radius: 22px;
+    }
+    .journey-card-wrapper {
+      margin-bottom: 65px;
+    }
+    .chapter-ring {
+      width: 210px;
+      height: 210px;
+      border-width: 24px;
+    }
+    .page-orbit {
+      width: 160px;
+      height: 160px;
+      opacity: 0.12;
+      right: -65px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition-duration: 0s !important;
+      scroll-behavior: auto !important;
+    }
+    .kinetic-track {
+      animation: none;
+    }
+    .kinetic-track > span:nth-child(2) {
+      display: none;
+    }
+    .kinetic-track > span {
+      white-space: normal;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding-inline: 18px;
+    }
+    .kinetic-track {
+      width: 100%;
+    }
+    .journey-card-wrapper {
+      position: relative;
+      top: auto;
+      margin-bottom: 25px;
+    }
+    .journey-intro {
+      position: static;
+    }
+  }
+}
+
+/* Step 02 CSS 3D sculpture: transform-only motion, independent of form state. */
+@layer components {
+  .auth-sculpture {
+    position: relative;
+    perspective: 800px;
+    overflow: clip;
+    pointer-events: none;
+    isolation: isolate;
+  }
+  .sculpture-orbit {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    left: 50%;
+    top: 50%;
+    margin: -115px;
+    transform-style: preserve-3d;
+    transform: rotateX(25deg) rotateZ(-24deg);
+    animation: sculpture-turn 24s linear infinite;
+  }
+  .sculpture-ring {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: 50%;
+    border: 30px solid #315cff;
+    box-shadow:
+      inset 4px 5px 2px #88a4ff,
+      inset -5px -5px 2px #122b91,
+      5px 8px 0 #132a80;
+  }
+  .sculpture-ring.ring-b {
+    inset: 23px;
+    border-width: 16px;
+    border-color: #c7fa76;
+    box-shadow:
+      inset 2px 2px 0 #eaffc6,
+      3px 4px 0 #5f8a29;
+    transform: rotateY(70deg);
+  }
+  .sculpture-ring.ring-c {
+    inset: -13px;
+    border-width: 2px;
+    border-color: #9cacc7;
+    box-shadow: none;
+    transform: rotateX(70deg);
+    opacity: 0.55;
+  }
+  .sculpture-core {
+    position: absolute;
+    inset: 65px;
+    background: linear-gradient(135deg, #ffd1b9, #ff6b3d);
+    border-radius: 23px;
+    display: grid;
+    place-items: center;
+    color: #0c1526;
+    font-size: 65px;
+    font-weight: 700;
+    transform: translateZ(25px);
+    box-shadow: 4px 5px 0 #a43f20;
+  }
+  .sculpture-moon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -25px;
+    right: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #7185a8);
+    transform: translateZ(25px);
+  }
+  .sculpture-ground {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 10%;
+    height: 30px;
+    border-radius: 50%;
+    background: #020713;
+    filter: blur(20px);
+    opacity: 0.65;
+  }
+  .sculpture-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.18em;
+    color: #c0cadd;
+    font-size: 10px;
+  }
+  .compact .sculpture-caption {
+    display: none;
+  }
+  .auth-sculpture[data-active="false"] .sculpture-orbit {
+    animation-play-state: paused;
+  }
+  @keyframes sculpture-turn {
+    0% {
+      transform: rotateX(25deg) rotateY(0deg) rotateZ(-24deg);
+    }
+    50% {
+      transform: rotateX(-15deg) rotateY(180deg) rotateZ(-12deg);
+    }
+    100% {
+      transform: rotateX(25deg) rotateY(360deg) rotateZ(-24deg);
+    }
+  }
+  @media (max-width: 599px) {
+    .sculpture-orbit {
+      width: 190px;
+      height: 190px;
+      margin: -95px;
+    }
+    .sculpture-core {
+      inset: 53px;
+      font-size: 50px;
+      border-radius: 17px;
+    }
+    .sculpture-ring {
+      border-width: 24px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sculpture-orbit {
+      animation: none;
+    }
+  }
+}
+
+/* Step 03: transform-only floating profile cards; no additional WebGL or assets. */
+@layer components {
+  .seeker-sculpture {
+    height: 230px;
+    perspective: 850px;
+    position: relative;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .seeker-card-orbit {
+    width: 150px;
+    height: 180px;
+    position: absolute;
+    top: 25px;
+    left: calc(50% - 75px);
+    transform-style: preserve-3d;
+    transform: rotateX(14deg) rotateY(-25deg) rotateZ(10deg);
+    animation: seeker-card-float 12s ease-in-out infinite;
+  }
+  .seeker-glass-card {
+    display: block;
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    border: 1px solid #899fcf;
+    box-shadow: 7px 10px 16px #14223725;
+  }
+  .seeker-glass-card.card-back {
+    background: #ffb49b;
+    transform: translateX(22px) translateY(-10px) translateZ(-40px)
+      rotate(10deg);
+  }
+  .seeker-glass-card.card-middle {
+    background: #c7fa76;
+    transform: translateX(-12px) translateY(8px) translateZ(-20px)
+      rotate(-10deg);
+  }
+  .seeker-glass-card.card-front {
+    background: linear-gradient(135deg, #4974ff, #203dc9);
+    color: #fff;
+    padding: 18px;
+    transform: translateZ(10px);
+  }
+  .seeker-glass-card.card-front > span {
+    font-size: 6px;
+    letter-spacing: 0.12em;
+    display: block;
+  }
+  .seeker-glass-card.card-front > strong {
+    font-size: 70px;
+    line-height: 1.15;
+    display: block;
+    color: #c7fa76;
+  }
+  .seeker-glass-card.card-front > i {
+    height: 4px;
+    background: #a4baff;
+    display: block;
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+  .seeker-glass-card.card-front > i:last-child {
+    width: 65%;
+  }
+  .seeker-orbit-dot {
+    position: absolute;
+    right: -20px;
+    top: 20px;
+    background: #ff6b3d;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    transform: translateZ(30px);
+    box-shadow: inset -4px -3px 2px #b83913;
+  }
+  .seeker-sculpture[data-active="false"] .seeker-card-orbit {
+    animation-play-state: paused;
+  }
+  @keyframes seeker-card-float {
+    0%,
+    100% {
+      transform: rotateX(14deg) rotateY(-25deg) rotateZ(10deg) translateY(0);
+    }
+    50% {
+      transform: rotateX(-6deg) rotateY(12deg) rotateZ(-5deg) translateY(12px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .seeker-card-orbit {
+      animation: none;
+    }
+  }
+}
+
+/* Step 04 opportunity sculpture: one transform-only scene, paused offscreen. */
+@layer components {
+  .opportunity-orbit {
+    position: relative;
+    height: 330px;
+    min-width: 0;
+    perspective: 950px;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .opportunity-stack {
+    position: absolute;
+    width: 205px;
+    height: 230px;
+    top: 45px;
+    left: calc(50% - 102px);
+    transform-style: preserve-3d;
+    transform: rotateX(15deg) rotateY(-24deg) rotateZ(10deg);
+    animation: opportunity-drift 15s ease-in-out infinite;
+    z-index: 1;
+  }
+  .opportunity-tile {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 25px;
+    border: 1px solid #ffffff60;
+    padding: 26px;
+    font-size: 25px;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    box-shadow: 8px 12px 0 #08102550;
+    color: #0c1526;
+  }
+  .tile-peach {
+    background: linear-gradient(135deg, #ffd0b9, #ff906e);
+    transform: translateX(37px) translateY(-18px) translateZ(-55px)
+      rotate(12deg);
+  }
+  .tile-blue {
+    background: linear-gradient(135deg, #6e93ff, #315cff);
+    color: #fff;
+    transform: translateX(-24px) translateY(6px) translateZ(-25px)
+      rotate(-10deg);
+  }
+  .tile-lime {
+    background: linear-gradient(135deg, #edffd5, #b5ed62);
+    transform: translateZ(20px);
+  }
+  .tile-lime i {
+    font-size: 80px;
+    line-height: 1;
+    font-style: normal;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: #315cff;
+  }
+  .opportunity-track {
+    position: absolute;
+    width: 290px;
+    height: 100px;
+    border: 1px solid #71819e;
+    border-radius: 50%;
+    top: 135px;
+    left: calc(50% - 145px);
+    transform: rotate(-32deg);
+    opacity: 0.6;
+  }
+  .opportunity-orbit[data-active="false"] .opportunity-stack {
+    animation-play-state: paused;
+  }
+  @keyframes opportunity-drift {
+    0%,
+    100% {
+      transform: rotateX(15deg) rotateY(-24deg) rotateZ(10deg) translateY(0);
+    }
+    50% {
+      transform: rotateX(-5deg) rotateY(18deg) rotateZ(-7deg) translateY(-12px);
+    }
+  }
+  @media (max-width: 899px) {
+    .opportunity-stack {
+      width: 165px;
+      height: 200px;
+      left: calc(50% - 82px);
+      top: 55px;
+    }
+    .opportunity-tile {
+      padding: 22px;
+      font-size: 20px;
+    }
+    .tile-lime i {
+      font-size: 60px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .opportunity-stack {
+      animation: none;
+    }
+  }
+}
+
+/* Step 05: geometric CSS building sculpture, paused outside the viewport/hidden tabs. */
+@layer components {
+  .employer-sculpture {
+    height: 245px;
+    position: relative;
+    perspective: 800px;
+    overflow: clip;
+    pointer-events: none;
+  }
+  .employer-tower {
+    position: absolute;
+    top: 45px;
+    left: calc(50% - 75px);
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transform: rotateX(15deg) rotateY(-25deg) rotateZ(-10deg);
+    animation: employer-rise 13s ease-in-out infinite;
+  }
+  .tower-block {
+    display: block;
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #91aaff, #315cff);
+    box-shadow: 8px 8px 0 #1839af;
+  }
+  .tower-one {
+    left: -22px;
+    top: 45px;
+    transform: translateZ(-15px);
+    background: linear-gradient(135deg, #dcffad, #b0e65e);
+    box-shadow: 8px 8px 0 #658e2c;
+  }
+  .tower-two {
+    left: 64px;
+    top: 20px;
+    transform: translateZ(-5px);
+    background: linear-gradient(135deg, #ffccb3, #ff9167);
+    box-shadow: 8px 8px 0 #b54b23;
+  }
+  .tower-three {
+    left: 13px;
+    top: -26px;
+    transform: translateZ(25px);
+  }
+  .employer-tower > span {
+    position: absolute;
+    left: 27px;
+    top: -15px;
+    color: #fff;
+    font-size: 66px;
+    line-height: 1;
+    transform: translateZ(30px);
+  }
+  .employer-tower > b {
+    position: absolute;
+    bottom: -42px;
+    left: -25px;
+    width: 220px;
+    text-align: center;
+    font-size: 7px;
+    letter-spacing: 0.16em;
+    color: #7b8da8;
+    transform: translateZ(-10px);
+  }
+  .employer-sculpture[data-active="false"] .employer-tower {
+    animation-play-state: paused;
+  }
+  @keyframes employer-rise {
+    0%,
+    100% {
+      transform: rotateX(15deg) rotateY(-25deg) rotateZ(-10deg) translateY(0);
+    }
+    50% {
+      transform: rotateX(-5deg) rotateY(15deg) rotateZ(5deg) translateY(12px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .employer-tower {
+      animation: none;
+    }
+  }
+}
+
+/* Step06: CSS-only 3D book, isolated from ordinary page/form code. */
+@layer components {
+  .knowledge-sculpture {
+    width: 100%;
+    height: 300px;
+    perspective: 1000px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  .knowledge-orbit {
+    width: 210px;
+    height: 250px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: knowledge-drift 8s ease-in-out infinite;
+  }
+  .knowledge-book {
+    width: 155px;
+    height: 205px;
+    position: absolute;
+    left: 27px;
+    top: 10px;
+    transform-style: preserve-3d;
+    transform: rotateX(16deg) rotateY(-28deg) rotateZ(-9deg);
+  }
+  .book-back,
+  .book-cover,
+  .book-page {
+    position: absolute;
+    inset: 0;
+    border-radius: 9px 18px 18px 9px;
+    transform-style: preserve-3d;
+    box-shadow: 6px 8px 0 rgba(13, 30, 40, 0.1);
+  }
+  .book-back {
+    background: #203ec4;
+    transform: translateZ(-22px);
+  }
+  .book-page {
+    background: repeating-linear-gradient(
+      90deg,
+      #fffdf0 0 2px,
+      #e6e5d3 2px 3px
+    );
+    border: 1px solid #d9dcca;
+    transform-origin: left center;
+  }
+  .book-page.page-one {
+    transform: translateZ(-15px) rotateY(-3deg);
+  }
+  .book-page.page-two {
+    transform: translateZ(-9px) rotateY(-6deg);
+  }
+  .book-page.page-three {
+    transform: translateZ(-3px) rotateY(-9deg);
+  }
+  .book-cover {
+    background: #718aff;
+    color: #101a2f;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    transform-origin: left center;
+    transform: translateZ(5px) rotateY(-15deg);
+    border-left: 8px solid #4562e4;
+    box-shadow: 9px 12px 0 rgba(13, 30, 40, 0.13);
+  }
+  .book-cover > span {
+    font-size: 44px;
+    line-height: 1;
+    color: #fffef9;
+  }
+  .book-cover > b {
+    font-size: 30px;
+    letter-spacing: -0.065em;
+    line-height: 0.98;
+    margin-top: auto;
+    font-weight: 850;
+  }
+  .book-cover > small {
+    font-size: 7px;
+    letter-spacing: 0.13em;
+    margin-top: 13px;
+  }
+  .knowledge-dot {
+    position: absolute;
+    border-radius: 19px;
+    box-shadow: 6px 8px 0 rgba(13, 30, 40, 0.13);
+  }
+  .knowledge-dot.dot-one {
+    width: 50px;
+    height: 50px;
+    background: #c7fa76;
+    right: -16px;
+    top: 30px;
+    transform: translateZ(35px) rotate(15deg);
+  }
+  .knowledge-dot.dot-two {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ffae88;
+    left: -10px;
+    bottom: 40px;
+    transform: translateZ(25px);
+  }
+  .knowledge-stamp {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    color: #596477;
+  }
+  .knowledge-sculpture[data-active="false"] .knowledge-orbit {
+    animation-play-state: paused;
+  }
+  @keyframes knowledge-drift {
+    0%,
+    100% {
+      transform: translateY(0) rotateZ(-2deg);
+    }
+    50% {
+      transform: translateY(-15px) rotateZ(4deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .knowledge-orbit {
+      animation: none;
+    }
+  }
+}
+
+/* Step07: procedural 3D connection rings, with no texture/model payload. */
+@layer components {
+  .growth-orbit {
+    width: 100%;
+    height: 290px;
+    display: grid;
+    place-items: center;
+    perspective: 950px;
+    pointer-events: none;
+  }
+  .growth-assembly {
+    width: 205px;
+    height: 245px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: growth-drift 9s ease-in-out infinite;
+  }
+  .growth-ring {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: 7px;
+    top: 15px;
+    border: 22px solid #748cff;
+    border-radius: 50%;
+    box-shadow:
+      inset 4px 4px 0 #4864db,
+      6px 8px 0 #3650be;
+    transform: rotateY(42deg) rotateX(23deg) rotateZ(-20deg);
+  }
+  .growth-ring.ring-two {
+    border-color: #c7fa76;
+    box-shadow:
+      inset 4px 4px 0 #a4cf59,
+      6px 8px 0 #86ad40;
+    transform: translateZ(22px) rotateY(-42deg) rotateX(-23deg) rotateZ(20deg);
+  }
+  .growth-core {
+    position: absolute;
+    left: 64px;
+    top: 70px;
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+    background: #ffb08a;
+    color: #142033;
+    border-radius: 22px;
+    font-size: 54px;
+    box-shadow: 7px 8px 0 #d98c66;
+    transform: translateZ(70px) rotate(-8deg);
+  }
+  .growth-assembly > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #667181;
+  }
+  .growth-orbit[data-active="false"] .growth-assembly {
+    animation-play-state: paused;
+  }
+  @keyframes growth-drift {
+    0%,
+    100% {
+      transform: translateY(0) rotateZ(-4deg);
+    }
+    50% {
+      transform: translateY(-14px) rotateZ(6deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .growth-assembly {
+      animation: none;
+    }
+  }
+}
+
+/* Step08: transform-only CSS3D assistant. Pauses offscreen/closed and obeys reduced motion. */
+.assistant-orb {
+  width: 48px;
+  height: 54px;
+  perspective: 500px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+.assistant-orb-assembly {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: assistant-orbit 14s linear infinite;
+  animation-play-state: paused;
+}
+.assistant-orb[data-active="true"] .assistant-orb-assembly {
+  animation-play-state: running;
+}
+.assistant-orb-assembly i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #315cff;
+  border-radius: 35%;
+  box-shadow: inset 0 0 14px #315cff15;
+}
+.assistant-orb-assembly i:nth-child(1) {
+  transform: rotateY(65deg) rotateX(30deg);
+}
+.assistant-orb-assembly i:nth-child(2) {
+  transform: rotateX(65deg) rotateZ(30deg);
+  border-color: #719e30;
+}
+.assistant-orb-assembly i:nth-child(3) {
+  transform: rotateY(-35deg) rotateX(-30deg);
+  border-color: #7e93ee;
+}
+.assistant-orb-assembly b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #315cff;
+  font-size: 23px;
+  transform: translateZ(5px);
+}
+.assistant-orb-large {
+  width: 180px;
+  height: 200px;
+}
+.assistant-orb-large .assistant-orb-assembly {
+  width: 110px;
+  height: 110px;
+}
+.assistant-orb-large .assistant-orb-assembly i {
+  border-width: 3px;
+}
+.assistant-orb-large .assistant-orb-assembly b {
+  font-size: 62px;
+}
+@keyframes assistant-orbit {
+  from {
+    transform: rotateX(-15deg) rotateY(0);
+  }
+  to {
+    transform: rotateX(-15deg) rotateY(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-orb-assembly {
+    animation: none;
+    transform: rotateX(-15deg) rotateY(25deg);
+  }
+}

@@ -1,0 +1,290 @@
+import { lazy, Suspense } from "react";
+// React Router maps routes; lazy/Suspense loads secondary page code only on demand.
+import { Routes, Route, Navigate } from "react-router-dom";
+import MainLayout from "../components/layout/MainLayout";
+import Home from "../pages/common/Home";
+import Loading from "../components/ui/Loading";
+import ProtectedRoute from "./ProtectedRoute";
+import GuestRoute from "./GuestRoute";
+import useAuth from "../hooks/useAuth";
+import { roleHome } from "../data/roles";
+const About = lazy(() => import("../pages/common/About"));
+const Contact = lazy(() => import("../pages/common/Contact"));
+const PublicJobs = lazy(() => import("../pages/common/PublicJobs"));
+const PublicCourses = lazy(() => import("../pages/common/PublicCourses"));
+const PublicSessions = lazy(() => import("../pages/common/PublicSessions"));
+const NotFound = lazy(() => import("../pages/common/NotFound"));
+const Login = lazy(() => import("../pages/auth/Login"));
+const Signup = lazy(() => import("../pages/auth/Signup"));
+const VerifyEmail = lazy(() => import("../pages/auth/VerifyEmail"));
+const BecomeTrainer = lazy(() => import("../pages/auth/BecomeTrainer"));
+const DashboardLayout = lazy(
+  () => import("../components/layout/DashboardLayout"),
+);
+const DashboardHome = lazy(() => import("../pages/dashboard/DashboardHome"));
+const Account = lazy(() => import("../pages/dashboard/Account"));
+const SeekerLayout = lazy(() => import("../components/layout/SeekerLayout"));
+const Profile = lazy(() => import("../pages/seeker/Profile"));
+const Education = lazy(() => import("../pages/seeker/Education"));
+const Experience = lazy(() => import("../pages/seeker/Experience"));
+const Skills = lazy(() => import("../pages/seeker/Skills"));
+const Documents = lazy(() => import("../pages/seeker/Documents"));
+const ResumeInsights = lazy(() => import("../pages/seeker/ResumeInsights"));
+const JobDetails = lazy(() => import("../pages/common/JobDetails"));
+const ApplyJob = lazy(() => import("../pages/seeker/ApplyJob"));
+const MyApplications = lazy(() => import("../pages/seeker/MyApplications"));
+const ApplicationDetails = lazy(
+  () => import("../pages/seeker/ApplicationDetails"),
+);
+const EmployerLayout = lazy(
+  () => import("../components/layout/EmployerLayout"),
+);
+const CompanyLayout = lazy(() => import("../components/layout/CompanyLayout"));
+const Companies = lazy(() => import("../pages/employer/Companies"));
+const CompanyProfile = lazy(() => import("../pages/employer/CompanyProfile"));
+const Team = lazy(() => import("../pages/employer/Team"));
+const CompanyJobs = lazy(() => import("../pages/employer/CompanyJobs"));
+const MyPostings = lazy(() => import("../pages/employer/MyPostings"));
+const JobEditor = lazy(() => import("../pages/employer/JobEditor"));
+const Candidates = lazy(() => import("../pages/employer/Candidates"));
+const CourseDetails = lazy(() => import("../pages/common/CourseDetails"));
+const TrainerLayout = lazy(() => import("../components/layout/TrainerLayout"));
+const TrainerCourseLayout = lazy(
+  () => import("../components/layout/TrainerCourseLayout"),
+);
+const TrainerProfile = lazy(() => import("../pages/trainer/TrainerProfile"));
+const TrainerCourses = lazy(() => import("../pages/trainer/MyCourses"));
+const CourseEditor = lazy(() => import("../pages/trainer/CourseEditor"));
+const CourseMaterials = lazy(() => import("../pages/trainer/CourseMaterials"));
+const MaterialResources = lazy(
+  () => import("../pages/trainer/MaterialResources"),
+);
+const CourseCategories = lazy(
+  () => import("../pages/trainer/CourseCategories"),
+);
+const MaterialsHome = lazy(() => import("../pages/trainer/MaterialsHome"));
+const MyLearning = lazy(() => import("../pages/learning/MyLearning"));
+const EnrollmentDetails = lazy(
+  () => import("../pages/learning/EnrollmentDetails"),
+);
+const LearningResources = lazy(
+  () => import("../pages/learning/LearningResources"),
+);
+const EnrollCourse = lazy(() => import("../pages/learning/EnrollCourse"));
+const MySessions = lazy(() => import("../pages/learning/MySessions"));
+const JoinSession = lazy(() => import("../pages/learning/JoinSession"));
+const SessionDetails = lazy(() => import("../pages/common/SessionDetails"));
+const Students = lazy(() => import("../pages/trainer/Students"));
+const MentorshipSessions = lazy(
+  () => import("../pages/trainer/MentorshipSessions"),
+);
+const SessionEditor = lazy(() => import("../pages/trainer/SessionEditor"));
+const SessionParticipants = lazy(
+  () => import("../pages/trainer/SessionParticipants"),
+);
+const TrainerSessionLayout = lazy(
+  () => import("../components/layout/TrainerSessionLayout"),
+);
+const AdminLayout = lazy(() => import("../components/layout/AdminLayout"));
+const AdminOverview = lazy(() => import("../pages/admin/AdminOverview"));
+const JobCategories = lazy(() => import("../pages/admin/JobCategories"));
+const ChatbotLogs = lazy(() => import("../pages/admin/ChatbotLogs"));
+function publicPage(page) {
+  return (
+    <MainLayout>
+      <Suspense fallback={<Loading label="Opening your next chapter…" />}>
+        {page}
+      </Suspense>
+    </MainLayout>
+  );
+}
+function deferred(page) {
+  return (
+    <Suspense fallback={<Loading label="Opening your workspace…" />}>
+      {page}
+    </Suspense>
+  );
+}
+export default function AppRoutes() {
+  const { activeRole } = useAuth();
+  return (
+    <Routes>
+      <Route path="/" element={publicPage(<Home />)} />
+      <Route path="/about" element={publicPage(<About />)} />
+      <Route path="/contact" element={publicPage(<Contact />)} />
+      <Route path="/jobs" element={publicPage(<PublicJobs />)} />
+      <Route path="/jobs/:jobId" element={publicPage(<JobDetails />)} />
+      <Route path="/courses" element={publicPage(<PublicCourses />)} />
+      <Route
+        path="/courses/:courseId"
+        element={publicPage(<CourseDetails />)}
+      />
+      <Route path="/sessions" element={publicPage(<PublicSessions />)} />
+      <Route
+        path="/sessions/:sessionId"
+        element={publicPage(<SessionDetails />)}
+      />
+      <Route element={<GuestRoute />}>
+        <Route path="/login" element={deferred(<Login />)} />
+        <Route path="/signup" element={deferred(<Signup />)} />
+        <Route path="/verify-email" element={deferred(<VerifyEmail />)} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={deferred(<DashboardLayout />)}>
+          <Route
+            index
+            element={<Navigate to={roleHome(activeRole)} replace />}
+          />
+          <Route path="account" element={deferred(<Account />)} />
+          <Route path="become-trainer" element={deferred(<BecomeTrainer />)} />
+          <Route element={deferred(<SeekerLayout />)}>
+            <Route
+              path="job-seeker/learning"
+              element={deferred(<MyLearning />)}
+            />
+            <Route
+              path="job-seeker/learning/:enrollmentId"
+              element={deferred(<EnrollmentDetails />)}
+            />
+            <Route
+              path="job-seeker/learning/:enrollmentId/materials/:materialId"
+              element={deferred(<LearningResources />)}
+            />
+            <Route
+              path="job-seeker/courses/:courseId/enroll"
+              element={deferred(<EnrollCourse />)}
+            />
+            <Route
+              path="job-seeker/sessions"
+              element={deferred(<MySessions />)}
+            />
+            <Route
+              path="job-seeker/sessions/:sessionId/join"
+              element={deferred(<JoinSession />)}
+            />
+            <Route
+              path="job-seeker/apply/:jobId"
+              element={deferred(<ApplyJob />)}
+            />
+            <Route
+              path="job-seeker/applications"
+              element={deferred(<MyApplications />)}
+            />
+            <Route
+              path="job-seeker/applications/:applicationId"
+              element={deferred(<ApplicationDetails />)}
+            />
+            <Route path="job-seeker/profile" element={deferred(<Profile />)} />
+            <Route
+              path="job-seeker/education"
+              element={deferred(<Education />)}
+            />
+            <Route
+              path="job-seeker/experience"
+              element={deferred(<Experience />)}
+            />
+            <Route path="job-seeker/skills" element={deferred(<Skills />)} />
+            <Route
+              path="job-seeker/documents"
+              element={deferred(<Documents />)}
+            />
+            <Route
+              path="job-seeker/resume-insights"
+              element={deferred(<ResumeInsights />)}
+            />
+          </Route>
+          <Route element={deferred(<EmployerLayout />)}>
+            <Route
+              path="employer/companies"
+              element={deferred(<Companies />)}
+            />
+            <Route path="employer/jobs" element={deferred(<MyPostings />)} />
+            <Route
+              path="employer/candidates"
+              element={deferred(<Candidates />)}
+            />
+            <Route
+              path="employer/companies/:companyId"
+              element={deferred(<CompanyLayout />)}
+            >
+              <Route index element={deferred(<CompanyProfile />)} />
+              <Route path="team" element={deferred(<Team />)} />
+              <Route path="jobs" element={deferred(<CompanyJobs />)} />
+              <Route path="jobs/new" element={deferred(<JobEditor />)} />
+              <Route
+                path="jobs/:jobId/edit"
+                element={deferred(<JobEditor />)}
+              />
+              <Route
+                path="jobs/:jobId/candidates"
+                element={deferred(<Candidates />)}
+              />
+            </Route>
+          </Route>
+          <Route element={deferred(<TrainerLayout />)}>
+            <Route path="trainer/students" element={deferred(<Students />)} />
+            <Route
+              path="trainer/sessions"
+              element={deferred(<MentorshipSessions />)}
+            />
+            <Route
+              path="trainer/sessions/new"
+              element={deferred(<SessionEditor />)}
+            />
+            <Route
+              path="trainer/sessions/:sessionId"
+              element={deferred(<TrainerSessionLayout />)}
+            >
+              <Route index element={<Navigate to="edit" replace />} />
+              <Route path="edit" element={deferred(<SessionEditor />)} />
+              <Route
+                path="participants"
+                element={deferred(<SessionParticipants />)}
+              />
+            </Route>
+            <Route
+              path="trainer/profile"
+              element={deferred(<TrainerProfile />)}
+            />
+            <Route
+              path="trainer/categories"
+              element={deferred(<CourseCategories />)}
+            />
+            <Route
+              path="trainer/courses"
+              element={deferred(<TrainerCourses />)}
+            />
+            <Route
+              path="trainer/materials"
+              element={deferred(<MaterialsHome />)}
+            />
+            <Route
+              path="trainer/courses/new"
+              element={deferred(<CourseEditor />)}
+            />
+            <Route
+              path="trainer/courses/:courseId"
+              element={deferred(<TrainerCourseLayout />)}
+            >
+              <Route index element={<Navigate to="edit" replace />} />
+              <Route path="edit" element={deferred(<CourseEditor />)} />
+              <Route path="students" element={deferred(<Students />)} />
+              <Route path="materials" element={deferred(<CourseMaterials />)} />
+              <Route
+                path="materials/:materialId"
+                element={deferred(<MaterialResources />)}
+              />
+            </Route>
+          </Route>
+          <Route path="admin" element={deferred(<AdminLayout />)}>
+            <Route index element={deferred(<AdminOverview />)} />
+            <Route path="categories" element={deferred(<JobCategories />)} />
+            <Route path="chatbot-logs" element={deferred(<ChatbotLogs />)} />
+          </Route>
+          <Route path=":rolePath" element={deferred(<DashboardHome />)} />
+        </Route>
+      </Route>
+      <Route path="*" element={publicPage(<NotFound />)} />
+    </Routes>
+  );
+}

@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local frontend environment
+.env
+.env.*
+!.env.example
+STEP_01_GUIDE.md
+STEP_02_GUIDE.md
+PROJECT_PROGRESS.md

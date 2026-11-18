@@ -1,0 +1,105 @@
+/* Final shared polish; forms keep their field layout and readable input sizes. */
+:where(main, .dashboard-main, .dashboard-body, .page-container) {
+  min-width: 0;
+}
+:where(.company-context, .trainer-course-context) :is(h1, h2, p) {
+  overflow-wrap: anywhere;
+}
+.overview-metrics,
+.employer-metrics,
+.trainer-metrics {
+  gap: 14px;
+}
+.overview-metrics > a,
+.employer-metrics > a,
+.trainer-metrics > a {
+  border-radius: 17px;
+  padding: 21px;
+  min-height: 0;
+}
+.overview-metrics strong,
+.employer-metrics strong,
+.trainer-metrics strong {
+  font-size: 34px;
+  line-height: 1.15;
+  margin: 12px 0;
+}
+.overview-metrics a > span,
+.employer-metrics a > span,
+.trainer-metrics a > span {
+  font-size: 13px;
+}
+.admin-workspace .admin-overview-card {
+  padding: 26px;
+  border-radius: 20px;
+}
+.admin-workspace .admin-overview-card h2 {
+  font-size: 28px;
+}
+.admin-workspace .admin-overview-card p {
+  font-size: 15px;
+}
+.app-recovery {
+  max-width: 780px;
+  padding: clamp(28px, 8vw, 90px) 24px;
+  margin: auto;
+  color: #14243c;
+  min-height: 100dvh;
+}
+.app-recovery > .brand {
+  display: inline-flex;
+  margin-bottom: 70px;
+}
+.app-recovery > .eyebrow {
+  display: block;
+  color: #5e7191;
+}
+.app-recovery h1 {
+  font-size: clamp(43px, 8vw, 78px);
+  letter-spacing: -2px;
+  line-height: 1.08;
+  margin: 24px 0;
+}
+.app-recovery h1 em {
+  color: #315cff;
+  font-family: Georgia, serif;
+  font-weight: 500;
+}
+.app-recovery p {
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 560px;
+  color: #5b6c83;
+}
+.app-recovery > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-top: 32px;
+}
+.app-recovery button {
+  font: inherit;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 30px;
+  background: #315cff;
+  color: white;
+  cursor: pointer;
+}
+.app-recovery > div > a {
+  font-weight: 650;
+  color: #315cff;
+}
+@media (max-width: 600px) {
+  .overview-metrics > a,
+  .employer-metrics > a,
+  .trainer-metrics > a {
+    padding: 17px;
+  }
+  .overview-metrics strong,
+  .employer-metrics strong,
+  .trainer-metrics strong {
+    font-size: 30px;
+  }
+}

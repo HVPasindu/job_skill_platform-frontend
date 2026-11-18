@@ -1,0 +1,710 @@
+/* Shared collection shell. Ordinary pages keep their existing cards and actions. */
+.data-collection {
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  container-type: inline-size;
+}
+.collection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0 16px;
+}
+.collection-label {
+  font-size: 13px;
+  font-weight: 650;
+  color: #5c6c83;
+  letter-spacing: 0.1px;
+}
+.collection-toolbar .MuiToggleButtonGroup-root {
+  padding: 3px;
+  background: #e9edf5;
+  border: 1px solid #d8dfeb;
+  border-radius: 12px;
+  gap: 3px;
+}
+.collection-toolbar .MuiToggleButton-root {
+  border: 0;
+  border-radius: 9px !important;
+  padding: 6px 11px;
+  gap: 7px;
+  min-height: 36px;
+  color: #5c6c83;
+  text-transform: none;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.collection-toolbar .MuiToggleButton-root.Mui-selected {
+  background: #fffef9;
+  color: #234dda;
+  box-shadow: 0 2px 5px #13275012;
+}
+.collection-toolbar .MuiToggleButton-root.Mui-selected:hover {
+  background: #fff;
+}
+.collection-toolbar .MuiToggleButton-root:focus-visible {
+  outline: 2px solid #315cff;
+  outline-offset: 2px;
+}
+/* Auto-fill keeps even a single record compact instead of stretching it across the page. */
+.data-collection .collection-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.data-collection[data-view="list"] .collection-items {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+.data-collection .collection-items > :is(article, a),
+.data-collection .job-skill-list > div {
+  min-width: 0;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #dce3ed;
+  box-shadow: 0 2px 4px #15315c03;
+}
+.data-collection .collection-items > :is(article, a):hover {
+  border-color: #b5c4e7;
+}
+.data-collection .collection-items :is(h2, h3) {
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  margin: 10px 0;
+  overflow-wrap: anywhere;
+}
+.data-collection .collection-items p {
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 7px 0;
+  overflow-wrap: anywhere;
+}
+.data-collection .collection-items small {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.data-collection .collection-items :is(a, button) {
+  overflow-wrap: anywhere;
+}
+.data-collection .collection-items > :is(article, a) > * {
+  min-width: 0;
+}
+.data-collection .collection-items .eyebrow {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.data-collection .collection-items .MuiButton-root {
+  padding: 8px 13px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  min-height: 36px;
+}
+/* Jobs: smaller cards; List uses a company / role / salary row on wide screens. */
+.data-collection .job-card {
+  min-height: 0;
+}
+.data-collection .job-card-top {
+  gap: 9px;
+}
+.data-collection .job-company-mark {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  border-radius: 11px;
+  flex-shrink: 0;
+}
+.data-collection .job-category {
+  font-size: 10px;
+}
+.data-collection .job-company-name {
+  margin: 13px 0 5px;
+  font-size: 12px;
+}
+.data-collection .job-card-location {
+  font-size: 13px;
+  margin: 8px 0;
+}
+.data-collection .job-tags {
+  gap: 5px;
+  margin: 12px 0;
+}
+.data-collection .job-tags span {
+  font-size: 10px;
+  padding: 5px 8px;
+}
+.data-collection .job-card-bottom {
+  padding-top: 14px;
+  gap: 12px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+.data-collection .job-card-bottom strong {
+  font-size: 13px;
+}
+.data-collection .employer-job-actions {
+  gap: 12px;
+  padding-top: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.data-collection .employer-job-card > strong {
+  display: block;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.data-collection[data-view="list"] .job-card {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.7fr) minmax(0, 1.5fr) minmax(
+      150px,
+      0.8fr
+    );
+  column-gap: 24px;
+  row-gap: 3px;
+  align-items: start;
+}
+.data-collection[data-view="list"] .job-card-top {
+  grid-column: 1;
+  grid-row: 1;
+  justify-content: flex-start;
+}
+.data-collection[data-view="list"] .job-card-top > span:last-child {
+  display: none;
+}
+.data-collection[data-view="list"] .job-company-name {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  margin: 4px 0 0;
+}
+.data-collection[data-view="list"] .job-card h2 {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+.data-collection[data-view="list"] .job-card-location {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+}
+.data-collection[data-view="list"] .job-tags {
+  grid-column: 2;
+  grid-row: 3;
+  margin: 6px 0 0;
+}
+.data-collection[data-view="list"] .job-card-bottom {
+  grid-column: 3;
+  grid-row: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  border-top: 0;
+  border-left: 1px solid #dce3ed;
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+/* Course/document covers become compact thumbnails. Actual images remain lazy loaded. */
+.data-collection .course-card {
+  padding: 0 !important;
+}
+.data-collection .course-card-image {
+  height: 132px;
+  flex-shrink: 0;
+}
+.data-collection .course-art {
+  padding: 18px;
+}
+.data-collection .course-art > span {
+  font-size: 45px;
+}
+.data-collection .course-art > b {
+  font-size: 12px;
+}
+.data-collection .course-card-body {
+  padding: 18px;
+}
+.data-collection .course-card-meta {
+  font-size: 10px;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.data-collection .course-card h2 {
+  margin: 12px 0 8px;
+}
+.data-collection .course-card-foot {
+  padding-top: 12px;
+  gap: 5px;
+}
+.data-collection .course-card-actions {
+  gap: 12px;
+  padding-top: 13px;
+  margin-top: 14px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.data-collection .document-card {
+  padding: 0 !important;
+}
+.data-collection .document-cover {
+  height: 115px;
+  min-height: 0;
+  padding: 18px;
+}
+.data-collection .document-cover strong {
+  font-size: 26px;
+  line-height: 1.1;
+}
+.data-collection .document-cover-arrow {
+  font-size: 34px;
+  bottom: 15px;
+  right: 18px;
+}
+.data-collection .document-details {
+  padding: 18px;
+}
+.data-collection .document-badges {
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.data-collection .document-badges span {
+  font-size: 10px;
+  padding: 5px 8px;
+}
+.data-collection .document-actions {
+  margin-top: 14px;
+  padding-top: 12px;
+  gap: 12px;
+  font-size: 12px;
+}
+.data-collection[data-view="list"] .course-card {
+  display: grid;
+  grid-template-columns: 164px minmax(0, 1fr);
+  align-items: stretch;
+}
+.data-collection[data-view="list"] .course-card-image {
+  height: 100%;
+  min-height: 148px;
+}
+.data-collection[data-view="list"] .course-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 22px;
+}
+.data-collection[data-view="list"] .course-card h2 {
+  margin: 7px 0;
+}
+.data-collection[data-view="list"] .course-card-foot {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding-top: 9px;
+}
+.data-collection[data-view="list"] .course-card-actions {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.data-collection[data-view="list"] .document-card {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+.data-collection[data-view="list"] .document-cover {
+  height: 100%;
+  min-height: 120px;
+}
+.data-collection[data-view="list"] .document-cover strong {
+  font-size: 20px;
+}
+.data-collection[data-view="list"] .document-cover-arrow {
+  font-size: 25px;
+}
+/* Company, profile and category cards keep all content and editable actions. */
+.data-collection .company-card-top {
+  gap: 12px;
+}
+.data-collection .company-card-top img,
+.data-collection .company-monogram {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 21px;
+}
+.data-collection .company-card > a {
+  margin-top: 16px;
+  padding-top: 12px;
+  font-size: 13px;
+}
+.data-collection .seeker-record {
+  min-height: 0;
+}
+.data-collection .record-actions {
+  margin-top: 16px;
+  padding-top: 12px;
+  gap: 18px;
+  font-size: 12px;
+}
+.data-collection .admin-category-card > div {
+  margin-top: 15px;
+  gap: 16px;
+}
+.data-collection .admin-category-card h3 {
+  margin: 15px 0 7px;
+}
+.data-collection .trainer-category-grid article > span {
+  font-size: 24px;
+  margin-bottom: 0;
+}
+.data-collection[data-view="list"]
+  :is(
+    .company-card,
+    .seeker-record,
+    .admin-category-card,
+    .trainer-category-grid article,
+    .learning-enrollment-card
+  ) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 24px;
+  align-items: start;
+}
+.data-collection[data-view="list"]
+  :is(
+    .company-card,
+    .seeker-record,
+    .admin-category-card,
+    .trainer-category-grid article,
+    .learning-enrollment-card
+  )
+  > * {
+  grid-column: 1;
+}
+.data-collection[data-view="list"]
+  :is(
+    .company-card > a,
+    .record-actions,
+    .admin-category-card > div,
+    .learning-enrollment-card > a
+  ) {
+  grid-column: 2;
+  grid-row: 1 / 8;
+  align-self: center;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+.data-collection[data-view="list"] .record-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.data-collection[data-view="list"] .company-card-top {
+  justify-content: flex-start;
+}
+/* Sessions and learning have neutral colours, legible metadata and smaller spacing. */
+.data-collection .session-card,
+.data-collection .learning-enrollment-card {
+  background: #fffef9;
+}
+.data-collection .session-card-top {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.data-collection .session-date {
+  font-size: 12px;
+}
+.data-collection .session-facts {
+  padding: 10px 0;
+  margin: 12px 0;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.data-collection .session-card-actions {
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.data-collection .learning-enrollment-card > a {
+  font-size: 13px;
+  margin-top: 14px;
+}
+.data-collection .learning-progress {
+  margin: 13px 0;
+}
+.data-collection[data-view="list"] .session-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.45fr);
+  column-gap: 26px;
+  align-items: start;
+}
+.data-collection[data-view="list"] .session-card > * {
+  grid-column: 1;
+}
+.data-collection[data-view="list"] .session-facts {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: start;
+  display: grid;
+  padding: 4px 0 0;
+  margin: 0;
+  border: 0;
+}
+.data-collection[data-view="list"] .session-card-actions {
+  grid-column: 2;
+  grid-row: 4 / 8;
+  align-self: end;
+  padding: 0;
+  margin: 10px 0 0;
+  border: 0;
+}
+/* Previously vertical rosters/material lists also get a usable compact Grid mode. */
+.data-collection[data-view="grid"]
+  :is(
+    .team-card,
+    .candidate-card,
+    .student-list > article,
+    .participant-list > article,
+    .trainer-material-list > article,
+    .trainer-resource-list > article,
+    .learning-material-list > article
+  ) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.data-collection[data-view="grid"]
+  :is(
+    .team-actions,
+    .candidate-card > div:last-child,
+    .trainer-material-actions
+  ) {
+  grid-column: auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  margin-top: auto;
+}
+.data-collection .team-avatar,
+.data-collection .participant-list article > span {
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+  border-radius: 11px;
+}
+.data-collection .team-actions {
+  gap: 10px;
+}
+.data-collection .material-order,
+.data-collection .resource-type {
+  width: 38px;
+  min-height: 38px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+.data-collection .trainer-material-actions {
+  gap: 10px;
+}
+.data-collection .student-list .learning-progress {
+  width: 100%;
+  min-width: 0;
+}
+.data-collection[data-view="grid"] .job-skill-list > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #fffef9;
+}
+.data-collection[data-view="grid"] .job-skill-list > div > strong {
+  flex-basis: 100%;
+}
+.data-collection[data-view="grid"] .application-list-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.data-collection[data-view="grid"] .application-list-card > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.data-collection[data-view="grid"] .application-open {
+  margin: 0;
+}
+.data-collection .admin-log-card {
+  padding: 20px;
+}
+.data-collection .admin-log-meta {
+  gap: 7px;
+}
+.data-collection .admin-log-card .MuiButton-root {
+  padding-left: 0;
+}
+.data-collection .learning-resource-grid > article h2 {
+  margin: 8px 0 15px;
+}
+.data-collection .collection-items > a {
+  background: #fffef9;
+  text-decoration: none;
+}
+.data-collection[data-view="grid"]
+  :is(.trainer-recent, .employer-recent, .overview-recent-list)
+  > a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+/* Based on the collection's available width, so dashboard sidebars are accounted for. */
+@container (max-width:720px) {
+  .data-collection[data-view="list"] .job-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .data-collection[data-view="list"] .job-card-top {
+    width: 100%;
+  }
+  .data-collection[data-view="list"] .job-card-bottom {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 0;
+    border-top: 1px solid #dce3ed;
+    padding: 12px 0 0;
+    margin-top: 8px;
+    justify-content: space-between;
+  }
+  .data-collection[data-view="list"]
+    :is(
+      .session-card,
+      .company-card,
+      .seeker-record,
+      .admin-category-card,
+      .trainer-category-grid article,
+      .learning-enrollment-card
+    ) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .data-collection[data-view="list"]
+    :is(.record-actions, .admin-category-card > div, .session-card-actions) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: auto;
+    margin-top: 12px;
+    gap: 14px;
+  }
+  .data-collection[data-view="list"] .session-facts {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .data-collection[data-view="list"] .learning-enrollment-card > a,
+  .data-collection[data-view="list"] .company-card > a {
+    align-self: flex-start;
+    margin-top: 12px;
+  }
+  .data-collection[data-view="list"] .course-card {
+    grid-template-columns: 118px minmax(0, 1fr);
+  }
+  .data-collection[data-view="list"] .course-card-body {
+    padding: 16px;
+  }
+  .data-collection[data-view="list"] .course-art {
+    padding: 15px;
+  }
+  .data-collection[data-view="list"] .course-art > b {
+    font-size: 10px;
+  }
+  .data-collection[data-view="list"] .student-list > article {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+@container (max-width:420px) {
+  .collection-toolbar {
+    gap: 10px;
+  }
+  .collection-label {
+    font-size: 12px;
+  }
+  .collection-toolbar .MuiToggleButton-root {
+    padding: 6px 9px;
+    gap: 4px;
+  }
+  .data-collection .collection-items > :is(article, a) {
+    padding: 17px;
+  }
+  .data-collection .collection-items :is(h2, h3) {
+    font-size: 19px;
+  }
+  .data-collection[data-view="list"] .course-card {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+  .data-collection[data-view="list"] .course-card-body {
+    padding: 14px;
+  }
+  .data-collection[data-view="list"] .course-art {
+    padding: 12px;
+  }
+  .data-collection[data-view="list"] .course-art > span {
+    font-size: 34px;
+  }
+  .data-collection[data-view="list"] .course-art > b {
+    writing-mode: vertical-rl;
+  }
+  .data-collection[data-view="list"] .document-card {
+    grid-template-columns: 68px minmax(0, 1fr);
+  }
+  .data-collection[data-view="list"] .document-cover {
+    padding: 12px;
+  }
+  .data-collection[data-view="list"] .document-cover strong {
+    display: none;
+  }
+  .data-collection[data-view="list"]
+    :is(
+      .team-card,
+      .candidate-card,
+      .trainer-material-list > article,
+      .trainer-resource-list > article,
+      .learning-material-list > article
+    ) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .data-collection[data-view="list"]
+    :is(
+      .team-actions,
+      .trainer-material-actions,
+      .candidate-card > div:last-child
+    ) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+  .data-collection[data-view="list"] .job-skill-list > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
