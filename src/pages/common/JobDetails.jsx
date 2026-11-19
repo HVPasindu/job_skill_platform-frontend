@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import "../../styles-jobs.css";
 import { useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -120,7 +123,10 @@ export default function JobDetails() {
               <div className="required-skills">
                 {skills.data.map((skill) => (
                   <div key={skill.id || skill.skill_id}>
-                    <strong>{skill.skill_name}</strong>
+                    <ExpandableRecord as="div">
+                      <strong data-preview-text>{skill.skill_name}</strong>
+                      <RecordToggle />
+                    </ExpandableRecord>
                     <span>
                       {asBoolean(skill.is_mandatory)
                         ? "Required"

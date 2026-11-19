@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useCallback, useState } from "react";
@@ -40,9 +43,10 @@ function Materials({ courseId, enrollmentId }) {
           {resource.data.materials.map((m) => (
             <article key={m.id}>
               <span>{m.sort_order ?? "↗"}</span>
-              <div>
+              <ExpandableRecord as="div">
                 <small>{words(m.material_type)}</small>
-                <h3>{m.title}</h3>
+                <h3 data-preview-text>{m.title}</h3>
+                <RecordToggle />
                 {externalUrl(m.external_url) && (
                   <a
                     href={externalUrl(m.external_url)}
@@ -52,7 +56,7 @@ function Materials({ courseId, enrollmentId }) {
                     Open lesson link ↗
                   </a>
                 )}
-              </div>
+              </ExpandableRecord>
               <Link
                 to={`/dashboard/job-seeker/learning/${enrollmentId}/materials/${m.id}`}
               >

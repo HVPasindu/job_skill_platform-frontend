@@ -787,7 +787,7 @@
     display: grid;
     gap: 12px;
   }
-  .overview-recent-list > a {
+  .overview-recent-list > .collection-linked-record {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -804,7 +804,7 @@
     margin: 12px 0;
     overflow-wrap: anywhere;
   }
-  .overview-recent-list > a > div > span,
+  .overview-recent-list > .collection-linked-record > div > span,
   .overview-recent-list small {
     font-size: 11px;
     color: #596477;
@@ -995,7 +995,7 @@
     .overview-shortcuts {
       padding: 25px;
     }
-    .overview-recent-list > a {
+    .overview-recent-list > .collection-linked-record {
       flex-direction: column;
       align-items: start;
     }

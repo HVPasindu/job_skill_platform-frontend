@@ -199,6 +199,10 @@
   grid-row: 3;
   margin: 6px 0 0;
 }
+.data-collection[data-view="list"] .job-card > .record-toggle {
+  grid-column: 2;
+  grid-row: 4;
+}
 .data-collection[data-view="list"] .job-card-bottom {
   grid-column: 3;
   grid-row: 1 / 4;
@@ -524,7 +528,7 @@
   gap: 12px;
   background: #fffef9;
 }
-.data-collection[data-view="grid"] .job-skill-list > div > strong {
+.data-collection[data-view="grid"] .job-skill-list > div > .record-preview {
   flex-basis: 100%;
 }
 .data-collection[data-view="grid"] .application-list-card {
@@ -554,13 +558,13 @@
 .data-collection .learning-resource-grid > article h2 {
   margin: 8px 0 15px;
 }
-.data-collection .collection-items > a {
+.data-collection .collection-items > :is(a, .collection-linked-record) {
   background: #fffef9;
   text-decoration: none;
 }
 .data-collection[data-view="grid"]
   :is(.trainer-recent, .employer-recent, .overview-recent-list)
-  > a {
+  > .collection-linked-record {
   display: flex;
   flex-direction: column;
   align-items: flex-start;

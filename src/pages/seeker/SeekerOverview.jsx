@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-jobs.css";
 import { Link } from "react-router-dom";
@@ -141,17 +144,25 @@ export default function SeekerOverview() {
             defaultView="list"
           >
             {data.recent_applications.map((application) => (
-              <Link
-                to={`/dashboard/job-seeker/applications/${application.id}`}
+              <article
                 key={application.id}
+                className="collection-linked-record"
               >
-                <div>
-                  <span>{application.company_name}</span>
-                  <h3>{application.job_title}</h3>
+                <ExpandableRecord as="div">
+                  <span data-preview-text>{application.company_name}</span>
+                  <h3 data-preview-text>
+                    <Link
+                      className="record-link"
+                      to={`/dashboard/job-seeker/applications/${application.id}`}
+                    >
+                      {application.job_title}
+                    </Link>
+                  </h3>
+                  <RecordToggle />
                   <small>{dateLabel(application.applied_at)}</small>
-                </div>
+                </ExpandableRecord>
                 <ApplicationStatus status={application.application_status} />
-              </Link>
+              </article>
             ))}
           </DataCollection>
         ) : (

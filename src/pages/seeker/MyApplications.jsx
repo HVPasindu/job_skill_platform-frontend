@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-jobs.css";
 import { useCallback } from "react";
@@ -89,23 +92,26 @@ export default function MyApplications() {
           >
             {resource.data.applications.map((application) => (
               <article className="application-list-card" key={application.id}>
-                <div>
-                  <span className="eyebrow">{application.company_name}</span>
-                  <h2>
+                <ExpandableRecord as="div">
+                  <span data-preview-text className="eyebrow">
+                    {application.company_name}
+                  </span>
+                  <h2 data-preview-text>
                     <Link
                       to={`/dashboard/job-seeker/applications/${application.id}`}
                     >
                       {application.job_title}
                     </Link>
                   </h2>
-                  <p>
+                  <p data-preview-text>
                     {application.location || "Location not specified"} · Applied{" "}
                     {dateLabel(application.applied_at)}
                   </p>
-                  <span>
+                  <RecordToggle />
+                  <span data-preview-text>
                     {application.resume_file_name || "No resume attached"}
                   </span>
-                </div>
+                </ExpandableRecord>
                 <div>
                   <ApplicationStatus status={application.application_status} />
                   <Link

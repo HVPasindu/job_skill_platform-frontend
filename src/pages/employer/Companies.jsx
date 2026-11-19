@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
@@ -53,7 +56,7 @@ export default function Companies() {
           className="company-grid"
         >
           {resource.data.companies.map((company) => (
-            <article className="company-card" key={company.id}>
+            <ExpandableRecord className="company-card" key={company.id}>
               <div className="company-card-top">
                 <ImageWithFallback
                   src={fileUrl(company.logo_url)}
@@ -66,16 +69,17 @@ export default function Companies() {
                 />
                 <span className="employer-role">{company.company_role}</span>
               </div>
-              <h2>{company.company_name}</h2>
-              <p>
+              <h2 data-preview-text>{company.company_name}</h2>
+              <p data-preview-text>
                 {[company.industry, company.city, company.country]
                   .filter(Boolean)
                   .join(" · ") || "Your company, ready to grow."}
               </p>
+              <RecordToggle />
               <Link to={`/dashboard/employer/companies/${company.id}`}>
                 Open company ↗
               </Link>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}

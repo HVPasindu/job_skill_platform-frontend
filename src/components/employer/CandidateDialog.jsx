@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -158,19 +161,20 @@ export default function CandidateDialog({ application, onClose, onSaved }) {
           ) : (
             <ol>
               {history.data.map((item) => (
-                <li key={item.id}>
+                <ExpandableRecord as="li" key={item.id}>
                   <ApplicationStatus status={item.new_status} />
                   <p>
                     {item.old_status
                       ? `${words(item.old_status)} → ${words(item.new_status)}`
                       : "Application submitted"}
                   </p>
-                  {item.note && <p>{item.note}</p>}
-                  <small>
+                  {item.note && <p data-preview-text>{item.note}</p>}
+                  <RecordToggle />
+                  <small data-preview-text>
                     {dateLabel(item.changed_at)}
                     {item.changed_by_name ? ` · ${item.changed_by_name}` : ""}
                   </small>
-                </li>
+                </ExpandableRecord>
               ))}
             </ol>
           )}

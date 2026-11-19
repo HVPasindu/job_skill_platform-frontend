@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -43,11 +46,12 @@ export default function CourseCategories() {
           className="trainer-category-grid"
         >
           {resource.data.categories.map((c) => (
-            <article key={c.id}>
+            <ExpandableRecord key={c.id}>
               <span>↗</span>
-              <h3>{c.category_name}</h3>
+              <h3 data-preview-text>{c.category_name}</h3>
+              <RecordToggle />
               <small>Shared course category</small>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}

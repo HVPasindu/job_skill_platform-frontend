@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import { Link } from "react-router-dom";
 import { fileUrl } from "../../utils/seekerFiles";
@@ -32,9 +35,9 @@ export default function CourseCard({
           }
         />
       </Link>
-      <div className="course-card-body">
+      <ExpandableRecord as="div" className="course-card-body">
         <div className="course-card-meta">
-          <span>
+          <span data-preview-text>
             {course.category_name || words(course.course_type) || "Course"}
           </span>
           {manage && (
@@ -43,17 +46,20 @@ export default function CourseCard({
             </span>
           )}
         </div>
-        <h2>
+        <h2 data-preview-text>
           <Link to={to}>{course.title}</Link>
         </h2>
-        <p>{course.short_description}</p>
+        <p data-preview-text>{course.short_description}</p>
+        <RecordToggle />
         <div className="course-card-foot">
-          <span>
+          <span data-preview-text>
             {[words(course.level), course.duration_text]
               .filter(Boolean)
               .join(" · ") || "Explore the course"}
           </span>
-          {course.trainer_name && <span>By {course.trainer_name}</span>}
+          {course.trainer_name && (
+            <span data-preview-text>By {course.trainer_name}</span>
+          )}
         </div>
         <div className="course-card-actions">
           <Link to={to}>
@@ -74,7 +80,7 @@ export default function CourseCard({
             </>
           )}
         </div>
-      </div>
+      </ExpandableRecord>
     </article>
   );
 }

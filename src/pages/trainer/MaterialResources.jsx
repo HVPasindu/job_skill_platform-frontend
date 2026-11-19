@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
@@ -95,18 +98,19 @@ function Files({ material, course }) {
             return (
               <article key={file.id}>
                 <span className="resource-type">{file.file_type}</span>
-                <div>
+                <ExpandableRecord as="div">
                   <h2>Resource #{file.id}</h2>
-                  <p>
+                  <p data-preview-text>
                     {file.external_url ||
                       "Uploaded " + words(file.file_type) + " resource"}
                   </p>
+                  <RecordToggle />
                   {href && (
                     <a href={href} target="_blank" rel="noopener noreferrer">
                       Open resource ↗
                     </a>
                   )}
-                </div>
+                </ExpandableRecord>
                 <div className="trainer-material-actions">
                   <button disabled={busy} onClick={() => setEditor(file)}>
                     Replace / edit

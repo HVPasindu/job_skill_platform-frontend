@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -98,25 +101,26 @@ export default function Team() {
           {resource.data.users.map((member) => (
             <article className="team-card" key={member.company_user_id}>
               <span className="team-avatar">{member.full_name.charAt(0)}</span>
-              <div>
+              <ExpandableRecord as="div">
                 <span className="employer-role">
                   {member.company_role}
                   {asBoolean(member.is_primary_contact)
                     ? " · Primary contact"
                     : ""}
                 </span>
-                <h2>
+                <h2 data-preview-text>
                   {member.full_name}
                   {Number(member.user_id) === Number(user.id) ? " (you)" : ""}
                 </h2>
-                <p>{member.email}</p>
-                <p>
+                <p data-preview-text>{member.email}</p>
+                <p data-preview-text>
                   {[member.job_title, member.department]
                     .filter(Boolean)
                     .join(" · ")}
                 </p>
-                {member.bio && <p>{member.bio}</p>}
-              </div>
+                {member.bio && <p data-preview-text>{member.bio}</p>}
+                <RecordToggle />
+              </ExpandableRecord>
               <div className="team-actions">
                 {(isOwner || Number(member.user_id) === Number(user.id)) && (
                   <button disabled={busy} onClick={() => setEditor(member)}>

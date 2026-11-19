@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -80,7 +83,10 @@ export default function JobSkills({ jobId }) {
         >
           {resource.data.skills.map((skill) => (
             <div key={skill.skill_id}>
-              <strong>{skill.skill_name}</strong>
+              <ExpandableRecord as="div">
+                <strong data-preview-text>{skill.skill_name}</strong>
+                <RecordToggle />
+              </ExpandableRecord>
               <span>
                 {asBoolean(skill.is_mandatory) ? "Mandatory" : "Nice to have"}
               </span>
