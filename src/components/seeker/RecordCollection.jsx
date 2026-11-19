@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 // MUI Dialog provides focus management; React Hook Form keeps the edit form simple.
@@ -180,7 +183,7 @@ export default function RecordCollection({ kind }) {
           className="seeker-record-grid"
         >
           {resource.data.items.map((record, index) => (
-            <article
+            <ExpandableRecord
               className={`seeker-record ${kind === "skills" ? "skill-record" : ""}`}
               key={record.id}
             >
@@ -191,10 +194,10 @@ export default function RecordCollection({ kind }) {
                 </span>
                 <span aria-hidden="true">↗</span>
               </div>
-              <h3>
+              <h3 data-preview-text>
                 {record.qualification || record.job_title || record.skill_name}
               </h3>
-              <p className="record-subtitle">
+              <p data-preview-text className="record-subtitle">
                 {record.institute_name ||
                   record.company_name ||
                   readable(record.proficiency_level)}
@@ -213,18 +216,25 @@ export default function RecordCollection({ kind }) {
                       ? "Present"
                       : dateInput(record.end_date) || "End not specified"}
                   </p>
-                  {record.field_of_study && <p>{record.field_of_study}</p>}
-                  {record.grade && <p>Grade: {record.grade}</p>}
+                  {record.field_of_study && (
+                    <p data-preview-text>{record.field_of_study}</p>
+                  )}
+                  {record.grade && (
+                    <p data-preview-text>Grade: {record.grade}</p>
+                  )}
                   {record.employment_type && (
                     <span className="seeker-tag">
                       {readable(record.employment_type)}
                     </span>
                   )}
                   {record.description && (
-                    <p className="record-description">{record.description}</p>
+                    <p data-preview-text className="record-description">
+                      {record.description}
+                    </p>
                   )}
                 </>
               )}
+              <RecordToggle />
               <div className="record-actions">
                 <button
                   type="button"
@@ -241,7 +251,7 @@ export default function RecordCollection({ kind }) {
                   Delete
                 </button>
               </div>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}

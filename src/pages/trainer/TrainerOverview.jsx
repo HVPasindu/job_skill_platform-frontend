@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-seeker.css";
 import "../../styles-trainer.css";
@@ -89,16 +92,23 @@ export default function TrainerOverview() {
           defaultView="list"
         >
           {recent_courses.map((course) => (
-            <Link
-              key={course.id}
-              to={`/dashboard/trainer/courses/${course.id}/edit`}
-            >
-              <h3>{course.title}</h3>
+            <article key={course.id} className="collection-linked-record">
+              <ExpandableRecord as="div">
+                <h3 data-preview-text>
+                  <Link
+                    className="record-link"
+                    to={`/dashboard/trainer/courses/${course.id}/edit`}
+                  >
+                    {course.title}
+                  </Link>
+                </h3>
+                <RecordToggle />
+              </ExpandableRecord>
               <span className={`course-status status-${course.status}`}>
                 {course.status}
               </span>
               <b>↗</b>
-            </Link>
+            </article>
           ))}
         </DataCollection>
       )}

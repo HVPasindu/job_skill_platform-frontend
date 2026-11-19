@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
@@ -96,9 +99,10 @@ export default function CourseMaterials() {
               <span className="material-order">
                 {material.sort_order ?? "—"}
               </span>
-              <div>
+              <ExpandableRecord as="div">
                 <span className="eyebrow">{words(material.material_type)}</span>
-                <h2>{material.title}</h2>
+                <h2 data-preview-text>{material.title}</h2>
+                <RecordToggle />
                 {externalUrl(material.external_url) && (
                   <a
                     href={externalUrl(material.external_url)}
@@ -108,7 +112,7 @@ export default function CourseMaterials() {
                     Open material link ↗
                   </a>
                 )}
-              </div>
+              </ExpandableRecord>
               <div className="trainer-material-actions">
                 <Link to={String(material.id)}>Files & links ↗</Link>
                 <button

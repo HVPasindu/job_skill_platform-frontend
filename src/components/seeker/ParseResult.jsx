@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import { resultText } from "../../utils/parseResult";
 const groups = [
   [
@@ -59,17 +62,20 @@ export default function ParseResult({ result }) {
           ) : (
             <div className="parsed-records">
               {result[key].map((item, index) => (
-                <dl key={index}>
-                  {fields.map(
-                    (field) =>
-                      resultText(item[field]) !== "" && (
-                        <div key={field}>
-                          <dt>{field.replaceAll("_", " ")}</dt>
-                          <dd>{resultText(item[field])}</dd>
-                        </div>
-                      ),
-                  )}
-                </dl>
+                <ExpandableRecord as="div" key={index}>
+                  <dl>
+                    {fields.map(
+                      (field) =>
+                        resultText(item[field]) !== "" && (
+                          <div key={field}>
+                            <dt>{field.replaceAll("_", " ")}</dt>
+                            <dd data-preview-text>{resultText(item[field])}</dd>
+                          </div>
+                        ),
+                    )}
+                  </dl>
+                  <RecordToggle />
+                </ExpandableRecord>
               ))}
             </div>
           )}
@@ -79,9 +85,12 @@ export default function ParseResult({ result }) {
         <section className="seeker-panel">
           <h3>Skipped documents</h3>
           {result.skipped_documents.map((item, index) => (
-            <p key={index}>
-              {resultText(item.file_name)}: {resultText(item.reason)}
-            </p>
+            <ExpandableRecord as="div" key={index}>
+              <p data-preview-text>
+                {resultText(item.file_name)}: {resultText(item.reason)}
+              </p>
+              <RecordToggle />
+            </ExpandableRecord>
           ))}
         </section>
       )}

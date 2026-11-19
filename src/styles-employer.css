@@ -604,7 +604,7 @@
     display: grid;
     gap: 12px;
   }
-  .employer-recent > a {
+  .employer-recent > .collection-linked-record {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -613,7 +613,7 @@
     border: 1px solid #dce2d3;
     border-radius: 20px;
   }
-  .employer-recent > a > div {
+  .employer-recent > .collection-linked-record > div {
     flex: 1;
     min-width: 0;
   }
@@ -742,10 +742,10 @@
     .employer-filters .MuiTextField-root:first-child {
       flex-basis: 100%;
     }
-    .employer-recent > a {
+    .employer-recent > .collection-linked-record {
       flex-wrap: wrap;
     }
-    .employer-recent > a > div {
+    .employer-recent > .collection-linked-record > div {
       flex-basis: 100%;
     }
     .employer-overview-hero .eyebrow {

@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 import usePagedResource from "../../hooks/usePagedResource";
@@ -76,11 +79,12 @@ export default function JobCategories() {
           className="admin-category-grid"
         >
           {resource.data.categories.map((category) => (
-            <article key={category.id} className="admin-category-card">
+            <ExpandableRecord key={category.id} className="admin-category-card">
               <span className="admin-card-index">
                 JOB CATEGORY / {String(category.id).padStart(2, "0")}
               </span>
-              <h3>{category.category_name}</h3>
+              <h3 data-preview-text>{category.category_name}</h3>
+              <RecordToggle />
               <p>Shared across employer workspaces</p>
               <div>
                 <Button
@@ -99,7 +103,7 @@ export default function JobCategories() {
                   Delete
                 </button>
               </div>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}
