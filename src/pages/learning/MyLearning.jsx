@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useState } from "react";
@@ -85,11 +88,12 @@ export default function MyLearning() {
           className="learning-card-grid"
         >
           {resource.data.enrollments.map((e) => (
-            <article className="learning-enrollment-card" key={e.id}>
+            <ExpandableRecord className="learning-enrollment-card" key={e.id}>
               <StatusPill status={e.enrollment_status} />
-              <h2>{e.title}</h2>
-              <p>{e.short_description}</p>
-              <small>
+              <h2 data-preview-text>{e.title}</h2>
+              <p data-preview-text>{e.short_description}</p>
+              <RecordToggle />
+              <small data-preview-text>
                 With {e.trainer_name} · Enrolled {dateLabel(e.enrolled_at)}
               </small>
               <ProgressBar value={e.progress_percentage} />
@@ -98,7 +102,7 @@ export default function MyLearning() {
                   ? "View record ↗"
                   : "Continue learning ↗"}
               </Link>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}

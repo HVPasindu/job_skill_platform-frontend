@@ -1,0 +1,81 @@
+.record-preview,
+.record-preview [data-preview-text] {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.record-preview [data-preview-text] {
+  -webkit-line-clamp: unset;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.record-preview:is([data-collapsed], [data-measuring]) [data-preview-text] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Rows below can flow down. The other cards keep their own height. */
+.data-collection[data-view="grid"] .collection-items:has(.record-toggle) {
+  align-items: start;
+}
+
+.record-preview .record-toggle {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  justify-self: start;
+  align-self: start;
+  padding: 5px 2px;
+  margin: 3px 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+  color: #254bd8;
+  cursor: pointer;
+  text-align: start;
+}
+.record-preview .record-toggle::after {
+  content: "";
+  display: inline-block;
+  width: 0.48em;
+  height: 0.48em;
+  margin: 0 2px 0.19em 0.55em;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.record-preview .record-toggle[aria-expanded="true"]::after {
+  transform: rotate(225deg);
+  vertical-align: -0.2em;
+}
+.record-preview .record-toggle:hover {
+  text-decoration: underline;
+}
+.record-preview .record-toggle:focus-visible {
+  outline: 2px solid #315cff;
+  outline-offset: 2px;
+}
+
+/* A recent-record card keeps its full clickable area and a separate disclosure. */
+.collection-linked-record {
+  position: relative;
+}
+.collection-linked-record .record-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.collection-linked-record .record-toggle {
+  position: relative;
+  z-index: 1;
+}
+.collection-linked-record .record-link:focus-visible {
+  outline: 2px solid #315cff;
+}

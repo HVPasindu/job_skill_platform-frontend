@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -48,11 +51,12 @@ export default function SessionParticipants() {
           {resource.data.participants.map((p) => (
             <article key={p.id}>
               <span>{p.full_name.charAt(0)}</span>
-              <div>
-                <h2>{p.full_name}</h2>
-                <p>{p.email}</p>
+              <ExpandableRecord as="div">
+                <h2 data-preview-text>{p.full_name}</h2>
+                <p data-preview-text>{p.email}</p>
+                <RecordToggle />
                 <small>Joined {dateLabel(p.joined_at)}</small>
-              </div>
+              </ExpandableRecord>
             </article>
           ))}
         </DataCollection>

@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useState } from "react";
 // MUI supplies filters and the read-only detail dialog; server pagination provides totals.
@@ -118,22 +121,25 @@ export default function ChatbotLogs() {
           defaultView="list"
         >
           {resource.data.logs.map((log) => (
-            <article key={log.id} className="admin-log-card">
+            <ExpandableRecord key={log.id} className="admin-log-card">
               <div className="admin-log-meta">
                 <span>
-                  {log.user_id
-                    ? log.full_name || "Linked account"
-                    : "No linked account"}
+                  <bdi data-preview-text>
+                    {log.user_id
+                      ? log.full_name || "Linked account"
+                      : "No linked account"}
+                  </bdi>
                 </span>
                 <time>{timestamp(log.created_at)}</time>
                 <small>#{log.id}</small>
               </div>
-              <h3>{log.question}</h3>
-              <p>{log.response}</p>
+              <h3 data-preview-text>{log.question}</h3>
+              <p data-preview-text>{log.response}</p>
+              <RecordToggle />
               <Button variant="text" onClick={() => setSelected(log)}>
                 Read full exchange ↗
               </Button>
-            </article>
+            </ExpandableRecord>
           ))}
         </DataCollection>
       )}

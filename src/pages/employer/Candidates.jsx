@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { useOutletContext, useParams, Link } from "react-router-dom";
@@ -124,15 +127,16 @@ function List({ job, company }) {
               <span className="team-avatar">
                 {application.full_name.charAt(0)}
               </span>
-              <div>
-                <h2>{application.full_name}</h2>
-                <p>{application.email}</p>
-                <p>
+              <ExpandableRecord as="div">
+                <h2 data-preview-text>{application.full_name}</h2>
+                <p data-preview-text>{application.email}</p>
+                <p data-preview-text>
                   {job?.title || application.job_title} ·{" "}
                   {company?.company_name || application.company_name}
                 </p>
+                <RecordToggle />
                 <small>Applied {dateLabel(application.applied_at)}</small>
-              </div>
+              </ExpandableRecord>
               <div>
                 <ApplicationStatus status={application.application_status} />
                 <button

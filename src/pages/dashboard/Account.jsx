@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import useAuth from "../../hooks/useAuth";
 import { ROLE_DETAILS } from "../../data/roles";
 import Button from "../../components/ui/Button";
@@ -42,7 +45,10 @@ export default function Account() {
           <ul className="company-memberships">
             {user.companies.map((company) => (
               <li key={company.company_id}>
-                <strong>{company.company_name}</strong>
+                <ExpandableRecord as="div">
+                  <strong data-preview-text>{company.company_name}</strong>
+                  <RecordToggle />
+                </ExpandableRecord>
                 <span>{company.company_role}</span>
               </li>
             ))}

@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-seeker.css";
 import "../../styles-employer.css";
@@ -75,19 +78,24 @@ export default function EmployerOverview() {
           <p>No jobs yet. Choose a company and create your first role.</p>
         ) : (
           data.recent_jobs.map((job) => (
-            <Link
-              key={job.id}
-              to={`/dashboard/employer/companies/${job.company_id}/jobs/${job.id}/edit`}
-            >
-              <div>
-                <h3>{job.title}</h3>
-                <p>{job.company_name}</p>
-              </div>
+            <article key={job.id} className="collection-linked-record">
+              <ExpandableRecord as="div">
+                <h3 data-preview-text>
+                  <Link
+                    className="record-link"
+                    to={`/dashboard/employer/companies/${job.company_id}/jobs/${job.id}/edit`}
+                  >
+                    {job.title}
+                  </Link>
+                </h3>
+                <p data-preview-text>{job.company_name}</p>
+                <RecordToggle />
+              </ExpandableRecord>
               <span className={`job-state job-${job.status}`}>
                 {job.status}
               </span>
               <span>↗</span>
-            </Link>
+            </article>
           ))
         )}
       </DataCollection>

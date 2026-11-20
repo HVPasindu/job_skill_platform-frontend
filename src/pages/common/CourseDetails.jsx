@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import "../../styles-seeker.css";
 import "../../styles-trainer.css";
 import "../../styles-learning.css";
@@ -35,10 +38,11 @@ function Outline({ id }) {
           {resource.data.materials.map((material) => (
             <li key={material.id}>
               <span>↗</span>
-              <div>
-                <h3>{material.title}</h3>
+              <ExpandableRecord as="div">
+                <h3 data-preview-text>{material.title}</h3>
+                <RecordToggle />
                 <p>{words(material.material_type)}</p>
-              </div>
+              </ExpandableRecord>
             </li>
           ))}
         </ol>

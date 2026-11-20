@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import DataCollection from "../collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
@@ -132,20 +135,23 @@ export default function JobList({ company }) {
           {resource.data.jobs.map((job) => {
             const base = `/dashboard/employer/companies/${job.company_id}/jobs/${job.id}`;
             return (
-              <article className="employer-job-card" key={job.id}>
+              <ExpandableRecord className="employer-job-card" key={job.id}>
                 <div className="employer-card-heading">
                   <span className={`job-state job-${job.status}`}>
                     {job.status}
                   </span>
                   <span>#{job.id}</span>
                 </div>
-                <h2>{job.title}</h2>
-                <p>{job.company_name || company?.company_name}</p>
-                <p>
+                <h2 data-preview-text>{job.title}</h2>
+                <p data-preview-text>
+                  {job.company_name || company?.company_name}
+                </p>
+                <p data-preview-text>
                   {[job.location, words(job.job_type), words(job.work_mode)]
                     .filter(Boolean)
                     .join(" · ")}
                 </p>
+                <RecordToggle />
                 <strong>{salary(job)}</strong>
                 <p className="form-hint">
                   Deadline: {dateLabel(job.application_deadline)}
@@ -157,7 +163,7 @@ export default function JobList({ company }) {
                     Delete
                   </button>
                 </div>
-              </article>
+              </ExpandableRecord>
             );
           })}
         </DataCollection>

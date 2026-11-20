@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import "../../styles-learning.css";
 import { useCallback, useState } from "react";
@@ -142,12 +145,13 @@ export default function Students() {
         >
           {resource.data.enrollments.map((e) => (
             <article key={e.id}>
-              <div>
-                <h2>{e.full_name}</h2>
-                <p>{e.email}</p>
-                <p>{course?.title || e.course_title}</p>
+              <ExpandableRecord as="div">
+                <h2 data-preview-text>{e.full_name}</h2>
+                <p data-preview-text>{e.email}</p>
+                <p data-preview-text>{course?.title || e.course_title}</p>
+                <RecordToggle />
                 <StatusPill status={e.enrollment_status} />
-              </div>
+              </ExpandableRecord>
               <ProgressBar value={e.progress_percentage} />
               {e.enrollment_status === "active" && (
                 <Button disabled={busy} onClick={() => complete(e)}>

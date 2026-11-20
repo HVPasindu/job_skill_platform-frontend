@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../../components/collections/ExpandableRecord";
 import DataCollection from "../../components/collections/DataCollection";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
@@ -245,7 +248,7 @@ export default function Documents() {
                 </strong>
                 <span className="document-cover-arrow">↗</span>
               </div>
-              <div className="document-details">
+              <ExpandableRecord as="div" className="document-details">
                 <div className="document-badges">
                   <span>
                     {types.find(([type]) => type === doc.document_type)?.[1] ||
@@ -255,7 +258,8 @@ export default function Documents() {
                     <span className="primary-badge">✦ Primary</span>
                   )}
                 </div>
-                <h3>{doc.file_name}</h3>
+                <h3 data-preview-text>{doc.file_name}</h3>
+                <RecordToggle />
                 <p>{fileSize(doc.file_size)}</p>
                 <div className="document-actions">
                   {fileUrl(doc.file_url) && (
@@ -279,7 +283,7 @@ export default function Documents() {
                     Delete
                   </button>
                 </div>
-              </div>
+              </ExpandableRecord>
             </article>
           ))}
         </DataCollection>

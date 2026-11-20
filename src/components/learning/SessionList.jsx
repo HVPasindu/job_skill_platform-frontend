@@ -1,3 +1,6 @@
+import ExpandableRecord, {
+  RecordToggle,
+} from "../collections/ExpandableRecord";
 import DataCollection from "../collections/DataCollection";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -178,20 +181,23 @@ export default function SessionList({ mode = "public" }) {
           {resource.data.sessions.map((session) => {
             const id = sessionId(session);
             return (
-              <article className="session-card" key={id}>
+              <ExpandableRecord className="session-card" key={id}>
                 <div className="session-card-top">
                   <span className="session-date">
                     {dateLabel(session.session_date)}
                   </span>
                   <StatusPill status={session.status} />
                 </div>
-                <h2>{session.title}</h2>
-                <p>
+                <h2 data-preview-text>{session.title}</h2>
+                <p data-preview-text>
                   {session.description ||
                     "A conversation for your next chapter."}
                 </p>
+                <RecordToggle />
                 {session.trainer_name && (
-                  <p className="session-trainer">With {session.trainer_name}</p>
+                  <p data-preview-text className="session-trainer">
+                    With {session.trainer_name}
+                  </p>
                 )}
                 <div className="session-facts">
                   <span>
@@ -200,7 +206,7 @@ export default function SessionList({ mode = "public" }) {
                   <span>{capacity(session)}</span>
                 </div>
                 {session.course_title && (
-                  <p className="session-course">
+                  <p data-preview-text className="session-course">
                     Course: {session.course_title}
                   </p>
                 )}
@@ -249,7 +255,7 @@ export default function SessionList({ mode = "public" }) {
                       </a>
                     )}
                 </div>
-              </article>
+              </ExpandableRecord>
             );
           })}
         </DataCollection>
