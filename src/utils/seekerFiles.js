@@ -37,18 +37,48 @@ export function canParse(document) {
     ].includes(document.file_type)
   );
 }
+
+
 export function fileUrl(path) {
   if (!path) return "";
+
   try {
+    const apiOrigin = new URL(API_BASE_URL);
+
     const url = new URL(
       String(path).replaceAll("\\", "/"),
-      API_BASE_URL.replace(/\/api\/?$/, "") + "/",
+      `${apiOrigin.origin}/`,
     );
-    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+
+    if (!["http:", "https:"].includes(url.protocol)) {
+      return "";
+    }
+
+    const hostname = url.hostname
+      .toLowerCase()
+      .replace(/^\[|\]$/g, "")
+      .replace(/\.$/, "");
+
+    const isLocalUrl =
+      hostname === "localhost" ||
+      hostname.endsWith(".localhost") ||
+      hostname === "0.0.0.0" ||
+      hostname === "::1" ||
+      /^127(?:\.\d{1,3}){3}$/.test(hostname);
+
+    if (isLocalUrl) {
+      url.protocol = apiOrigin.protocol;
+      url.host = apiOrigin.host;
+      url.port = apiOrigin.port;
+    }
+
+    return url.href;
   } catch {
     return "";
   }
 }
+
+
 export function fileSize(bytes) {
   const value = Number(bytes) || 0;
   return value >= 1024 * 1024
