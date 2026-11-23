@@ -1,0 +1,354 @@
+name: SkillJob Frontend CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "Inspect the production web server or deploy frontend"
+        type: choice
+        required: true
+        default: inspect
+        options:
+          - inspect
+          - deploy
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skilljob-frontend-production
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    name: Read-only EC2 / Nginx inspection
+    if: github.event_name == 'workflow_dispatch' && inputs.operation == 'inspect'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect Nginx without changing production
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+        run: |
+          set -euo pipefail
+          : "${AWS_ACCESS_KEY_ID:?Missing frontend repository AWS_ACCESS_KEY_ID secret}"
+          : "${AWS_SECRET_ACCESS_KEY:?Missing frontend repository AWS_SECRET_ACCESS_KEY secret}"
+          : "${AWS_DEFAULT_REGION:?Missing frontend repository AWS_REGION secret}"
+          : "${EC2_INSTANCE_ID:?Missing frontend repository EC2_INSTANCE_ID secret}"
+
+          SCRIPT_FILE="$RUNNER_TEMP/frontend-inspect.sh"
+          cat > "$SCRIPT_FILE" <<'REMOTE'
+          set -Eeuo pipefail
+          echo "===== SKILLJOB FRONTEND: READ-ONLY INSPECTION ====="
+          echo "Host: $(hostname)"
+          echo "Nginx configuration test:"
+          nginx -t
+          echo "===== RELEVANT ACTIVE NGINX DIRECTIVES ====="
+          nginx -T 2>/dev/null | grep -E '^[[:space:]]*(listen|server_name|root|index|location|proxy_pass|try_files)([[:space:];{]|$)' | head -n 90 || true
+          echo "===== FRONTEND DOCUMENT ROOT ====="
+          if [[ -d /var/www/html ]]; then
+            stat -c '%A %U:%G %n' /var/www/html
+            ls -la /var/www/html | head -n 24
+            if [[ -s /var/www/html/index.html ]]; then
+              echo 'index.html: PRESENT'
+            else
+              echo 'index.html: MISSING or EMPTY'
+            fi
+          else
+            echo 'WARNING: /var/www/html does not exist.'
+          fi
+          echo "===== REQUIRED UTILITIES ====="
+          for cmd in curl tar gzip sha256sum rsync; do
+            if command -v "$cmd" >/dev/null 2>&1; then
+              echo "$cmd: available"
+            else
+              echo "$cmd: NOT INSTALLED"
+            fi
+          done
+          echo "===== AVAILABLE DISK / MEMORY ====="
+          df -h /var/www 2>/dev/null || true
+          free -h
+          echo "===== FRONTEND REPOSITORY PUBLIC ACCESS ====="
+          curl -sS -L -o /dev/null --max-time 12 \
+            -w 'Frontend GitHub repository anonymous HTTP status: %{http_code}\n' \
+            'https://github.com/HVPasindu/job_skill_platform-frontend' || true
+          echo "===== CURRENT LOCAL HTTP RESPONSE ====="
+          curl -sS -o /dev/null --max-time 8 -w 'Local Nginx HTTP status: %{http_code}\n' \
+            -H 'Host: skilljob.pasindujayarathna.me' 'http://127.0.0.1/' || true
+          echo "READ-ONLY INSPECTION COMPLETE. No files or services were changed."
+          REMOTE
+
+          SCRIPT_B64="$(gzip -c "$SCRIPT_FILE" | base64 -w 0)"
+          SSM_COMMAND="bash -o pipefail -c 'printf %s ${SCRIPT_B64} | base64 -d | gzip -dc | bash -s'"
+          jq -n --arg command "$SSM_COMMAND" \
+            '{commands: [$command], executionTimeout: ["180"]}' > "$RUNNER_TEMP/frontend-params.json"
+          COMMAND_ID="$(aws ssm send-command \
+            --instance-ids "$EC2_INSTANCE_ID" \
+            --document-name AWS-RunShellScript \
+            --comment 'SkillJob frontend read-only CD readiness check' \
+            --timeout-seconds 60 \
+            --parameters "file://$RUNNER_TEMP/frontend-params.json" \
+            --query 'Command.CommandId' --output text)"
+          echo "SSM Command ID: $COMMAND_ID"
+          FINISHED=false
+          for attempt in $(seq 1 40); do
+            if RESULT="$(aws ssm get-command-invocation --command-id "$COMMAND_ID" \
+              --instance-id "$EC2_INSTANCE_ID" --output json 2>"$RUNNER_TEMP/frontend-err.txt")"; then
+              STATUS="$(jq -r .Status <<< "$RESULT")"
+              case "$STATUS" in
+                Success|Failed|TimedOut|Cancelled) FINISHED=true; break ;;
+                Pending|InProgress|Delayed|Cancelling) ;;
+                *) echo "Unexpected status: $STATUS"; exit 1 ;;
+              esac
+            elif ! grep -q InvocationDoesNotExist "$RUNNER_TEMP/frontend-err.txt"; then
+              cat "$RUNNER_TEMP/frontend-err.txt" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$FINISHED" == true ]] || { echo 'Read-only inspection timed out; inspect SSM command.'; exit 1; }
+          echo '===== INSPECTION STDOUT ====='
+          jq -r '.StandardOutputContent // ""' <<< "$RESULT"
+          echo '===== INSPECTION STDERR ====='
+          jq -r '.StandardErrorContent // ""' <<< "$RESULT" >&2
+          [[ "$(jq -r .Status <<< "$RESULT")" == Success ]] \
+            && [[ "$(jq -r .ResponseCode <<< "$RESULT")" == 0 ]]
+
+  deploy:
+    name: Build on GitHub and deploy static dist to EC2
+    if: >-
+      (github.event_name == 'push' && vars.FRONTEND_CD_ENABLED == 'true') ||
+      (github.event_name == 'workflow_dispatch' && inputs.operation == 'deploy')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write  # Required only to create a release containing compiled static files.
+
+    steps:
+      - name: Checkout exact frontend commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js for frontend build
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.3'
+          cache: npm
+
+      - name: Install locked frontend dependencies
+        run: npm ci
+
+      - name: Build production frontend (outside EC2)
+        env:
+          VITE_API_BASE_URL: https://skilljob.pasindujayarathna.me/api
+          VITE_ENABLE_3D: 'true'
+        run: |
+          set -euo pipefail
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+          test "$(find dist/assets -type f | wc -l)" -gt 0
+          echo 'Production Vite dist build verified.'
+
+      - name: Package and publish commit-specific static assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          RELEASE_TAG="frontend-cd-${GITHUB_SHA}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          ASSET_FILE="$RUNNER_TEMP/skilljob-frontend-dist.tar.gz"
+          tar -C dist -czf "$ASSET_FILE" .
+          gzip -t "$ASSET_FILE"
+          ARCHIVE_SHA="$(sha256sum "$ASSET_FILE" | awk '{print $1}')"
+          echo "Asset SHA256: $ARCHIVE_SHA"
+          echo "Release tag: $RELEASE_TAG"
+          gh release create "$RELEASE_TAG" "$ASSET_FILE" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Frontend CD build ${GITHUB_SHA:0:12}" \
+            --notes "Automated static frontend deployment artifact for commit $GITHUB_SHA. Not an application release." \
+            --latest=false
+          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
+          echo "ARCHIVE_SHA=$ARCHIVE_SHA" >> "$GITHUB_ENV"
+
+      - name: Deploy compiled frontend through AWS SSM
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+        run: |
+          set -euo pipefail
+          : "${AWS_ACCESS_KEY_ID:?Missing frontend repository AWS_ACCESS_KEY_ID secret}"
+          : "${AWS_SECRET_ACCESS_KEY:?Missing frontend repository AWS_SECRET_ACCESS_KEY secret}"
+          : "${AWS_DEFAULT_REGION:?Missing frontend repository AWS_REGION secret}"
+          : "${EC2_INSTANCE_ID:?Missing frontend repository EC2_INSTANCE_ID secret}"
+          : "${ARCHIVE_SHA:?Missing verified archive checksum}"
+          : "${RELEASE_TAG:?Missing release tag}"
+
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}/skilljob-frontend-dist.tar.gz"
+          URL_B64="$(printf %s "$URL" | base64 -w 0)"
+          SCRIPT_FILE="$RUNNER_TEMP/frontend-deploy.sh"
+          cat > "$SCRIPT_FILE" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 022
+
+          EXPECTED_SHA="$1"
+          SOURCE_SHA="$2"
+          ASSET_URL="$(printf '%s' "$3" | base64 -d)"
+          WEB_ROOT='/var/www/html'
+          DOMAIN='skilljob.pasindujayarathna.me'
+          BACKUP_DIR='/home/ubuntu/skilljob-frontend-backups'
+          TEMP_DIR="$(mktemp -d /tmp/skilljob-frontend-cd.XXXXXXXX)"
+          BACKUP_FILE=''
+          SITE_MODIFIED=false
+          DEPLOY_SUCCEEDED=false
+
+          rollback_and_cleanup() {
+            local exit_code=$?
+            trap - EXIT
+            if [[ "$exit_code" -ne 0 && "$SITE_MODIFIED" == true ]]; then
+              echo 'FRONTEND DEPLOYMENT FAILED: restoring previous files from backup.'
+              if [[ -f "$BACKUP_FILE" ]]; then
+                if tar -xzf "$BACKUP_FILE" -C "$WEB_ROOT"; then
+                  echo 'Original frontend files were restored. New unused hashed assets may remain.'
+                else
+                  echo 'CRITICAL: frontend restore failed; inspect the web root and backup immediately.' >&2
+                fi
+              fi
+            fi
+            rm -rf -- "$TEMP_DIR"
+            exit "$exit_code"
+          }
+          trap rollback_and_cleanup EXIT
+
+          echo '===== FRONTEND PRODUCTION PRE-FLIGHT ====='
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid source commit SHA'; exit 1; }
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{64}$ ]] || { echo 'Invalid archive SHA256'; exit 1; }
+          [[ "$ASSET_URL" == https://github.com/HVPasindu/job_skill_platform-frontend/releases/download/*/skilljob-frontend-dist.tar.gz ]] \
+            || { echo 'Unexpected frontend artifact URL'; exit 1; }
+          [[ -d "$WEB_ROOT" && ! -L "$WEB_ROOT" && -s "$WEB_ROOT/index.html" ]] \
+            || { echo 'Expected existing frontend webroot/index.html not found'; exit 1; }
+          [[ "$(realpath "$WEB_ROOT")" == '/var/www/html' ]] \
+            || { echo 'Unexpected webroot path'; exit 1; }
+          for cmd in nginx curl tar gzip sha256sum rsync; do
+            command -v "$cmd" >/dev/null || { echo "Missing command: $cmd"; exit 1; }
+          done
+          nginx -t
+          NGINX_CONFIG="$(nginx -T 2>/dev/null)"
+          grep -Eq '^[[:space:]]*root[[:space:]]+/var/www/html[[:space:]]*;' <<< "$NGINX_CONFIG" \
+            || { echo 'Nginx does not declare expected document root'; exit 1; }
+          grep -Eq '^[[:space:]]*server_name[[:space:]].*skilljob\.pasindujayarathna\.me' <<< "$NGINX_CONFIG" \
+            || { echo 'Expected Nginx production server_name not found'; exit 1; }
+          # Fail closed if the destination includes sensitive server-side folders.
+          for item in '.env' 'uploads' 'node_modules' '.git'; do
+            [[ ! -e "$WEB_ROOT/$item" ]] || { echo "Unsafe webroot contents: $item"; exit 1; }
+          done
+          FREE_KB="$(df -Pk "$WEB_ROOT" | awk 'NR==2 {print $4}')"
+          [[ "$FREE_KB" =~ ^[0-9]+$ && "$FREE_KB" -ge 204800 ]] \
+            || { echo 'Less than 200 MB free in frontend webroot filesystem'; exit 1; }
+
+          echo '===== DOWNLOADING VERIFIED STATIC BUILD ====='
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-delay 3 --connect-timeout 15 --max-time 240 \
+            "$ASSET_URL" -o "$TEMP_DIR/frontend.tar.gz"
+          echo "$EXPECTED_SHA  $TEMP_DIR/frontend.tar.gz" | sha256sum --check --status \
+            || { echo 'Artifact checksum verification failed'; exit 1; }
+          gzip -t "$TEMP_DIR/frontend.tar.gz"
+          mkdir -p "$TEMP_DIR/site"
+          tar -xzf "$TEMP_DIR/frontend.tar.gz" -C "$TEMP_DIR/site" \
+            --no-same-owner --no-same-permissions
+          [[ -s "$TEMP_DIR/site/index.html" && -d "$TEMP_DIR/site/assets" ]] \
+            || { echo 'Downloaded frontend build is incomplete'; exit 1; }
+          if find "$TEMP_DIR/site" -type l | grep -q .; then
+            echo 'Unexpected symlink in compiled frontend build'; exit 1
+          fi
+
+          echo '===== BACKUP EXISTING FRONTEND ====='
+          mkdir -p "$BACKUP_DIR"
+          chmod 700 "$BACKUP_DIR"
+          BACKUP_FILE="$BACKUP_DIR/skilljob_frontend_$(date -u +%Y%m%d_%H%M%S)_$$.tar.gz"
+          tar -C "$WEB_ROOT" -czf "$BACKUP_FILE" .
+          chmod 600 "$BACKUP_FILE"
+          gzip -t "$BACKUP_FILE"
+          echo "Verified backup: $BACKUP_FILE"
+          echo "Backup SHA256: $(sha256sum "$BACKUP_FILE" | awk '{print $1}')"
+
+          echo '===== INSTALLING STATIC FRONTEND FILES ====='
+          # Preserve FileZilla-compatible ownership and keep unrelated site files.
+          WEB_UID="$(stat -c '%u' "$WEB_ROOT")"
+          WEB_GID="$(stat -c '%g' "$WEB_ROOT")"
+          SITE_MODIFIED=true
+          # Copy assets BEFORE publishing the new index.html; never use --delete.
+          rsync -rt --chown="${WEB_UID}:${WEB_GID}" --chmod=D755,F644 \
+            --exclude='/index.html' "$TEMP_DIR/site/" "$WEB_ROOT/"
+          install -o "$WEB_UID" -g "$WEB_GID" -m 0644 \
+            "$TEMP_DIR/site/index.html" "$WEB_ROOT/.index.skilljob-deploy.$$"
+          mv -f "$WEB_ROOT/.index.skilljob-deploy.$$" "$WEB_ROOT/index.html"
+          cmp -s "$TEMP_DIR/site/index.html" "$WEB_ROOT/index.html" \
+            || { echo 'Published index differs from expected build'; exit 1; }
+          nginx -t
+          HTTP_CODE="$(curl -sS -o /dev/null --max-time 10 \
+            -w '%{http_code}' -H "Host: $DOMAIN" 'http://127.0.0.1/')"
+          case "$HTTP_CODE" in
+            200|301|302|307|308) echo "Local Nginx HTTP check: $HTTP_CODE" ;;
+            *) echo "Unexpected Nginx HTTP status: $HTTP_CODE"; exit 1 ;;
+          esac
+          echo "Installed frontend commit: $SOURCE_SHA"
+          echo 'Production .env, database, uploads, backend, PM2 and Nginx configuration untouched.'
+          echo 'Older hashed assets and unrelated files were preserved.'
+          DEPLOY_SUCCEEDED=true
+          echo '===== FRONTEND DEPLOYMENT SUCCESSFUL ====='
+          REMOTE
+
+          SCRIPT_B64="$(gzip -c "$SCRIPT_FILE" | base64 -w 0)"
+          SSM_COMMAND="bash -o pipefail -c 'printf %s ${SCRIPT_B64} | base64 -d | gzip -dc | bash -s -- ${ARCHIVE_SHA} ${GITHUB_SHA} ${URL_B64}'"
+          jq -n --arg command "$SSM_COMMAND" \
+            '{commands: [$command], executionTimeout: ["600"]}' > "$RUNNER_TEMP/frontend-deploy-params.json"
+          COMMAND_ID="$(aws ssm send-command \
+            --instance-ids "$EC2_INSTANCE_ID" \
+            --document-name AWS-RunShellScript \
+            --comment "SkillJob frontend CD ${GITHUB_SHA:0:12}" \
+            --timeout-seconds 60 \
+            --parameters "file://$RUNNER_TEMP/frontend-deploy-params.json" \
+            --query 'Command.CommandId' --output text)"
+          echo "Frontend SSM Command ID: $COMMAND_ID"
+          FINISHED=false
+          for attempt in $(seq 1 100); do
+            if RESULT="$(aws ssm get-command-invocation --command-id "$COMMAND_ID" \
+              --instance-id "$EC2_INSTANCE_ID" --output json 2>"$RUNNER_TEMP/frontend-err.txt")"; then
+              STATUS="$(jq -r .Status <<< "$RESULT")"
+              echo "SSM status: $STATUS (attempt $attempt)"
+              case "$STATUS" in
+                Success|Failed|TimedOut|Cancelled) FINISHED=true; break ;;
+                Pending|InProgress|Delayed|Cancelling) ;;
+                *) echo "Unexpected SSM status: $STATUS"; exit 1 ;;
+              esac
+            elif ! grep -q InvocationDoesNotExist "$RUNNER_TEMP/frontend-err.txt"; then
+              cat "$RUNNER_TEMP/frontend-err.txt" >&2
+              exit 1
+            fi
+            sleep 7
+          done
+          [[ "$FINISHED" == true ]] || {
+            echo "SSM still running after polling timeout: $COMMAND_ID. Inspect before redeploying."
+            exit 1
+          }
+          echo '===== EC2 FRONTEND STDOUT ====='
+          jq -r '.StandardOutputContent // ""' <<< "$RESULT"
+          echo '===== EC2 FRONTEND STDERR ====='
+          jq -r '.StandardErrorContent // ""' <<< "$RESULT" >&2
+          [[ "$(jq -r .Status <<< "$RESULT")" == Success ]] \
+            && [[ "$(jq -r .ResponseCode <<< "$RESULT")" == 0 ]] \
+            || { echo "Frontend deployment failed: SSM command $COMMAND_ID"; exit 1; }
+          echo 'SUCCESS: Verified frontend build deployed to EC2 via SSM.'
